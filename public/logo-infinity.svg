@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Wosool.ai Infinity Logo</title>
+  <desc id="desc">White infinity symbol on black background</desc>
+  <rect width="1024" height="1024" fill="#000000" />
+  <path
+    d="M 512 512 C 432 404 384 336 288 336 C 188 336 112 412 112 512 C 112 612 188 688 288 688 C 384 688 432 620 512 512 C 592 404 640 336 736 336 C 836 336 912 412 912 512 C 912 612 836 688 736 688 C 640 688 592 620 512 512"
+    fill="none"
+    stroke="#F5F5F5"
+    stroke-width="92"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
