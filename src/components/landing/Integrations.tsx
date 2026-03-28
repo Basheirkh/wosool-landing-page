@@ -16,7 +16,7 @@ const integrations = [
 
 export default function Integrations() {
   return (
-    <section id="product" className="relative overflow-hidden px-6 py-24 bg-surface-inset">
+    <section id="product" className="relative overflow-hidden px-5 py-16 md:px-6 md:py-24 bg-surface-inset">
       <div
         className="pointer-events-none absolute inset-0 opacity-70"
         style={{
@@ -31,7 +31,7 @@ export default function Integrations() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="mb-14 max-w-4xl text-right"
+          className="mb-10 max-w-4xl text-right md:mb-14"
         >
           <span className="mb-4 block text-sm text-secondary">التكاملات</span>
           <h2 className="text-[30px] font-bold leading-[1.12] md:text-[42px] lg:text-[54px]">
@@ -44,7 +44,7 @@ export default function Integrations() {
           </p>
         </motion.div>
 
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 xl:grid-cols-4 md:gap-4">
           {integrations.map((item, index) => (
             <motion.div
               key={item.name}
@@ -52,7 +52,7 @@ export default function Integrations() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.42, delay: index * 0.05 }}
-              className={`group relative overflow-hidden rounded-[28px] border p-6 ${
+              className={`group relative overflow-hidden rounded-[22px] border p-4 md:rounded-[28px] md:p-6 ${
                 item.available ? "border-brand-primary/20" : "border-subtle"
               }`}
               style={{
@@ -65,7 +65,7 @@ export default function Integrations() {
               }}
             >
               <div
-                className="pointer-events-none absolute inset-x-0 top-0 h-20 opacity-70"
+                className="pointer-events-none absolute inset-x-0 top-0 hidden h-20 opacity-70 md:block"
                 style={{
                   background: item.available
                     ? "radial-gradient(circle at top, rgba(var(--brand-primary-rgb),0.14), transparent 68%)"
@@ -73,9 +73,9 @@ export default function Integrations() {
                 }}
               />
 
-              <div className="relative z-10 flex items-start justify-between gap-4">
+              <div className="relative z-10 flex items-start justify-between gap-3 md:gap-4">
                 <div
-                  className="flex h-[110px] w-[110px] items-center justify-center rounded-[22px] border border-black/[0.06] bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)] dark:shadow-none"
+                  className="flex h-[72px] w-[72px] items-center justify-center rounded-[16px] border border-black/[0.06] bg-white p-3 shadow-[0_2px_8px_rgba(0,0,0,0.06)] dark:shadow-none md:h-[110px] md:w-[110px] md:rounded-[22px] md:p-4"
                   style={{ borderColor: item.available ? "rgba(var(--brand-primary-rgb),0.16)" : undefined }}
                 >
                   <Image
@@ -83,11 +83,11 @@ export default function Integrations() {
                     alt={item.name}
                     width={220}
                     height={88}
-                    className={`max-h-[74px] w-auto object-contain ${item.available ? "" : "opacity-72 grayscale"}`}
+                    className={`max-h-[42px] w-auto object-contain md:max-h-[74px] ${item.available ? "" : "opacity-72 grayscale"}`}
                   />
                 </div>
                 <span
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium shadow-[0_8px_20px_rgba(16,32,42,0.06)] ${
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-medium shadow-[0_8px_20px_rgba(16,32,42,0.06)] md:gap-2 md:px-4 md:py-2 md:text-xs ${
                     item.available
                       ? "bg-[rgba(var(--brand-primary-rgb),0.14)] text-brand-primary ring-1 ring-brand-primary/16"
                       : "bg-surface text-secondary ring-1 ring-[var(--border-subtle)]"
@@ -98,9 +98,9 @@ export default function Integrations() {
                 </span>
               </div>
 
-              <div className="relative z-10 mt-6">
-                <h3 className="text-[22px] font-semibold leading-8 text-primary">{item.name}</h3>
-                <p className="mt-2 text-sm leading-7 text-secondary">{item.note}</p>
+              <div className="relative z-10 mt-4 md:mt-6">
+                <h3 className="text-[16px] font-semibold leading-6 text-primary md:text-[22px] md:leading-8">{item.name}</h3>
+                <p className="mt-1.5 hidden text-[13px] leading-6 text-secondary md:mt-2 md:block md:text-sm md:leading-7">{item.note}</p>
               </div>
             </motion.div>
           ))}

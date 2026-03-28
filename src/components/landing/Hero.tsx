@@ -5,9 +5,9 @@ import TypewriterDemo from "@/components/ui/TypewriterDemo";
 
 export default function Hero() {
   return (
-    <section className="relative pt-[80px] px-6">
+    <section className="relative px-5 pt-[72px] md:px-6 md:pt-[80px]">
       {/* Outer wrapper with margin and rounded border — Botpress pattern */}
-      <div className="relative w-full max-w-[1400px] mx-auto rounded-2xl border border-subtle overflow-hidden min-h-[85vh]">
+      <div className="relative w-full max-w-[1400px] mx-auto rounded-2xl border border-subtle overflow-hidden min-h-[72vh] md:min-h-[85vh]">
         {/* Dot grid background */}
         <div className="absolute inset-0 bg-surface-inset dot-grid" />
 

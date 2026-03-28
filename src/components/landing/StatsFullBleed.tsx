@@ -14,7 +14,7 @@ export default function StatsFullBleed() {
 
   return (
     <section className="relative py-0">
-      <div className="relative px-6 py-24 bg-background">
+      <div className="relative px-5 py-16 md:px-6 md:py-24 bg-background">
         <div className="max-w-[1400px] mx-auto">
           <LandingArtFrame
             theme="future"

@@ -52,7 +52,7 @@ export default function Pricing() {
   const [yearly, setYearly] = useState(false);
 
   return (
-    <section id="pricing" className="relative py-24 px-6 bg-surface-inset">
+    <section id="pricing" className="relative px-5 py-16 md:px-6 md:py-24 bg-surface-inset">
       <div className="max-w-[1400px] mx-auto">
         {/* Header */}
         <motion.div
