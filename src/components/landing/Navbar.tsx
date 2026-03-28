@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Logo from "@/components/ui/Logo";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -14,9 +16,9 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { label: "المنتج", href: "#product" },
-    { label: "الأسعار", href: "#pricing" },
-    { label: "المدونة", href: "#" },
+    { label: "المنتج", href: "/#product" },
+    { label: "الأسعار", href: "/#pricing" },
+    { label: "المدونة", href: "/blog" },
   ];
 
   return (
@@ -24,42 +26,43 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 h-[60px] flex items-center transition-all duration-300 ${
           scrolled
-            ? "bg-[#080B0F]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/20"
+            ? "theme-nav-shell backdrop-blur-xl border-b"
             : "bg-transparent"
         }`}
       >
         <div className="w-full max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Logo size="md" color="white" />
+          <Logo size="md" color="adaptive" />
 
           {/* Center nav — desktop */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
-                className="text-sm text-[#8a8f98] hover:text-white transition-colors relative group"
+                className="text-sm transition-colors relative group theme-link-muted"
               >
                 {link.label}
                 <span className="absolute bottom-0 right-0 w-0 h-[1px] bg-brand-primary transition-all duration-300 group-hover:w-full" />
-              </a>
+              </Link>
             ))}
           </div>
 
           {/* Right buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <a
-              href="#"
-              className="text-sm text-[#8a8f98] hover:text-white transition-colors px-4 py-2"
+            <ThemeToggle />
+            <Link
+              href="/blog"
+              className="text-sm transition-colors px-4 py-2 theme-link-muted"
             >
-              تسجيل الدخول
-            </a>
-            <a
-              href="#"
-              className="text-sm font-medium bg-white text-[#080B0F] rounded-full px-5 py-2.5 hover:bg-white/90 transition-all hover:-translate-y-[1px]"
+              المدونة
+            </Link>
+            <Link
+              href="/#pricing"
+              className="theme-btn-primary text-sm font-medium rounded-full px-5 py-2.5 transition-all hover:-translate-y-[1px]"
             >
               ابدأ مجاناً
-            </a>
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
@@ -69,17 +72,17 @@ export default function Navbar() {
             aria-label="القائمة"
           >
             <span
-              className={`block w-5 h-[2px] bg-white transition-transform ${
+              className={`block w-5 h-[2px] bg-foreground transition-transform ${
                 menuOpen ? "rotate-45 translate-y-[5px]" : ""
               }`}
             />
             <span
-              className={`block w-5 h-[2px] bg-white transition-opacity ${
+              className={`block w-5 h-[2px] bg-foreground transition-opacity ${
                 menuOpen ? "opacity-0" : ""
               }`}
             />
             <span
-              className={`block w-5 h-[2px] bg-white transition-transform ${
+              className={`block w-5 h-[2px] bg-foreground transition-transform ${
                 menuOpen ? "-rotate-45 -translate-y-[5px]" : ""
               }`}
             />
@@ -89,30 +92,31 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-40 bg-[#080B0F]/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 pt-[60px]">
+        <div className="theme-nav-overlay fixed inset-0 z-40 backdrop-blur-xl flex flex-col items-center justify-center gap-8 pt-[60px]">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.label}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="text-2xl text-white font-medium"
+              className="theme-text-primary text-2xl font-medium"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <div className="flex flex-col gap-4 mt-8 items-center">
-            <a
-              href="#"
-              className="text-[#8a8f98] text-lg"
+            <ThemeToggle />
+            <Link
+              href="/blog"
+              className="theme-link-muted text-lg"
             >
-              تسجيل الدخول
-            </a>
-            <a
-              href="#"
-              className="bg-brand-primary text-[#080B0F] rounded-full px-8 py-3 text-lg font-semibold"
+              المدونة
+            </Link>
+            <Link
+              href="/#pricing"
+              className="theme-btn-primary rounded-full px-8 py-3 text-lg font-semibold"
             >
               ابدأ مجاناً
-            </a>
+            </Link>
           </div>
         </div>
       )}

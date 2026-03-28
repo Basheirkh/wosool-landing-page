@@ -1,115 +1,294 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { ReactNode } from "react";
+import LandingArtFrame from "@/components/landing/LandingArtFrame";
+
+function MiniWindow({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`rounded-[24px] shadow-[0_18px_45px_rgba(0,0,0,0.22)] backdrop-blur-sm ${className}`}
+      style={{
+        border: "1px solid var(--art-panel-border)",
+        background: "var(--art-panel)",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function IconBadge({
+  children,
+  tone = "default",
+  className = "",
+}: {
+  children: ReactNode;
+  tone?: "default" | "green" | "purple" | "blue";
+  className?: string;
+}) {
+  const tones = {
+    default: "",
+    green: "bg-brand-primary/12 text-brand-primary",
+    purple: "bg-violet-400/12 text-violet-300",
+    blue: "bg-sky-400/12 text-sky-300",
+  };
+
+  return (
+    <div
+      className={`flex h-7 w-7 items-center justify-center rounded-lg ${tones[tone]} ${className}`}
+      style={tone === "default" ? { background: "var(--art-chip-bg)", color: "var(--art-text-secondary)" } : undefined}
+    >
+      {children}
+    </div>
+  );
+}
+
+function MessageIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.8 8.8 0 0 1-4-.9L3 21l1.3-4.8A8.5 8.5 0 1 1 21 11.5Z" />
+      <path d="M8.5 10.5h7" />
+      <path d="M8.5 14h4.5" />
+    </svg>
+  );
+}
+
+function StoreIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 10.5h16" />
+      <path d="M6 10.5l1.2-4h9.6l1.2 4" />
+      <path d="M6.5 10.5V18h11v-7.5" />
+      <path d="M9.5 18v-4h5v4" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 12.05A8 8 0 0 1 8.53 19.2L4 20l.82-4.44A8 8 0 1 1 20 12.05Z" />
+      <path d="M9 9.7c.2-.3.4-.3.7-.3h.4c.2 0 .4.1.5.4l.6 1.7c.1.2.1.4 0 .5l-.4.5c-.2.2-.2.3 0 .5.5.8 1.3 1.4 2.2 1.9.2.1.4.1.5-.1l.5-.6c.1-.2.3-.2.5-.1l1.6.7c.3.1.4.3.4.5 0 .5-.4 1.1-.9 1.4-.4.2-.9.3-1.4.2-2-.6-3.8-2.1-5-4-.4-.7-.4-1.5.2-2.3Z" />
+    </svg>
+  );
+}
+
+function BrainIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9.5 4.5a2.5 2.5 0 0 0-4 2v.2a3 3 0 0 0-1 5.6A3 3 0 0 0 6 18h.5" />
+      <path d="M14.5 4.5a2.5 2.5 0 0 1 4 2v.2a3 3 0 0 1 1 5.6A3 3 0 0 1 18 18h-.5" />
+      <path d="M9.5 4.5c.7-.3 1.5-.5 2.5-.5s1.8.2 2.5.5" />
+      <path d="M9 9c.6.4 1.3.6 3 .6s2.4-.2 3-.6" />
+      <path d="M9 15c.6-.4 1.3-.6 3-.6s2.4.2 3 .6" />
+      <path d="M12 4v16" />
+    </svg>
+  );
+}
+
+function LayersIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 4 4 8l8 4 8-4-8-4Z" />
+      <path d="m4 12 8 4 8-4" />
+      <path d="m4 16 8 4 8-4" />
+    </svg>
+  );
+}
+
+function PlusIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 8v4l2.5 1.5" />
+    </svg>
+  );
+}
+
+function ShieldIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3 6 5.5v5.8c0 4 2.4 7.5 6 9.2 3.6-1.7 6-5.2 6-9.2V5.5L12 3Z" />
+      <path d="m9.5 12 1.7 1.7 3.3-3.3" />
+    </svg>
+  );
+}
 
 const features = [
   {
-    title: "انشر حيث يتواجد عملاءك.",
-    description: "يمكن نشر الوكلاء على واتساب، أو تضمينهم في متجرك، أو تشغيلهم عبر واجهات صوتية دون الحاجة لتنفيذات منفصلة.",
-    badge: "موظف العملاء",
+    title: "يعرف من يتكلم معه قبل أن يسأل.",
+    description: "يرى العميل وسياقه قبل أن يرد.",
+    badge: "معرفة العميل",
     visual: (
-      <div className="w-full h-full flex items-end justify-center p-6">
-        <div className="bg-white rounded-xl shadow-lg p-4 w-[280px]">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="74.424 10.58 46.872 28.387" width="14" height="9"><path fill="#fff" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/></svg>
+      <div className="flex h-full w-full items-end justify-center p-6">
+        <MiniWindow className="w-[300px] overflow-hidden">
+          <div className="flex items-center gap-3 px-4 py-4" style={{ borderBottom: "1px solid var(--art-border)" }}>
+            <div className="flex gap-1.5">
+              <IconBadge>
+                <ClockIcon />
+              </IconBadge>
+              <IconBadge tone="purple">
+                <StoreIcon />
+              </IconBadge>
+              <IconBadge tone="green">
+                <MessageIcon />
+              </IconBadge>
             </div>
-            <span className="text-[#0a0a0a] text-sm font-medium">Agent</span>
-            <div className="flex gap-1.5 mr-auto">
-              <div className="w-6 h-6 rounded bg-[#25D366]/10 flex items-center justify-center"><span className="text-xs">💬</span></div>
-              <div className="w-6 h-6 rounded bg-blue-500/10 flex items-center justify-center"><span className="text-xs">🌐</span></div>
-              <div className="w-6 h-6 rounded bg-gray-100 flex items-center justify-center text-gray-400 text-xs">+</div>
+            <span className="text-[13px] font-semibold" style={{ color: "var(--art-text-primary)" }}>Customer Agent</span>
+            <div className="mr-auto flex h-9 w-9 items-center justify-center rounded-full bg-brand-primary text-[#080B0F] shadow-[0_8px_18px_rgba(0,217,126,0.25)]">
+              <ShieldIcon />
             </div>
           </div>
-          <div className="text-xs text-[#0a0a0a]/70 border-t pt-3">
-            <span className="font-medium text-[#0a0a0a]">Instructions</span>
-            <p className="mt-1 text-[11px] leading-relaxed">أنت جزء أساسي من عمليات المتجر. استخدم الأدوات لتحسين تجربة العملاء.</p>
+          <div className="px-4 py-4">
+            <div className="mb-3 flex items-center justify-between">
+              <span className="text-[13px] font-semibold" style={{ color: "var(--art-text-primary)" }}>Profile Match</span>
+              <span className="rounded-full bg-brand-primary/12 px-2 py-1 text-[10px] text-brand-primary">
+                matched
+              </span>
+            </div>
+            <p className="text-[12px] leading-6" style={{ color: "var(--art-text-secondary)" }}>
+              رقم العميل مطابق لـ 3 طلبات سابقة. آخر تواصل كان قبل 5 أيام. استخدم رداً مباشراً وواضحاً.
+            </p>
           </div>
+        </MiniWindow>
+      </div>
+    ),
+  },
+  {
+    title: "4 طبقات ذاكرة بدل محادثة تنسى كل شيء.",
+    description: "جلسة، مهام، قرارات، ومتجر.",
+    badge: "الذاكرة",
+    visual: (
+      <div className="flex h-full w-full items-center justify-center p-6">
+        <div className="w-[290px] space-y-4">
+          <MiniWindow className="px-4 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-primary/12 text-brand-primary">
+                <LayersIcon />
+              </div>
+              <div className="flex-1">
+                <div className="text-[13px] font-semibold" style={{ color: "var(--art-text-primary)" }}>Session Memory</div>
+                <div className="mt-1 inline-flex rounded-full bg-brand-primary/12 px-2 py-1 text-[10px] text-brand-primary">
+                  نشطة
+                </div>
+              </div>
+            </div>
+          </MiniWindow>
+          <MiniWindow className="px-4 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sky-400/12 text-sky-300">
+                <ShieldIcon />
+              </div>
+              <div className="flex-1">
+                <div className="text-[13px] font-semibold" style={{ color: "var(--art-text-primary)" }}>Decision Log</div>
+                <div className="mt-1 text-[11px]" style={{ color: "var(--art-text-muted)" }}>لا خصم تحت 100 ريال</div>
+              </div>
+            </div>
+          </MiniWindow>
         </div>
       </div>
     ),
   },
   {
-    title: "عزز سير عمل دعم العملاء.",
-    description: "امنح الوكلاء القدرة على التعامل مع الاستفسارات الروتينية، والتصعيد عند الحاجة، والحفاظ على الاتساق عبر القنوات.",
-    badge: "الأتمتة",
+    title: "يعرف متى ينفذ، ومتى يسأل، ومتى يتوقف.",
+    description: "ينفذ، أو يسأل، أو يتوقف.",
+    badge: "الموافقة",
     visual: (
-      <div className="w-full h-full flex items-center justify-center p-6">
-        <div className="space-y-3">
-          <div className="bg-white rounded-xl shadow-lg p-3 flex items-center gap-3 w-[260px]">
-            <div className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-sm">H</div>
-            <div>
-              <div className="text-sm font-medium text-[#0a0a0a]">WhatsApp User</div>
-              <div className="text-[10px] text-green-600 bg-green-50 px-1.5 py-0.5 rounded inline-block">Assigned</div>
+      <div className="flex h-full w-full items-center justify-center p-6">
+        <MiniWindow className="w-[300px] overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: "1px solid var(--art-border)" }}>
+            <div className="inline-flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-brand-primary" />
+              <span className="text-[13px] font-semibold" style={{ color: "var(--art-text-primary)" }}>Approval Engine</span>
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-lg p-3 flex items-center gap-3 w-[260px]">
-            <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm">A</div>
-            <div>
-              <div className="text-sm font-medium text-[#0a0a0a]">Webchat User</div>
-              <div className="text-[11px] text-[#0a0a0a]/60">هل يمكنني استرداد المبلغ؟</div>
+          <div className="space-y-3 px-4 py-4">
+            <div className="mr-auto max-w-[78%] rounded-2xl px-3 py-2.5 text-[12px]" style={{ background: "var(--art-chip-bg)", color: "var(--art-text-primary)" }}>
+              عميل يطلب استرداد 350 ريال.
+            </div>
+            <div className="max-w-[85%] rounded-2xl px-3 py-2.5 text-[12px] leading-6" style={{ background: "var(--art-panel-soft)", color: "var(--art-text-secondary)" }}>
+              هذه الحالة تحتاج موافقتك أولاً. هل توافق على الاسترداد؟
             </div>
           </div>
-        </div>
+          <div className="flex items-center justify-between px-4 py-3 text-[12px]" style={{ borderTop: "1px solid var(--art-border)", color: "var(--art-text-muted)" }}>
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-primary/12">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#00D97E" strokeWidth="2.3">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </div>
+            <span>نعم / لا</span>
+          </div>
+        </MiniWindow>
       </div>
     ),
   },
   {
-    title: "قدّم محادثات سياقية.",
-    description: "المحادثات ذات حالة مستمرة ودائمة، مما يُمكّن الوكلاء من تتبع السياق والعمل عبر الخطوات دون فقدان المعلومات.",
-    badge: "السياق",
+    title: "ليس أذكى من ChatGPT عموماً. أذكى داخل متجرك.",
+    description: "ليس أذكى عموماً. أذكى داخل عملك.",
+    badge: "الطبقة الذكية",
     visual: (
-      <div className="w-full h-full flex items-center justify-center p-6">
-        <div className="bg-white rounded-xl shadow-lg w-[260px] overflow-hidden">
-          <div className="px-3 py-2 border-b flex items-center gap-2">
-            <span className="text-xs font-medium text-[#0a0a0a]">Emulator</span>
-            <span className="w-2 h-2 rounded-full bg-brand-primary" />
+      <div className="flex h-full w-full items-center justify-center p-6">
+        <MiniWindow className="w-[280px] p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-[13px] font-semibold" style={{ color: "var(--art-text-primary)" }}>Context Layers</span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-md" style={{ border: "1px solid var(--art-panel-border)", color: "var(--art-text-muted)" }}>
+              <PlusIcon />
+            </span>
           </div>
-          <div className="p-3 space-y-2">
-            <div className="bg-gray-100 rounded-lg p-2 text-[11px] text-[#0a0a0a] max-w-[80%] mr-auto">
-              أواجه مشكلة في الطلب. الدفع لا يعمل.
-            </div>
-            <div className="bg-[#f8f8f8] rounded-lg p-2 text-[11px] text-[#0a0a0a]/80 max-w-[85%]">
-              شكراً لإبلاغنا. تم إنشاء تذكرة لهذه المشكلة. هل يمكنك إرسال لقطة شاشة؟
-            </div>
-          </div>
-          <div className="px-3 py-2 border-t flex items-center gap-2">
-            <input className="flex-1 text-[11px] text-gray-400 bg-transparent outline-none" placeholder="اكتب للاختبار..." readOnly />
-            <div className="w-5 h-5 rounded-full bg-brand-primary/20 flex items-center justify-center">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00D97E" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: "ادمج مع الأنظمة الحالية.",
-    description: "استخدم واجهات سلة وواتساب، وادخل إلى بيانات المتجر، وتفاعل مباشرة مع المنتجات والطلبات والعملاء.",
-    badge: "التكامل",
-    visual: (
-      <div className="w-full h-full flex items-center justify-center p-6">
-        <div className="bg-white rounded-xl shadow-lg p-4 w-[240px]">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-sm font-medium text-[#0a0a0a]">Capabilities</span>
-            <span className="w-5 h-5 rounded border border-gray-200 flex items-center justify-center text-gray-400 text-xs">+</span>
-          </div>
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {[
-              { icon: "🛒", name: "سلة", sub: "إدارة المتجر", color: "bg-purple-50" },
-              { icon: "💬", name: "واتساب", sub: "رسائل العملاء", color: "bg-green-50" },
-              { icon: "📊", name: "التقارير", sub: "تحليل البيانات", color: "bg-blue-50" },
+              {
+                icon: <StoreIcon />,
+                name: "سلة",
+                sub: "الطلبات والمنتجات",
+                color: "bg-violet-400/12",
+                iconTone: "text-violet-300",
+              },
+              {
+                icon: <WhatsAppIcon />,
+                name: "واتساب",
+                sub: "المحادثات المباشرة",
+                color: "bg-brand-primary/12",
+                iconTone: "text-brand-primary",
+              },
+              {
+                icon: <BrainIcon />,
+                name: "الذاكرة",
+                sub: "القرارات والسياسات",
+                color: "bg-sky-400/12",
+                iconTone: "text-sky-300",
+              },
             ].map((cap) => (
-              <div key={cap.name} className={`flex items-center gap-3 p-2 rounded-lg ${cap.color}`}>
-                <span className="text-lg">{cap.icon}</span>
+              <div
+                key={cap.name}
+                className={`flex items-center gap-3 rounded-2xl px-3 py-3 ${cap.color}`}
+              >
+                <span className={cap.iconTone}>{cap.icon}</span>
                 <div>
-                  <div className="text-xs font-medium text-[#0a0a0a]">{cap.name}</div>
-                  <div className="text-[10px] text-[#0a0a0a]/50">{cap.sub}</div>
+                  <div className="text-[12px] font-semibold" style={{ color: "var(--art-text-primary)" }}>{cap.name}</div>
+                  <div className="text-[10px]" style={{ color: "var(--art-text-muted)" }}>{cap.sub}</div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </MiniWindow>
       </div>
     ),
   },
@@ -129,16 +308,16 @@ export default function FeaturesGrid() {
         >
           {/* Label with line */}
           <div className="flex items-center gap-4 mb-8">
-            <div className="flex-1 h-px bg-white/[0.08]" />
-            <span className="text-sm text-[#8a8f98]">الإمكانات</span>
+            <div className="flex-1 h-px bg-ghost-strong" />
+            <span className="text-sm text-secondary">الإمكانات</span>
           </div>
 
           <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.15] text-right max-w-4xl mr-0 ml-auto">
-            وصول يوفر البنية التحتية الأساسية
+            لا نبيع Chatbot بواجهة عربية.
             <br />
-            لتشغيل وكلاء الذكاء الاصطناعي في بيئة
+            نبيع طبقة تشغيل
             <br />
-            <span className="text-[#8a8f98]">الإنتاج.</span>
+            <span className="text-secondary">تفهم. تقرر. تنفذ.</span>
           </h2>
         </motion.div>
 
@@ -151,25 +330,38 @@ export default function FeaturesGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="group rounded-2xl bg-[#141414] border border-white/[0.06] overflow-hidden hover:border-white/[0.10] transition-all duration-300"
+              className="group overflow-hidden rounded-[26px] border border-subtle bg-surface-elevated transition-all duration-300 hover:border-medium hover:bg-surface-elevated"
             >
               {/* Card top — "تعرف على المزيد ↗" like Botpress */}
               <div className="flex justify-end p-5 pb-0">
-                <a href="#" className="flex items-center gap-1 text-xs text-[#8a8f98] hover:text-white transition-colors">
+                <a href="#" className="flex items-center gap-1 text-xs text-secondary hover:text-primary transition-colors">
                   تعرف على المزيد
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                 </a>
               </div>
 
-              {/* Visual area — UI mockup */}
-              <div className="h-[260px] relative">
-                {feature.visual}
+              <div className="relative h-[260px]">
+                <LandingArtFrame
+                  theme={i === 0 ? "signal" : i === 1 ? "memory" : i === 2 ? "vault" : "network"}
+                  word={feature.badge}
+                  accent={i === 0 ? "#FB7185" : i === 1 ? "#A78BFA" : i === 2 ? "#F97316" : "#00D97E"}
+                  secondaryAccent={i === 0 ? "#00D97E" : i === 1 ? "#00D97E" : i === 2 ? "#F6C453" : "#38BDF8"}
+                  className="h-full rounded-none border-0"
+                  hideWord
+                  minimal
+                >
+                  {feature.visual}
+                </LandingArtFrame>
               </div>
 
               {/* Text below card */}
-              <div className="p-6 pt-4 border-t border-white/[0.04]">
+              <div className="border-t border-faint p-6 pt-4">
+                <div className="inline-flex items-center gap-2 text-[11px] text-brand-primary mb-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
+                  {feature.badge}
+                </div>
                 <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
-                <p className="text-sm text-[#8a8f98] leading-relaxed">
+                <p className="text-sm text-secondary leading-relaxed">
                   {feature.description}
                 </p>
               </div>

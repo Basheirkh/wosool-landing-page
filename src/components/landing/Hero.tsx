@@ -5,14 +5,14 @@ import TypewriterDemo from "@/components/ui/TypewriterDemo";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-[60px] px-6">
+    <section className="relative pt-[80px] px-6">
       {/* Outer wrapper with margin and rounded border — Botpress pattern */}
-      <div className="relative w-full max-w-[1400px] mx-auto rounded-2xl border border-white/[0.06] overflow-hidden min-h-[85vh] flex items-center justify-center">
+      <div className="relative w-full max-w-[1400px] mx-auto rounded-2xl border border-subtle overflow-hidden min-h-[85vh]">
         {/* Dot grid background */}
-        <div className="absolute inset-0 bg-[#0a0a0a] dot-grid" />
+        <div className="absolute inset-0 bg-surface-inset dot-grid" />
 
         {/* Radial green glow from center */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,217,126,0.06)_0%,_transparent_55%)]" />
+        <div className="absolute inset-0" style={{ backgroundImage: "var(--hero-accent-wash)" }} />
 
         {/* 3D Floating Objects — wireframe line-art style like Botpress */}
         {/* WhatsApp icon — top right */}
@@ -79,17 +79,17 @@ export default function Hero() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-20 flex flex-col items-center text-center">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 py-16 md:py-20 flex flex-col items-center text-center">
           {/* Badge — green left border like Botpress */}
           <motion.a
-            href="#"
+            href="#pricing"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/[0.04] border border-white/[0.10] text-sm text-[#8a8f98] mb-10 hover:bg-white/[0.06] transition-colors border-r-2 border-r-brand-primary"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-ghost border border-medium text-sm text-secondary mb-10 hover:bg-ghost-strong transition-colors border-r-2 border-r-brand-primary"
           >
-            جديد: تكامل مع سلة — تعرف على المزيد
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <span className="text-brand-primary">←</span>
+            نبدأ من التجارة الإلكترونية ونتوسع إلى كل عمل أونلاين
           </motion.a>
 
           {/* H1 — massive centered like Botpress */}
@@ -99,9 +99,9 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-[40px] md:text-[64px] lg:text-[80px] xl:text-[96px] font-bold leading-[1.08] mb-6 tracking-tight"
           >
-            <span className="block">نظام تشغيل المتجر</span>
+            <span className="block">متجرك يعمل</span>
             <span className="block">
-              بالذكاء الاصطناعي{" "}
+              وأنت نائم{" "}
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="74.424 10.58 46.872 28.387" className="inline-block w-[0.6em] h-[0.36em] align-middle mb-1" aria-label="Wosool">
                 <path fill="#00D97E" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
               </svg>
@@ -113,9 +113,11 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="text-[15px] md:text-base text-[#8a8f98] max-w-lg mb-10 leading-relaxed"
+            className="text-[15px] md:text-[17px] text-secondary max-w-2xl mb-10 leading-relaxed"
           >
-            أنشئ وكلاءك الذكيين، وأدرهم عبر الواتساب والأدوات والبيانات.
+            نظام تشغيل للأعمال أونلاين.
+            <br />
+            يبدأ من التجارة الإلكترونية. ويتوسع إلى ما بعدها.
           </motion.p>
 
           {/* CTAs — pill buttons like Botpress */}
@@ -123,39 +125,98 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.35 }}
-            className="flex items-center gap-3"
+            className="flex flex-col sm:flex-row items-center gap-3"
           >
             <a
-              href="#"
-              className="bg-white text-[#080B0F] font-medium rounded-full px-7 py-3 text-sm hover:bg-white/90 transition-all hover:-translate-y-[1px]"
+              href="#pricing"
+              className="theme-btn-primary font-medium rounded-full px-7 py-3 text-sm hover:opacity-90 transition-all hover:-translate-y-[1px] min-w-[180px]"
             >
-              ابدأ مجاناً
+              اطلب الوصول المبكر
             </a>
             <a
-              href="#"
-              className="flex items-center gap-2 text-white/80 hover:text-white border border-white/[0.15] rounded-full px-7 py-3 text-sm transition-all hover:border-white/[0.3]"
+              href="#comparisons"
+              className="flex items-center justify-center gap-2 text-primary border border-brand-primary/20 bg-brand-primary/5 rounded-full px-7 py-3 text-sm transition-all hover:border-brand-primary/40 min-w-[180px]"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-              عرض الخطط
+              قارن قبل أن تقرر
             </a>
+            <a
+              href="#product"
+              className="flex items-center justify-center gap-2 text-faint hover:text-primary border border-strong rounded-full px-7 py-3 text-sm transition-all min-w-[180px]"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+              شاهد كيف يعمل
+            </a>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.42 }}
+            className="text-sm text-muted mt-4 max-w-2xl leading-relaxed"
+          >
+            ليس لمن يريد بناء stack من الصفر.
+            بل لمن يريد تشغيل العمل اليوم.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+            className="flex flex-wrap items-center justify-center gap-3 mt-8"
+          >
+            {[
+              "العربية أولاً",
+              "واتساب-native",
+              "يشغّل وينفّذ",
+            ].map((item) => (
+              <span
+                key={item}
+                className="px-4 py-2 rounded-full border border-subtle bg-ghost text-sm text-faint"
+              >
+                {item}
+              </span>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: [0, 8, 0] }}
+            transition={{ delay: 0.65, duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="mt-8 flex flex-col items-center"
+          >
+            <span className="text-[11px] tracking-[0.24em] text-muted uppercase">
+              Live Preview
+            </span>
+            <div className="mt-3 flex flex-col items-center gap-2">
+              <div className="w-px h-10 bg-gradient-to-b from-brand-primary/70 to-transparent" />
+              <div className="w-8 h-8 rounded-full border border-brand-primary/20 bg-brand-primary/8 flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00D97E" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 5v14" />
+                  <path d="M19 12l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="w-full mt-14 lg:mt-16"
+          >
+            <div className="relative max-w-[980px] mx-auto">
+              <div className="absolute -inset-8 bg-brand-primary/5 rounded-[40px] blur-3xl" />
+              <div
+                className="relative shadow-2xl shadow-black/60 rounded-[28px] overflow-hidden"
+                style={{ transform: "perspective(1400px) rotateY(-2deg) rotateX(2deg)" }}
+              >
+                <TypewriterDemo />
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
-
-      {/* WhatsApp Demo — floating below hero, overlapping */}
-      <motion.div
-        initial={{ opacity: 0, y: 60, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        className="absolute bottom-[-80px] left-1/2 -translate-x-1/2 z-20 hidden lg:block"
-      >
-        <div className="relative">
-          <div className="absolute -inset-6 bg-brand-primary/5 rounded-3xl blur-3xl" />
-          <div className="relative shadow-2xl shadow-black/60 rounded-2xl overflow-hidden" style={{ transform: "perspective(1000px) rotateY(-3deg) rotateX(2deg)" }}>
-            <TypewriterDemo />
-          </div>
-        </div>
-      </motion.div>
     </section>
   );
 }

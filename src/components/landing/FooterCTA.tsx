@@ -1,90 +1,119 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
+import LandingArtFrame from "@/components/landing/LandingArtFrame";
 
 export default function FooterCTA() {
   return (
     <section className="relative px-6 py-8">
       <div className="max-w-[1400px] mx-auto rounded-2xl overflow-hidden flex flex-col md:flex-row min-h-[500px]">
-        {/* Right side in RTL — Artistic image/illustration */}
-        <div className="md:w-[45%] relative bg-gradient-to-br from-[#2a1a4a] via-[#1a3040] to-[#0a2020] min-h-[300px] md:min-h-auto overflow-hidden">
-          {/* Decorative artistic composition */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            {/* Abstract art placeholder — geometric shapes */}
-            <div className="relative w-[300px] h-[400px]">
-              {/* Vase shape */}
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[120px] h-[200px] rounded-t-[60px] bg-gradient-to-b from-cyan-300/30 to-blue-400/20 border border-cyan-400/20" />
-              {/* Plant stems */}
-              <div className="absolute bottom-[200px] left-1/2 -translate-x-1/2">
-                <div className="w-[2px] h-[80px] bg-green-400/40 mx-auto" />
-                <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-400/15 -translate-y-4" />
-                <div className="w-12 h-12 rounded-full bg-green-600/15 border border-green-500/10 -translate-y-8 translate-x-6" />
-              </div>
-              {/* Books */}
-              <div className="absolute bottom-0 right-0 w-16 h-6 bg-red-700/30 rounded-sm" />
-              <div className="absolute bottom-6 right-2 w-14 h-5 bg-amber-700/25 rounded-sm" />
-            </div>
-          </div>
+        <div className="md:w-[45%] relative min-h-[300px] md:min-h-auto p-3 bg-surface-inset">
+          <LandingArtFrame
+            theme="future"
+            word="دعوة"
+            eyebrow="Early Access"
+            accent="#38BDF8"
+            secondaryAccent="#00D97E"
+            className="h-full min-h-[280px]"
+            hideWord
+          >
+            <div className="absolute inset-0 z-20 flex items-center justify-center p-10">
+              <div className="relative flex h-full w-full items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                  <svg width="320" height="200" viewBox="0 0 320 200" fill="none">
+                    <path
+                      d="M104 100C104 74 123 58 147 58C169 58 182 72 195 100C207 128 221 142 243 142C267 142 286 126 286 100C286 74 267 58 243 58C221 58 207 72 195 100C182 128 169 142 147 142C123 142 104 126 104 100Z"
+                      stroke="url(#loopStrokeLarge)"
+                      strokeWidth="14"
+                      strokeLinecap="round"
+                    />
+                    <defs>
+                      <linearGradient id="loopStrokeLarge" x1="104" y1="58" x2="286" y2="142" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#38BDF8" />
+                        <stop offset="0.55" stopColor="#00D97E" />
+                        <stop offset="1" stopColor="#6EE7B7" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
 
-          {/* Matrix/code rain overlay — like Botpress */}
-          <div className="absolute inset-0 opacity-[0.08] overflow-hidden pointer-events-none">
-            <div className="font-mono text-[10px] text-white leading-none whitespace-pre-wrap break-all p-4">
-              {Array(200).fill("01001010 وصول 11010100 ∞ 10101010 ").join("")}
+                <motion.div
+                  animate={{ scale: [0.98, 1.02, 0.98], opacity: [0.76, 1, 0.76] }}
+                  transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative"
+                >
+                  <svg width="220" height="140" viewBox="0 0 220 140" fill="none">
+                    <path
+                      d="M40 70C40 48 56 34 78 34C96 34 108 46 118 70C128 94 140 106 158 106C180 106 196 92 196 70C196 48 180 34 158 34C140 34 128 46 118 70C108 94 96 106 78 106C56 106 40 92 40 70Z"
+                      stroke="url(#wosoolLoop)"
+                      strokeWidth="10"
+                      strokeLinecap="round"
+                    />
+                    <defs>
+                      <linearGradient id="wosoolLoop" x1="40" y1="34" x2="196" y2="106" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#38BDF8" />
+                        <stop offset="0.55" stopColor="#00D97E" />
+                        <stop offset="1" stopColor="#6EE7B7" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </motion.div>
+
+                <motion.div
+                  animate={{ x: [-34, 34, -34], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute h-3 w-3 rounded-full bg-brand-primary shadow-[0_0_18px_rgba(0,217,126,0.55)]"
+                />
+              </div>
             </div>
-          </div>
+          </LandingArtFrame>
         </div>
 
-        {/* Left side in RTL — Giant stacked words + circular CTA */}
-        <div className="md:w-[55%] bg-[#0a0a0a] relative overflow-hidden">
-          {/* Matrix decoration in background */}
-          <div className="absolute inset-0 opacity-[0.04] overflow-hidden pointer-events-none">
-            <div className="font-mono text-[8px] text-white leading-tight whitespace-pre-wrap break-all p-4">
-              {Array(300).fill("10110101 00101001 11001010 01010011 ").join("")}
-            </div>
-          </div>
-
-          {/* Grid layout for words — Botpress style */}
+        <div className="md:w-[55%] bg-surface-inset relative overflow-hidden">
           <div className="relative z-10 h-full flex flex-col">
-            {/* Row 1: "أطلق" */}
-            <div className="flex-1 flex items-center justify-center border-b border-white/[0.04] px-8">
+            <div className="absolute top-6 right-6 text-xs text-muted">
+              ليس لكل أحد. ومصمم لهذا السوق تحديداً.
+            </div>
+            <div className="flex-1 flex items-center justify-center border-b border-faint px-8">
               <motion.span
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="text-[48px] md:text-[72px] lg:text-[96px] font-bold text-white leading-none"
+                className="text-[48px] md:text-[72px] lg:text-[96px] font-bold text-primary leading-none"
               >
-                أطلق
+                دع متجرك
               </motion.span>
             </div>
 
-            {/* Row 2: "متجرك" */}
-            <div className="flex-1 flex items-center justify-center border-b border-white/[0.04] px-8">
+            <div className="flex-1 flex items-center justify-center border-b border-faint px-8">
               <motion.span
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-[48px] md:text-[72px] lg:text-[96px] font-bold text-white/80 leading-none"
+                className="text-[48px] md:text-[72px] lg:text-[96px] font-bold text-faint leading-none"
               >
-                متجرك
+                يعمل
               </motion.span>
             </div>
 
-            {/* Row 3: Circular CTA + "مع وصول ∞" */}
             <div className="flex-1 flex items-center justify-center gap-6 md:gap-10 px-8">
-              {/* Circular CTA button — Botpress pattern */}
-              <motion.a
-                href="#"
+              <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.25 }}
-                className="w-[100px] h-[100px] md:w-[120px] md:h-[120px] rounded-full bg-brand-primary text-[#080B0F] flex flex-col items-center justify-center gap-1 font-semibold text-sm hover:scale-105 transition-transform flex-shrink-0"
+                className="flex-shrink-0"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                <span>ابدأ الآن</span>
-              </motion.a>
+                <Link
+                  href="/#pricing"
+                  className="inline-flex items-center justify-center rounded-full bg-brand-primary px-7 py-4 text-sm font-semibold text-on-brand transition-transform hover:scale-[1.03]"
+                >
+                  اطلب الدعوة
+                </Link>
+              </motion.div>
 
               <motion.span
                 initial={{ opacity: 0, x: 20 }}
@@ -93,8 +122,7 @@ export default function FooterCTA() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-[36px] md:text-[56px] lg:text-[72px] font-bold leading-none"
               >
-                مع{" "}
-                <span className="text-brand-primary">وصول</span>
+                وأنت <span className="text-brand-primary">نائم</span>
               </motion.span>
             </div>
           </div>
