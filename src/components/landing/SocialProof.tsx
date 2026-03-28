@@ -6,7 +6,7 @@ import LandingArtFrame from "@/components/landing/LandingArtFrame";
 
 export default function SocialProof() {
   return (
-    <section className="relative bg-surface-inset py-24 px-6">
+    <section className="relative bg-surface-inset px-5 py-16 md:px-6 md:py-24">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col md:flex-row items-start justify-between mb-16 gap-8">
           <div className="hidden md:block w-[180px]">

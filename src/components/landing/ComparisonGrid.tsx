@@ -41,7 +41,7 @@ const notes = [
 
 export default function ComparisonGrid() {
   return (
-    <section id="comparisons" className="relative py-24 px-6 bg-surface-inset">
+    <section id="comparisons" className="relative px-5 py-16 md:px-6 md:py-24 bg-surface-inset">
       <div className="max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

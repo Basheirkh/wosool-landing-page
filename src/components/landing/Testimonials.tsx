@@ -52,7 +52,7 @@ function TestimonialCard({ t }: { t: typeof testimonials[number] }) {
 
 export default function Testimonials() {
   return (
-    <section className="relative py-24 px-6 bg-surface-inset overflow-hidden">
+    <section className="relative px-5 py-16 md:px-6 md:py-24 bg-surface-inset overflow-hidden">
       <div className="max-w-[1400px] mx-auto mb-12">
         {/* Label */}
         <span className="text-sm text-secondary block mb-4 text-right">المشكلة اليومية</span>

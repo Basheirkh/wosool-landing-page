@@ -7,15 +7,15 @@ import LandingArtFrame from "@/components/landing/LandingArtFrame";
 export default function FooterCTA() {
   return (
     <section className="relative px-6 py-8">
-      <div className="max-w-[1400px] mx-auto rounded-2xl overflow-hidden flex flex-col md:flex-row min-h-[500px]">
-        <div className="md:w-[45%] relative min-h-[300px] md:min-h-auto p-3 bg-surface-inset">
+      <div className="max-w-[1400px] mx-auto rounded-2xl overflow-hidden flex flex-col md:flex-row min-h-[420px] md:min-h-[500px]">
+        <div className="md:w-[45%] relative min-h-[240px] md:min-h-auto p-3 bg-surface-inset">
           <LandingArtFrame
             theme="future"
             word="دعوة"
             eyebrow="Early Access"
             accent="#38BDF8"
             secondaryAccent="#00D97E"
-            className="h-full min-h-[280px]"
+            className="h-full min-h-[220px] md:min-h-[280px]"
             hideWord
           >
             <div className="absolute inset-0 z-20 flex items-center justify-center p-10">

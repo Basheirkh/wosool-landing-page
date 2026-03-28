@@ -52,10 +52,12 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
             <Link
-              href="/blog"
+              href="https://app.wosool.ai/login"
+              target="_blank"
+              rel="noreferrer"
               className="text-sm transition-colors px-4 py-2 theme-link-muted"
             >
-              المدونة
+              تسجيل دخول
             </Link>
             <Link
               href="/#pricing"
@@ -106,10 +108,12 @@ export default function Navbar() {
           <div className="flex flex-col gap-4 mt-8 items-center">
             <ThemeToggle />
             <Link
-              href="/blog"
+              href="https://app.wosool.ai/login"
+              target="_blank"
+              rel="noreferrer"
               className="theme-link-muted text-lg"
             >
-              المدونة
+              تسجيل دخول
             </Link>
             <Link
               href="/#pricing"

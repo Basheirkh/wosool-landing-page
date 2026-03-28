@@ -35,7 +35,7 @@ export default function HowItWorks() {
             eyebrow="Execution Loop"
             accent="#60A5FA"
             secondaryAccent="#00D97E"
-            className="min-h-[500px] flex items-center justify-center"
+            className="min-h-[360px] md:min-h-[500px] flex items-center justify-center"
             muted
           >
           <div className="relative z-20 w-full h-full flex flex-col md:flex-row items-center justify-center gap-8 p-8">

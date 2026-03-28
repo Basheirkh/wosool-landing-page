@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const agents = [
@@ -50,8 +51,18 @@ const flow = [
 ];
 
 export default function AgentsArchitectureSection() {
+  const [activeFlow, setActiveFlow] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveFlow((current) => (current + 1) % flow.length);
+    }, 1800);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
   return (
-    <section className="relative px-6 py-24 bg-background">
+    <section className="relative px-5 py-16 md:px-6 md:py-24 bg-background">
       <div className="mx-auto max-w-[1400px]">
         <div className="mb-10 flex items-end justify-between gap-6">
           <div className="max-w-3xl text-right mr-0 ml-auto">
@@ -172,19 +183,54 @@ export default function AgentsArchitectureSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55 }}
-            className="rounded-[28px] border border-subtle p-7"
+            className="relative overflow-hidden rounded-[28px] border border-subtle p-7"
             style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--bg-surface) 88%, #eef6f1 12%), var(--bg-surface))" }}
           >
+            <motion.div
+              animate={{ opacity: [0.08, 0.18, 0.08], x: [0, -14, 0] }}
+              transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
+              className="pointer-events-none absolute right-[8%] top-[18%] h-24 w-40 rounded-full blur-3xl"
+              style={{ background: "rgba(var(--brand-primary-rgb),0.12)" }}
+            />
             <div className="mb-4 text-sm text-brand-primary">Interaction Flow</div>
             <h3 className="text-[24px] font-bold leading-[1.2]">الموظفون يعملون معاً، لا منفصلين.</h3>
             <div className="mt-6 space-y-3">
               {flow.map((item, index) => (
-                <div key={item} className="flex items-start gap-3 rounded-2xl px-4 py-4" style={{ background: "linear-gradient(135deg, var(--ghost-bg), color-mix(in srgb, var(--ghost-bg) 74%, #eef2f7 26%))" }}>
+                <motion.div
+                  key={item}
+                  animate={{
+                    opacity: index === activeFlow ? 1 : 0.62,
+                    x: index === activeFlow ? -6 : 0,
+                    scale: index === activeFlow ? 1.01 : 1,
+                  }}
+                  transition={{ duration: 0.32 }}
+                  className="relative flex items-start gap-3 overflow-hidden rounded-2xl px-4 py-4"
+                  style={{
+                    background:
+                      index === activeFlow
+                        ? "linear-gradient(135deg, rgba(var(--brand-primary-rgb),0.10), rgba(56,189,248,0.05))"
+                        : "linear-gradient(135deg, var(--ghost-bg), color-mix(in srgb, var(--ghost-bg) 74%, #eef2f7 26%))",
+                    border: index === activeFlow ? "1px solid rgba(var(--brand-primary-rgb),0.14)" : "1px solid transparent",
+                  }}
+                >
+                  {index === activeFlow && (
+                    <motion.div
+                      key={`flow-progress-${index}`}
+                      initial={{ width: "0%" }}
+                      animate={{ width: "100%" }}
+                      transition={{ duration: 1.8, ease: "linear" }}
+                      className="absolute bottom-0 right-0 h-[2px] rounded-full"
+                      style={{
+                        background: "linear-gradient(90deg, rgba(var(--brand-primary-rgb),0.85), rgba(56,189,248,0.7))",
+                        boxShadow: "0 0 14px rgba(var(--brand-primary-rgb),0.35)",
+                      }}
+                    />
+                  )}
                   <span className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-brand-primary/12 text-[11px] text-brand-primary">
                     {index + 1}
                   </span>
                   <p className="text-sm leading-7 text-faint">{item}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
@@ -194,9 +240,15 @@ export default function AgentsArchitectureSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, delay: 0.08 }}
-            className="rounded-[28px] border border-subtle p-7"
+            className="relative overflow-hidden rounded-[28px] border border-subtle p-7"
             style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--bg-inset) 84%, #eef4ef 16%), var(--bg-surface))" }}
           >
+            <motion.div
+              animate={{ opacity: [0.08, 0.16, 0.08], scale: [1, 1.05, 1] }}
+              transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut" }}
+              className="pointer-events-none absolute left-[10%] top-[18%] h-28 w-28 rounded-full blur-3xl"
+              style={{ background: "rgba(56,189,248,0.10)" }}
+            />
             <div className="mb-4 flex items-center justify-between gap-4">
               <div>
                 <div className="text-sm text-secondary">ما يراه التاجر فوراً</div>
@@ -206,16 +258,45 @@ export default function AgentsArchitectureSection() {
                 التفاصيل التقنية والتحريرية ←
               </Link>
             </div>
-            <div className="grid gap-4 md:grid-cols-3">
-              {[
-                "متجرك في الأعلى كمصدر الحقيقة.",
-                "وصول في الوسط كنظام تشغيل.",
-                "4 موظفين في الأسفل كل واحد له قناة واضحة.",
-              ].map((item) => (
-                <div key={item} className="rounded-2xl border border-subtle px-4 py-4 text-sm leading-7 text-faint" style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--bg-surface) 86%, #f6efe4 14%), var(--bg-surface))" }}>
-                  {item}
+            <div className="relative mt-4 rounded-[28px] border border-subtle p-5 md:p-6" style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--bg-surface) 86%, #f6efe4 14%), var(--bg-surface))" }}>
+              <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
+                <div className="space-y-3">
+                  <div className="rounded-2xl border border-subtle bg-white/40 px-4 py-3 text-sm leading-7 text-faint">متجرك في الأعلى كمصدر الحقيقة.</div>
+                  <div className="rounded-2xl border border-subtle bg-white/40 px-4 py-3 text-sm leading-7 text-faint">4 موظفين في الأسفل كل واحد له قناة واضحة.</div>
                 </div>
-              ))}
+
+                <div className="relative mx-auto my-3 h-32 w-32 md:my-0">
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0"
+                  >
+                    <svg viewBox="0 0 160 160" className="h-full w-full" fill="none">
+                      <ellipse cx="80" cy="80" rx="56" ry="22" stroke="rgba(0,184,108,0.18)" strokeWidth="1.2" />
+                      <ellipse cx="80" cy="80" rx="56" ry="22" stroke="rgba(56,189,248,0.14)" strokeWidth="1.2" transform="rotate(60 80 80)" />
+                      <ellipse cx="80" cy="80" rx="56" ry="22" stroke="rgba(167,139,250,0.12)" strokeWidth="1.2" transform="rotate(120 80 80)" />
+                    </svg>
+                    <div className="absolute left-[11%] top-[47%] h-3 w-3 rounded-full bg-brand-primary/55" />
+                    <div className="absolute right-[13%] top-[27%] h-2.5 w-2.5 rounded-full bg-sky-400/45" />
+                    <div className="absolute right-[23%] bottom-[16%] h-3 w-3 rounded-full bg-violet-400/35" />
+                  </motion.div>
+                  <motion.div
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-[28%] flex items-center justify-center rounded-full border border-brand-primary/18 bg-white/78 text-center shadow-[0_16px_34px_rgba(16,32,42,0.08)]"
+                  >
+                    <div>
+                      <div className="text-[24px] font-bold leading-none text-brand-primary">∞</div>
+                      <div className="mt-1 text-[13px] font-semibold text-primary">وصول</div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="rounded-2xl border border-subtle bg-white/40 px-4 py-3 text-sm leading-7 text-faint">وصول في الوسط كنظام تشغيل.</div>
+                  <div className="rounded-2xl border border-subtle bg-white/40 px-4 py-3 text-sm leading-7 text-faint">المخطط يشرح العلاقة بدون قراءة طويلة.</div>
+                </div>
+              </div>
             </div>
             <div className="mt-5 rounded-[24px] border border-brand-primary/18 bg-brand-primary/[0.06] p-5">
               <div className="text-sm text-brand-primary">CTA</div>

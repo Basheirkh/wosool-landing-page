@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import LandingArtFrame from "@/components/landing/LandingArtFrame";
 
@@ -12,17 +13,16 @@ export default function EditorialSplit() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.7 }}
-        className="max-w-[1400px] mx-auto rounded-2xl overflow-hidden flex flex-col md:flex-row min-h-[420px]"
+        className="max-w-[1400px] mx-auto rounded-2xl overflow-hidden flex flex-col md:flex-row min-h-[340px] md:min-h-[420px]"
       >
         {/* Right side in RTL — colored gradient with large word */}
         <div className="md:w-[55%] relative p-3 md:p-4 bg-surface-inset">
           <LandingArtFrame
             theme="signal"
             word="المكتب"
-            eyebrow="Channel Strategy"
             accent="#25D366"
             secondaryAccent="#00D97E"
-            className="h-full min-h-[280px]"
+            className="h-full min-h-[220px] md:min-h-[280px]"
             wordClassName="text-[58px] md:text-[96px] lg:text-[118px]"
             hideWord
           >
@@ -37,10 +37,13 @@ export default function EditorialSplit() {
                   boxShadow: "0 10px 24px rgba(0,0,0,0.08)",
                 }}
               >
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#25D366" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M20 12.05A8 8 0 0 1 8.53 19.2L4 20l.82-4.44A8 8 0 1 1 20 12.05Z" />
-                  <path d="M9 9.7c.2-.3.4-.3.7-.3h.4c.2 0 .4.1.5.4l.6 1.7c.1.2.1.4 0 .5l-.4.5c-.2.2-.2.3 0 .5.5.8 1.3 1.4 2.2 1.9.2.1.4.1.5-.1l.5-.6c.1-.2.3-.2.5-.1l1.6.7c.3.1.4.3.4.5 0 .5-.4 1.1-.9 1.4-.4.2-.9.3-1.4.2-2-.6-3.8-2.1-5-4-.4-.7-.4-1.5.2-2.3Z" />
-                </svg>
+                <Image
+                  src="/logos/whatsapp.svg"
+                  alt="WhatsApp"
+                  width={72}
+                  height={72}
+                  className="h-[72px] w-[72px] object-contain"
+                />
               </motion.div>
 
               <motion.div

@@ -296,7 +296,7 @@ const features = [
 
 export default function FeaturesGrid() {
   return (
-    <section id="product" className="relative py-24 px-6">
+    <section id="product" className="relative px-5 py-16 md:px-6 md:py-24">
       <div className="max-w-[1400px] mx-auto">
         {/* Section label + heading — Botpress style */}
         <motion.div

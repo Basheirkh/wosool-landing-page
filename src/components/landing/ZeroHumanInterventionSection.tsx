@@ -38,7 +38,7 @@ const quotes = [
 
 export default function ZeroHumanInterventionSection() {
   return (
-    <section className="relative overflow-hidden bg-surface-inset px-6 py-24">
+    <section className="relative overflow-hidden bg-surface-inset px-5 py-16 md:px-6 md:py-24">
       <div
         className="pointer-events-none absolute inset-0 opacity-80"
         style={{

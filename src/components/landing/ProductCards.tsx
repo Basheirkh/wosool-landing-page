@@ -33,7 +33,7 @@ export default function ProductCards() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="rounded-2xl overflow-hidden bg-surface-accent-green border border-subtle min-h-[500px] relative group"
+            className="rounded-2xl overflow-hidden bg-surface-accent-green border border-subtle min-h-[420px] md:min-h-[500px] relative group"
           >
             {/* Label */}
             <div className="flex items-center justify-between p-6 pb-0">
@@ -106,7 +106,7 @@ export default function ProductCards() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-2xl overflow-hidden bg-surface-elevated border border-subtle min-h-[500px] relative group"
+            className="rounded-2xl overflow-hidden bg-surface-elevated border border-subtle min-h-[420px] md:min-h-[500px] relative group"
           >
             {/* Label */}
             <div className="flex items-center justify-between p-6 pb-0">
