@@ -8,19 +8,14 @@ import BlogHighlights from "@/components/blog/BlogHighlights";
 const ScrollProgress = dynamic(() => import("@/components/landing/ScrollProgress"), { ssr: false });
 const BackToTop = dynamic(() => import("@/components/landing/BackToTop"), { ssr: false });
 const ActivationJourney = dynamic(() => import("@/components/landing/ActivationJourney"));
-const EditorialSplit = dynamic(() => import("@/components/landing/EditorialSplit"));
 const AgentsArchitectureSection = dynamic(() => import("@/components/landing/AgentsArchitectureSection"));
-const InfrastructureSection = dynamic(() => import("@/components/landing/InfrastructureSection"));
-const FeaturesGrid = dynamic(() => import("@/components/landing/FeaturesGrid"));
-const HowItWorks = dynamic(() => import("@/components/landing/HowItWorks"));
-const ArchStatement = dynamic(() => import("@/components/landing/ArchStatement"));
-const ProductCards = dynamic(() => import("@/components/landing/ProductCards"));
-const ComparisonGrid = dynamic(() => import("@/components/landing/ComparisonGrid"));
-const ZeroHumanInterventionSection = dynamic(() => import("@/components/landing/ZeroHumanInterventionSection"));
-const StatsFullBleed = dynamic(() => import("@/components/landing/StatsFullBleed"));
-const SocialProof = dynamic(() => import("@/components/landing/SocialProof"));
-const Testimonials = dynamic(() => import("@/components/landing/Testimonials"));
 const Integrations = dynamic(() => import("@/components/landing/Integrations"));
+const ProductCards = dynamic(() => import("@/components/landing/ProductCards"));
+const FeaturesGrid = dynamic(() => import("@/components/landing/FeaturesGrid"));
+const ComparisonGrid = dynamic(() => import("@/components/landing/ComparisonGrid"));
+const Testimonials = dynamic(() => import("@/components/landing/Testimonials"));
+const FAQ = dynamic(() => import("@/components/landing/FAQ"));
+const SocialProof = dynamic(() => import("@/components/landing/SocialProof"));
 const SecurityBrief = dynamic(() => import("@/components/landing/SecurityBrief"));
 const Pricing = dynamic(() => import("@/components/landing/Pricing"));
 const FooterCTA = dynamic(() => import("@/components/landing/FooterCTA"));
@@ -32,29 +27,49 @@ export default function Home() {
       <BackToTop />
       <Navbar />
       <main>
-        {/* 01 — Hero: dark + dot grid + 3D objects */}
+        {/* 01 — Hero: "تكلّم متجرك. يسويه." */}
         <Hero />
         <SocialProofBar />
-        <Integrations />
+
+        {/* 02 — Before/After + 3 Steps */}
         <ActivationJourney />
-        <EditorialSplit />
+
+        {/* 03 — 4 Employees with real examples */}
         <AgentsArchitectureSection />
-        <InfrastructureSection />
+
+        {/* 04 — Integrations (Salla + WhatsApp) */}
+        <Integrations />
+
+        {/* 05 — Morning summary + How it works */}
         <ProductCards />
+
+        {/* 06 — Capabilities (no code, no jargon) */}
         <FeaturesGrid />
-        <HowItWorks />
-        <ArchStatement />
-        <ComparisonGrid />
-        <ZeroHumanInterventionSection />
-        <BlogHighlights />
-        <StatsFullBleed />
-        <SocialProof />
+
+        {/* 07 — Daily problem ticker */}
         <Testimonials />
+
+        {/* 08 — Comparison (WhatsApp Business vs ChatGPT vs Wosool) */}
+        <ComparisonGrid />
+
+        {/* 09 — FAQ */}
+        <FAQ />
+
+        {/* 10 — Social Proof: testimonials */}
         <SecurityBrief />
+
+        {/* 11 — Trust & Security */}
+        <SocialProof />
+
+        {/* 12 — Blog */}
+        <BlogHighlights />
+
+        {/* 13 — Pricing (2 tiers) */}
         <Pricing />
+
+        {/* 14 — Final CTA */}
         <FooterCTA />
       </main>
-      {/* 14 — Footer: columns */}
       <Footer />
     </>
   );

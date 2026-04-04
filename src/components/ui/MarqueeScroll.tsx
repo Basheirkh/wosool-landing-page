@@ -5,7 +5,6 @@ import { ReactNode } from "react";
 interface MarqueeScrollProps {
   children: ReactNode;
   speed?: number;
-  direction?: "rtl" | "ltr";
   reverse?: boolean;
   className?: string;
 }
@@ -13,18 +12,15 @@ interface MarqueeScrollProps {
 export default function MarqueeScroll({
   children,
   speed = 30,
-  direction = "ltr",
   reverse = false,
   className = "",
 }: MarqueeScrollProps) {
   return (
-    <div className={`overflow-hidden ${className}`}>
+    <div className={`overflow-hidden ${className}`} dir="ltr">
       <div
-        className="flex items-center gap-12 w-max"
+        className="flex items-center gap-6 w-max will-change-transform"
         style={{
-          animation: `marquee ${speed}s linear infinite`,
-          animationDirection: reverse ? "reverse" : "normal",
-          direction: direction === "rtl" ? "rtl" : "ltr",
+          animation: `${reverse ? "marquee-reverse" : "marquee"} ${speed}s linear infinite`,
         }}
       >
         {children}

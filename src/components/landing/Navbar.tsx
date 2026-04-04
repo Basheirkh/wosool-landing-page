@@ -16,7 +16,7 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { label: "المنتج", href: "/#product" },
+    { label: "شوف كيف يشتغل", href: "/#product" },
     { label: "الأسعار", href: "/#pricing" },
     { label: "المدونة", href: "/blog" },
   ];
@@ -57,13 +57,13 @@ export default function Navbar() {
               rel="noreferrer"
               className="text-sm transition-colors px-4 py-2 theme-link-muted"
             >
-              تسجيل دخول
+              دخول
             </Link>
             <Link
               href="/#pricing"
               className="theme-btn-primary text-sm font-medium rounded-full px-5 py-2.5 transition-all hover:-translate-y-[1px]"
             >
-              ابدأ مجاناً
+              جرّب مجاناً
             </Link>
           </div>
 
@@ -113,13 +113,13 @@ export default function Navbar() {
               rel="noreferrer"
               className="theme-link-muted text-lg"
             >
-              تسجيل دخول
+              دخول
             </Link>
             <Link
               href="/#pricing"
               className="theme-btn-primary rounded-full px-8 py-3 text-lg font-semibold"
             >
-              ابدأ مجاناً
+              جرّب مجاناً
             </Link>
           </div>
         </div>

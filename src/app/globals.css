@@ -331,6 +331,16 @@ html[data-theme="light"] .wa-bubble-sent {
   to { transform: rotate(360deg) scale(1.05); }
 }
 
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {

@@ -82,7 +82,7 @@ export default function Footer() {
           </span>
 
           <span className="theme-text-secondary text-xs">
-            صُنع بـ <span className="text-brand-primary">∞</span> في المملكة العربية السعودية 🇸🇦
+            صُنع بـ <span className="text-brand-primary">∞</span> في المملكة العربية السعودية
           </span>
         </div>
       </div>

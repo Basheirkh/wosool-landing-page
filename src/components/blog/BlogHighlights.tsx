@@ -10,14 +10,12 @@ export default function BlogHighlights() {
       <div className="max-w-[1400px] mx-auto">
         <div className="mb-12 flex items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <span className="mb-4 inline-flex rounded-full border border-brand-primary/20 bg-brand-primary/5 px-4 py-2 text-xs tracking-[0.24em] text-brand-primary uppercase">
-              Learn
-            </span>
             <h2 className="text-[30px] md:text-[46px] font-bold leading-[1.12]">
-              مدونة مبنية بنفس لغة المنتج.
-              <br />
-              نفس الثيم. نفس الرؤية. عمق أكبر.
+              تبي تفهم أكثر؟
             </h2>
+            <p className="mt-4 text-secondary text-[16px] leading-relaxed">
+              مقالات قصيرة — بالعربي — تشرح كل شيء.
+            </p>
           </div>
           <Link
             href="/blog"

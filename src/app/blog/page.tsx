@@ -104,7 +104,7 @@ export default function BlogIndexPage() {
                         {article.audience}
                       </span>
                       <span className="text-brand-primary transition-transform duration-300 group-hover:-translate-x-1">
-                        اقرأ المقال ←
+                        <span className="inline-flex items-center gap-1">اقرأ المقال <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg></span>
                       </span>
                     </div>
                   </div>

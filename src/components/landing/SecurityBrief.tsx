@@ -1,24 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import LandingArtFrame from "@/components/landing/LandingArtFrame";
+import { Quote } from "lucide-react";
 
-const guards = [
+const testimonials = [
   {
-    title: "ما نحميه",
-    text: "طلباتك، محادثاتك، وبيانات متجرك تُعامل كأمانة تشغيلية لا كوقود تسويقي.",
+    quote: "كنت أصحّى 6 الصبح أشوف الطلبات. الحين وصول يرسلي ملخص وأنا نايم.",
+    author: "صاحبة متجر عباءات، جدة",
   },
   {
-    title: "ما لا نفعله",
-    text: "لا نبيع البيانات، لا نستخدم بيانات متجرك لتدريب الآخرين، ولا نعدك بأن كل رد صحيح 100%.",
+    quote: "أضفت 30 منتج في 10 دقائق بصوتي من السيارة.",
+    author: "مدير متجر إلكترونيات",
   },
   {
-    title: "كيف نُخفّف المخاطر",
-    text: "العزل، التشفير، وسلّم موافقات واضح حتى لا يتجاوز وصول ما يجب أن يبقى بيدك.",
-  },
-  {
-    title: "حقك دائماً",
-    text: "يمكنك حذف بياناتك أو تصديرها، ومعرفة ما نحتفظ به ولماذا نحتفظ به.",
+    quote: "عميلتي وصلتها إجابة الساعة 2 الفجر. ما عرفت إنه مو إنسان.",
+    author: "صاحب متجر عطور",
   },
 ];
 
@@ -33,42 +29,32 @@ export default function SecurityBrief() {
           transition={{ duration: 0.6 }}
           className="mb-12 text-right"
         >
-          <div className="flex items-center gap-4 mb-8">
-            <div className="flex-1 h-px bg-ghost-strong" />
-            <span className="text-sm text-secondary">الأمان والشفافية</span>
-          </div>
-
           <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.15] max-w-5xl mr-0 ml-auto">
-            الأمان بوضوح.
-            <br />
-            <span className="text-secondary">لا شعارات طويلة.</span>
+            تجّار مثلك — بدأوا
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
-          {guards.map((guard, index) => (
+        <div className="grid md:grid-cols-3 gap-5">
+          {testimonials.map((item, index) => (
             <motion.div
-              key={guard.title}
+              key={item.author}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: index * 0.08 }}
-              className="overflow-hidden rounded-[28px] border border-subtle bg-surface-elevated"
+              className="rounded-[28px] border border-subtle bg-surface-elevated p-7"
             >
-              <div className="p-3">
-                <LandingArtFrame
-                  theme={index === 0 ? "vault" : index === 1 ? "developer" : index === 2 ? "signal" : "memory"}
-                  word={`0${index + 1}`}
-                  accent={index === 0 ? "#F97316" : index === 1 ? "#60A5FA" : index === 2 ? "#00D97E" : "#A78BFA"}
-                  secondaryAccent={index === 0 ? "#F6C453" : index === 1 ? "#22D3EE" : index === 2 ? "#6EE7B7" : "#00D97E"}
-                  className="h-[160px]"
-                  align="center"
-                  wordClassName="text-[68px] md:text-[76px]"
-                />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-primary/10 mb-5">
+                <Quote size={18} className="text-brand-primary" strokeWidth={1.8} />
               </div>
-              <div className="p-6 pt-2">
-                <h3 className="text-lg font-semibold mb-3">{guard.title}</h3>
-                <p className="text-sm text-secondary leading-relaxed">{guard.text}</p>
+              <p className="text-[16px] leading-[1.8] text-primary mb-5">
+                &quot;{item.quote}&quot;
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 rounded-full bg-brand-primary/12 border border-brand-primary/20 flex items-center justify-center text-brand-primary text-sm font-bold">
+                  {item.author[0]}
+                </div>
+                <span className="text-sm text-secondary">{item.author}</span>
               </div>
             </motion.div>
           ))}

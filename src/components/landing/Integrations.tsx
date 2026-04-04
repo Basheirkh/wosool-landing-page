@@ -4,14 +4,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 const integrations = [
-  { name: "واتساب Business", src: "/logos/whatsapp.svg", status: "جاهز الآن", available: true, note: "القناة الأساسية للتشغيل" },
-  { name: "سلة", src: "/logos/salla.svg", status: "جاهز الآن", available: true, note: "الطلبات والمخزون والمنتجات" },
-  { name: "Meta", src: "/logos/meta.svg", status: "قريباً", available: false, note: "طبقة القنوات الأوسع" },
-  { name: "Instagram", src: "/logos/instagram.svg", status: "قريباً", available: false, note: "امتداد اجتماعي للتفاعل" },
-  { name: "Facebook", src: "/logos/facebook.svg", status: "قريباً", available: false, note: "نفس الهوية عبر المنصات" },
-  { name: "Zid", src: "/logos/zid.svg", status: "قريباً", available: false, note: "تكامل متجر إضافي" },
-  { name: "Shopify", src: "/logos/shopify.svg", status: "قريباً", available: false, note: "امتداد عالمي للتجارة" },
-  { name: "Google Analytics", src: "/logos/google-analytics.svg", status: "قريباً", available: false, note: "قراءة أعمق للأداء" },
+  { name: "واتساب Business", src: "/logos/whatsapp.svg", status: "جاهز", available: true, note: "أرسل وينفّذ" },
+  { name: "سلة", src: "/logos/salla.svg", status: "جاهز", available: true, note: "يقرأ متجرك ويديره" },
+  { name: "زد", src: "/logos/zid.svg", status: "قريباً", available: false, note: "نفس الشيء — لمتاجر زد" },
+  { name: "Shopify", src: "/logos/shopify.svg", status: "قريباً", available: false, note: "للمتاجر العالمية" },
+  { name: "Meta", src: "/logos/meta.svg", status: "قريباً", available: false, note: "إنستقرام وفيسبوك" },
 ];
 
 export default function Integrations() {
@@ -33,18 +30,17 @@ export default function Integrations() {
           transition={{ duration: 0.55 }}
           className="mb-10 max-w-4xl text-right md:mb-14"
         >
-          <span className="mb-4 block text-sm text-secondary">التكاملات</span>
           <h2 className="text-[30px] font-bold leading-[1.12] md:text-[42px] lg:text-[54px]">
-            وصول لا يبدأ من لوحة فارغة.
-            <br />
-            <span className="text-secondary">يبدأ من الأدوات التي يعمل بها متجرك أصلًا.</span>
+            يشتغل مع متجرك من أول يوم
           </h2>
           <p className="mt-5 max-w-2xl text-[16px] leading-8 text-secondary">
-            لهذا يجب أن يظهر قسم التكامل مبكرًا: التاجر يفهم سريعًا أن الوصول لن يفرض stack جديدًا، بل يدخل فوق واتساب والمتجر والتحليلات.
+            عندك سلة؟ وصّله في 10 ثوان.
+            <br />
+            وصول يقرأ منتجاتك وطلباتك ويبدأ.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 xl:grid-cols-4 md:gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 xl:grid-cols-5 md:gap-4">
           {integrations.map((item, index) => (
             <motion.div
               key={item.name}
@@ -105,25 +101,6 @@ export default function Integrations() {
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, delay: 0.18 }}
-          className="mt-8 flex flex-wrap gap-3 text-sm"
-        >
-          {[
-            "واتساب جاهز للتشغيل",
-            "سلة جاهزة للربط",
-            "Meta / Instagram / Facebook في الطريق",
-            "Shopify / Zid / Analytics ضمن roadmap الواضحة",
-          ].map((item) => (
-            <span key={item} className="rounded-full border border-subtle bg-ghost px-4 py-2 text-secondary">
-              {item}
-            </span>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
