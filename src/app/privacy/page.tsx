@@ -64,10 +64,19 @@ export default function PrivacyPage() {
                   <div className="mt-14 space-y-14 leading-9">
                     <LegalSection id="intro" number="1" title="من نحن">
                       <p>
-                        وصول (&ldquo;الشركة&rdquo;، &ldquo;نحن&rdquo;) هي منصة ذكاء
-                        اصطناعي لخدمة عملاء المتاجر الإلكترونية على منصة سلة.
+                        وصول منتج تُقدّمه{" "}
+                        <span className="theme-text-primary font-semibold">
+                          شركة Silk Rose
+                        </span>{" "}
+                        (&ldquo;الشركة&rdquo;، &ldquo;نحن&rdquo;) — الجهة المالكة
+                        والمشغّلة لمنصة وصول للذكاء الاصطناعي لخدمة عملاء
+                        المتاجر الإلكترونية على منصة سلة.
                       </p>
                       <ul className="mt-4 space-y-2">
+                        <li>
+                          <span className="theme-text-secondary">الشركة المالكة:</span>{" "}
+                          Silk Rose
+                        </li>
                         <li>
                           <span className="theme-text-secondary">المقر:</span>{" "}
                           المملكة العربية السعودية — جدة

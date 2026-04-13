@@ -65,9 +65,14 @@ export default function TermsPage() {
                     >
                       <p>
                         باستخدام تطبيق وصول (&ldquo;الخدمة&rdquo;)، فإنك تقبل هذه
-                        الشروط بينك وبين وصول (&ldquo;الشركة&rdquo;). إذا كنت
-                        تستخدم الخدمة لصالح شركة أو كيان قانوني، فأنت تُمثّل هذا
-                        الكيان وتقبل هذه الشروط نيابةً عنه.
+                        الشروط بينك وبين{" "}
+                        <span className="theme-text-primary font-semibold">
+                          شركة Silk Rose
+                        </span>{" "}
+                        (&ldquo;الشركة&rdquo;، &ldquo;نحن&rdquo;) — الجهة المالكة
+                        والمشغّلة لوصول. إذا كنت تستخدم الخدمة لصالح شركة أو
+                        كيان قانوني، فأنت تُمثّل هذا الكيان وتقبل هذه الشروط
+                        نيابةً عنه.
                       </p>
                       <h3 className="theme-text-primary mt-8 mb-4 text-lg font-semibold">
                         لا يُسمح باستخدام الخدمة إذا:
