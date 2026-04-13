@@ -49,9 +49,23 @@ export default function FooterCTA() {
           >
             <Link
               href="/#pricing"
-              className="inline-flex items-center justify-center rounded-full bg-brand-primary px-8 py-4 text-[15px] font-semibold text-on-brand transition-transform hover:scale-[1.03] shadow-[0_12px_32px_rgba(0,217,126,0.25)]"
+              className="theme-btn-accent inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 text-[15px] font-semibold"
             >
-              جرّب مجاناً — 7 أيام بدون بطاقة
+              <span>جرّب مجاناً — 7 أيام بدون بطاقة</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="-scale-x-100"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
             </Link>
           </motion.div>
         </div>

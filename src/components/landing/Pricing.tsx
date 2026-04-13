@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 
 const plans = [
   {
@@ -70,7 +70,7 @@ export default function Pricing() {
               }`}
             >
               سنوي
-              <span className="text-[10px] bg-brand-primary text-on-brand px-1.5 py-0.5 rounded-full font-bold">
+              <span className="theme-badge-accent text-[10px] px-2 py-0.5 rounded-full font-bold">
                 -20%
               </span>
             </button>
@@ -94,7 +94,8 @@ export default function Pricing() {
             >
               {plan.badge && (
                 <div className="mb-4 flex justify-center -mt-11">
-                  <span className="rounded-full bg-brand-primary px-5 py-1.5 text-xs font-bold text-on-brand shadow-[0_6px_20px_rgba(0,217,126,0.3)]">
+                  <span className="theme-badge-accent inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider">
+                    <Sparkles size={12} strokeWidth={2.5} />
                     {plan.badge}
                   </span>
                 </div>
@@ -126,10 +127,10 @@ export default function Pricing() {
               {/* CTA */}
               <a
                 href="#"
-                className={`block text-center rounded-full py-3 text-sm font-medium transition-all hover:-translate-y-[1px] ${
+                className={`block text-center rounded-full py-3 text-sm font-semibold ${
                   plan.featured
-                    ? "bg-brand-primary text-on-brand hover:bg-brand-primary/90"
-                    : "bg-ghost-strong text-primary border border-medium hover:bg-ghost-strong"
+                    ? "theme-btn-accent"
+                    : "bg-ghost-strong text-primary border border-medium hover:bg-ghost-strong transition-all hover:-translate-y-[1px]"
                 }`}
               >
                 {plan.cta}

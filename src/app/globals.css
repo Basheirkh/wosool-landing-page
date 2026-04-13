@@ -417,6 +417,43 @@ html[data-theme="light"] .wa-bubble-sent {
   border-color: var(--border-medium);
 }
 
+/* Accent (brand-green) CTA — solid, high-contrast, for primary conversion moments */
+.theme-btn-accent {
+  background: linear-gradient(180deg, #00E589 0%, #00C46F 100%);
+  color: #051108;
+  border: 1px solid rgba(0, 80, 40, 0.18);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.3) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.18) inset,
+    0 8px 24px -8px rgba(0, 217, 126, 0.45);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.theme-btn-accent:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.18) inset,
+    0 14px 32px -10px rgba(0, 217, 126, 0.55);
+}
+
+.theme-btn-accent:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+/* Badge variant — same family, smaller scale */
+.theme-badge-accent {
+  background: linear-gradient(180deg, #00E589 0%, #00C46F 100%);
+  color: #051108;
+  border: 1px solid rgba(0, 80, 40, 0.2);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.16) inset,
+    0 6px 16px -6px rgba(0, 217, 126, 0.4);
+}
+
 .theme-chip {
   background: color-mix(in srgb, var(--bg-elevated) 70%, transparent);
   border: 1px solid var(--border-subtle);
