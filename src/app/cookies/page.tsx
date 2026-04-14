@@ -173,8 +173,8 @@ export default function CookiesPage() {
                 sections={sections}
                 contactLabel="أسئلة حول الكوكيز؟"
                 contactBody="تواصل معنا لأي استفسار حول ملفات الارتباط وكيف نستخدمها."
-                contactHref="mailto:privacy@wosool.ai"
-                contactCta="privacy@wosool.ai"
+                contactHref="mailto:info@wosool.ai"
+                contactCta="info@wosool.ai"
               />
             </div>
           </div>

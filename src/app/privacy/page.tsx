@@ -83,7 +83,7 @@ export default function PrivacyPage() {
                         </li>
                         <li>
                           <span className="theme-text-secondary">للتواصل:</span>{" "}
-                          privacy@wosool.ai
+                          info@wosool.ai
                         </li>
                       </ul>
                     </LegalSection>
@@ -355,12 +355,12 @@ export default function PrivacyPage() {
                           [
                             "الاطلاع",
                             "معرفة البيانات التي نحتفظ بها",
-                            "privacy@wosool.ai",
+                            "info@wosool.ai",
                           ],
                           [
                             "التصحيح",
                             "تصحيح بياناتك الخاطئة",
-                            "privacy@wosool.ai",
+                            "info@wosool.ai",
                           ],
                           [
                             "الحذف",
@@ -370,12 +370,12 @@ export default function PrivacyPage() {
                           [
                             "الاعتراض",
                             "الاعتراض على معالجة معينة",
-                            "privacy@wosool.ai",
+                            "info@wosool.ai",
                           ],
                           [
                             "قابلية النقل",
                             "استلام بياناتك بصيغة قابلة للقراءة آلياً",
-                            "privacy@wosool.ai",
+                            "info@wosool.ai",
                           ],
                         ]}
                       />
@@ -427,7 +427,7 @@ export default function PrivacyPage() {
                         <li>
                           تواصل معنا مباشرة:{" "}
                           <span className="theme-text-primary">
-                            privacy@wosool.ai
+                            info@wosool.ai
                           </span>
                         </li>
                         <li>
@@ -460,8 +460,8 @@ export default function PrivacyPage() {
                 sections={sections}
                 contactLabel="أسئلة حول خصوصيتك؟"
                 contactBody="تواصل معنا مباشرة — نستجيب لجميع الطلبات خلال 30 يوماً."
-                contactHref="mailto:privacy@wosool.ai"
-                contactCta="privacy@wosool.ai"
+                contactHref="mailto:info@wosool.ai"
+                contactCta="info@wosool.ai"
               />
             </div>
           </div>

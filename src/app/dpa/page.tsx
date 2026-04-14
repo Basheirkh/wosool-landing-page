@@ -438,8 +438,8 @@ export default function DpaPage() {
                 sections={sections}
                 contactLabel="تحتاج DPA موقّعة؟"
                 contactBody="للعملاء من فئة Enterprise، نوفّر DPA موقّعة رسمياً عند الطلب."
-                contactHref="mailto:legal@wosool.ai"
-                contactCta="legal@wosool.ai"
+                contactHref="mailto:info@wosool.ai"
+                contactCta="info@wosool.ai"
               />
             </div>
           </div>

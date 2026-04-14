@@ -312,8 +312,8 @@ export default function AiDisclosurePage() {
                 sections={sections}
                 contactLabel="تحتاج مراجعة بشرية؟"
                 contactBody="أخبرنا إذا كان قرار آلي قد أثّر عليك، وسنراجعه يدوياً."
-                contactHref="mailto:ethics@wosool.ai"
-                contactCta="ethics@wosool.ai"
+                contactHref="mailto:info@wosool.ai"
+                contactCta="info@wosool.ai"
               />
             </div>
           </div>

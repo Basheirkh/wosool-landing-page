@@ -160,7 +160,7 @@ export default function RefundsPage() {
                         <li>
                           أرسل بريداً إلى{" "}
                           <span className="theme-text-primary font-medium">
-                            billing@wosool.ai
+                            info@wosool.ai
                           </span>{" "}
                           من البريد المسجّل في حسابك
                         </li>
@@ -197,8 +197,8 @@ export default function RefundsPage() {
                 sections={sections}
                 contactLabel="أسئلة الفوترة"
                 contactBody="فريق الفوترة يردّ خلال 5 أيام عمل على جميع طلبات الاسترداد."
-                contactHref="mailto:billing@wosool.ai"
-                contactCta="billing@wosool.ai"
+                contactHref="mailto:info@wosool.ai"
+                contactCta="info@wosool.ai"
               />
             </div>
           </div>

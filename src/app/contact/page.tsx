@@ -15,7 +15,7 @@ const channels = [
     title: "تحدّث إلى فريق المبيعات",
     description:
       "للمتاجر التي تبحث عن خطة Enterprise، تكامل مخصّص، أو عرض تجريبي مباشر.",
-    email: "sales@wosool.ai",
+    email: "info@wosool.ai",
     sla: "نردّ خلال 1 يوم عمل",
   },
   {
@@ -23,7 +23,7 @@ const channels = [
     title: "فريق الدعم",
     description:
       "لأي مشكلة تقنية، سؤال عن التشغيل، أو مساعدة في إعداد الوكيل.",
-    email: "support@wosool.ai",
+    email: "info@wosool.ai",
     sla: "نردّ خلال 4 ساعات في أيام العمل",
   },
   {
@@ -31,7 +31,7 @@ const channels = [
     title: "الفوترة والاشتراكات",
     description:
       "لأسئلة الفواتير، تغيير الخطط، طلبات الاسترداد، وتعديل بيانات الدفع.",
-    email: "billing@wosool.ai",
+    email: "info@wosool.ai",
     sla: "نردّ خلال 5 أيام عمل",
   },
   {
@@ -39,7 +39,7 @@ const channels = [
     title: "حقوق البيانات",
     description:
       "لطلبات الاطلاع، التصحيح، الحذف، أو أي استفسار متعلّق ببياناتك الشخصية.",
-    email: "privacy@wosool.ai",
+    email: "info@wosool.ai",
     sla: "نستجيب خلال 30 يوماً (PDPL)",
   },
   {
@@ -47,7 +47,7 @@ const channels = [
     title: "الفريق القانوني",
     description:
       "لأسئلة الشروط، اتفاقيات معالجة البيانات، أو أي تواصل رسمي قانوني.",
-    email: "legal@wosool.ai",
+    email: "info@wosool.ai",
     sla: "نردّ خلال 3 أيام عمل",
   },
   {
@@ -55,7 +55,7 @@ const channels = [
     title: "أخلاقيات الذكاء الاصطناعي",
     description:
       "للإبلاغ عن قرار آلي غير عادل، طلب مراجعة بشرية، أو الإفصاح عن انحياز.",
-    email: "ethics@wosool.ai",
+    email: "info@wosool.ai",
     sla: "نراجع كل بلاغ يدوياً",
   },
 ];
@@ -162,10 +162,10 @@ export default function ContactPage() {
                       عام
                     </div>
                     <a
-                      href="mailto:hello@wosool.ai"
+                      href="mailto:info@wosool.ai"
                       className="theme-text-primary text-sm transition hover:text-brand-primary"
                     >
-                      hello@wosool.ai
+                      info@wosool.ai
                     </a>
                   </div>
                   <div className="theme-content-card rounded-3xl p-5">
@@ -173,10 +173,10 @@ export default function ContactPage() {
                       الصحافة
                     </div>
                     <a
-                      href="mailto:press@wosool.ai"
+                      href="mailto:info@wosool.ai"
                       className="theme-text-primary text-sm transition hover:text-brand-primary"
                     >
-                      press@wosool.ai
+                      info@wosool.ai
                     </a>
                   </div>
                   <div className="theme-content-card rounded-3xl p-5">
@@ -184,10 +184,10 @@ export default function ContactPage() {
                       الشراكات
                     </div>
                     <a
-                      href="mailto:partners@wosool.ai"
+                      href="mailto:info@wosool.ai"
                       className="theme-text-primary text-sm transition hover:text-brand-primary"
                     >
-                      partners@wosool.ai
+                      info@wosool.ai
                     </a>
                   </div>
                   <div className="theme-content-card rounded-3xl p-5">

@@ -26,7 +26,7 @@ export default function Footer() {
       links: [
         { label: "عن وصول", href: "/about" },
         { label: "تواصل معنا", href: "/contact" },
-        { label: "الصحافة", href: "mailto:press@wosool.ai" },
+        { label: "الصحافة", href: "mailto:info@wosool.ai" },
       ],
     },
     {
@@ -43,8 +43,8 @@ export default function Footer() {
       title: "الحوكمة",
       links: [
         { label: "الإفصاح عن الذكاء الاصطناعي", href: "/ai-disclosure" },
-        { label: "أخلاقيات AI", href: "mailto:ethics@wosool.ai" },
-        { label: "حقوق البيانات", href: "mailto:privacy@wosool.ai" },
+        { label: "أخلاقيات AI", href: "mailto:info@wosool.ai" },
+        { label: "حقوق البيانات", href: "mailto:info@wosool.ai" },
         {
           label: "شكاوى SDAIA",
           href: "https://pdpl.sdaia.gov.sa",

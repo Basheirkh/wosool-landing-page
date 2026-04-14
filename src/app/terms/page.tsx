@@ -334,8 +334,8 @@ export default function TermsPage() {
                 sections={sections}
                 contactLabel="لديك سؤال قانوني؟"
                 contactBody="تواصل مع الفريق القانوني مباشرة — نردّ خلال 3 أيام عمل."
-                contactHref="mailto:legal@wosool.ai"
-                contactCta="legal@wosool.ai"
+                contactHref="mailto:info@wosool.ai"
+                contactCta="info@wosool.ai"
               />
             </div>
           </div>
