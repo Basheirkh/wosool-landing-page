@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Wosool — Conversation Act · Storyboard Frames</title>
+<link rel="stylesheet" href="tokens.css">
+<script src="deck-stage.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: #000; }
+
+  /* ═══ Stage frame (shared) ═══════════════════════════════════════ */
+  .frame {
+    background: var(--w-bg);
+    font-family: var(--w-font-ar);
+    color: var(--w-text);
+    position: relative;
+    overflow: hidden;
+  }
+  .frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--w-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--w-border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.35;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+  }
+
+  /* ── Salla chrome (store crumb + app marker) ─────────────────── */
+  .store-chrome {
+    position: absolute;
+    top: 48px;
+    inset-inline-start: 80px;
+    inset-inline-end: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--w-text-muted);
+    font-size: 14px;
+    z-index: 5;
+  }
+  .crumbs { display: flex; align-items: center; gap: 10px; }
+  .crumbs .sep { color: var(--w-border-strong); }
+  .crumbs .current { color: var(--w-text-soft); font-weight: 500; }
+  .store-mark {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--w-text-soft);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+  .store-mark .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--w-success); }
+
+  /* ── Storyboard caption ──────────────────────────────────────── */
+  .frame-caption {
+    position: absolute;
+    bottom: 48px;
+    inset-inline-start: 80px;
+    display: flex; align-items: baseline; gap: 16px;
+    color: var(--w-text-muted);
+    font-family: var(--w-font-mono);
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    z-index: 5;
+  }
+  .frame-caption .num { color: var(--w-ink); font-weight: 700; font-size: 13px; }
+  .frame-caption .ar {
+    font-family: var(--w-font-ar); text-transform: none; letter-spacing: 0;
+    color: var(--w-text-soft); font-size: 13px;
+  }
+
+  /* ═══ App shell (embedded Salla iframe look) ═════════════════════ */
+  .app-shell {
+    position: absolute;
+    background: var(--w-surface);
+    border: 1px solid var(--w-border);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--w-sh-2);
+    display: flex;
+    flex-direction: column;
+  }
+  /* Camera: full dashboard, center — F11 & F13 */
+  .shell-center {
+    width: 1280px;
+    height: 920px;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  /* Camera: split — dashboard on right half — F10 & F12 */
+  .shell-split {
+    width: 820px;
+    height: 920px;
+    right: 120px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: auto;
+  }
+  .app-body {
+    flex: 1;
+    padding: 40px 44px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 0;
+  }
+  .shell-split .app-body { padding: 32px 32px 22px; gap: 14px; }
+
+  /* Page header */
+  .page-h { display: flex; align-items: flex-start; justify-content: space-between; }
+  .page-h h1 { font-size: 30px; font-weight: 700; margin: 0; letter-spacing: -0.01em; white-space: nowrap; }
+  .page-h .sub { font-size: 16px; color: var(--w-text-soft); margin-top: 4px; white-space: nowrap; }
+  .page-logo { display: flex; align-items: center; gap: 10px; }
+  .page-logo .mark {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--w-mint-500);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .page-logo .mark svg { width: 22px; height: auto; }
+  .page-logo .name { font-size: 15px; font-weight: 700; color: var(--w-ink); }
+  .shell-split .page-h h1 { font-size: 24px; }
+  .shell-split .page-h .sub { font-size: 14px; }
+
+  /* Page toolbar (filters, search) */
+  .page-toolbar {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--w-border);
+  }
+  .search-input {
+    flex: 1;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: var(--w-surface-2);
+    border: 1px solid var(--w-border);
+    border-radius: 10px;
+    color: var(--w-text-muted);
+    font-size: 14px;
+  }
+  .search-input svg { width: 16px; height: 16px; }
+  .filter-chip {
+    padding: 8px 14px;
+    background: var(--w-surface);
+    border: 1px solid var(--w-border);
+    border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+    color: var(--w-text-soft);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .filter-chip.on {
+    background: var(--w-ink); color: #fff; border-color: var(--w-ink);
+  }
+
+  /* Product list */
+  .product-list { display: flex; flex-direction: column; gap: 10px; }
+  .product-row {
+    display: flex; align-items: center; gap: 18px;
+    padding: 16px 18px;
+    background: var(--w-surface);
+    border: 1px solid var(--w-border);
+    border-radius: 14px;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 200ms var(--w-ease-out);
+  }
+  .product-row.muted { opacity: 0.55; }
+  .product-row.new {
+    border-color: var(--w-mint-500);
+    box-shadow:
+      0 0 0 4px rgba(115, 252, 215, 0.25),
+      0 8px 24px rgba(0, 178, 89, 0.12);
+    background: linear-gradient(180deg, #F4FFFB 0%, var(--w-surface) 70%);
+    animation: slide-in 500ms var(--w-ease-out);
+  }
+  @keyframes slide-in {
+    from { transform: translateY(-8px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+  .product-row.pulse {
+    border-color: var(--w-success);
+    box-shadow:
+      0 0 0 3px rgba(0, 178, 89, 0.18),
+      0 0 0 8px rgba(0, 178, 89, 0.08);
+    background: linear-gradient(180deg, #F2FFF7 0%, var(--w-surface) 70%);
+  }
+
+  .product-thumb {
+    width: 64px; height: 64px;
+    border-radius: 10px;
+    background: var(--w-surface-2);
+    border: 1px solid var(--w-border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--w-text-muted);
+    position: relative;
+  }
+  .product-thumb svg { width: 30px; height: 30px; }
+  .product-thumb.blue   { background: #EFF6FF; color: #3B82F6; }
+  .product-thumb.violet { background: #F5F3FF; color: #8B5CF6; }
+  .product-thumb.amber  { background: #FFFBEB; color: #D97706; }
+  .product-thumb.rose   { background: #FFF1F2; color: #E11D48; }
+  .product-thumb.mint   { background: var(--w-mint-100); color: var(--w-teal-700); }
+
+  .product-body { flex: 1; min-width: 0; }
+  .product-body .name {
+    display: block;
+    font-size: 17px; font-weight: 700; color: var(--w-ink);
+    margin-bottom: 4px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .product-body .meta {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; color: var(--w-text-soft);
+  }
+  .product-body .meta .sku { font-family: var(--w-font-mono); color: var(--w-text-muted); font-size: 12px; }
+  .product-body .meta .stock { color: var(--w-text-soft); }
+  .product-body .meta .stock.low { color: var(--w-warning); font-weight: 600; }
+
+  .product-price {
+    text-align: left;
+    flex-shrink: 0;
+    min-width: 140px;
+  }
+  .product-price .amount {
+    font-size: 20px; font-weight: 700; color: var(--w-ink);
+    font-variant-numeric: tabular-nums;
+    font-family: var(--w-font-mono);
+    display: flex; align-items: baseline; gap: 4px;
+    justify-content: flex-start;
+  }
+  .product-price .amount .unit { font-size: 13px; font-weight: 500; color: var(--w-text-soft); }
+  .product-price .status {
+    font-size: 12px; color: var(--w-text-muted); margin-top: 4px;
+    font-family: var(--w-font-ar);
+  }
+
+  /* Price change styling (F13) */
+  .price-change {
+    display: flex; align-items: baseline; gap: 8px;
+    justify-content: flex-start;
+  }
+  .price-change .old {
+    font-size: 14px; color: var(--w-text-muted);
+    text-decoration: line-through;
+    font-family: var(--w-font-mono);
+  }
+  .price-change .new {
+    font-size: 24px; font-weight: 800;
+    color: var(--w-success);
+    font-family: var(--w-font-mono);
+  }
+  .price-change .new .unit { font-size: 13px; font-weight: 500; }
+  .price-delta {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 700;
+    padding: 3px 8px; border-radius: 6px;
+    background: var(--w-success-soft); color: var(--w-success);
+    font-family: var(--w-font-mono);
+    margin-top: 6px;
+  }
+
+  /* "New" badge */
+  .new-badge {
+    position: absolute;
+    top: -8px; inset-inline-start: 14px;
+    background: var(--w-mint-500);
+    color: var(--w-ink);
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 4px 10px; border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0, 77, 91, 0.15);
+  }
+
+  /* ── Inline toasts (top-right of shell) ───────────────────────── */
+  .toast {
+    position: absolute;
+    top: 120px;
+    right: 120px;
+    left: auto;
+    background: var(--w-ink);
+    color: #fff;
+    border-radius: 999px;
+    padding: 12px 20px 12px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: var(--w-sh-3);
+    z-index: 6;
+  }
+  .toast .tick {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--w-mint-500); color: var(--w-ink);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .toast .tick svg { width: 11px; height: 11px; }
+  .toast .tick.success { background: var(--w-success); color: #fff; }
+  .toast .tick.pencil { background: var(--w-mint-500); color: var(--w-ink); }
+
+  /* ═══ iPhone (F10, F12 — left half, tilted -5°) ═════════════════ */
+  .phone {
+    position: absolute;
+    left: 160px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-5deg);
+    width: 440px;
+    height: 900px;
+    border-radius: 64px;
+    background: #111;
+    padding: 14px;
+    box-shadow:
+      0 40px 80px rgba(11, 26, 31, 0.25),
+      0 0 0 2px #1f2937,
+      inset 0 0 0 2px #000;
+    z-index: 3;
+  }
+  .phone-screen {
+    width: 100%; height: 100%;
+    border-radius: 52px;
+    overflow: hidden;
+    background: #0B141A;
+    position: relative;
+    color: #E9EDEF;
+    font-family: var(--w-font-ar), -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex; flex-direction: column;
+  }
+  .phone-notch {
+    position: absolute;
+    top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 120px; height: 32px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 3;
+  }
+  .phone-status {
+    padding: 18px 32px 8px;
+    display: flex; justify-content: space-between;
+    font-size: 14px; font-weight: 600;
+    color: #E9EDEF;
+    flex-shrink: 0;
+  }
+  .phone-status .right { display: flex; align-items: center; gap: 6px; }
+  .phone-status .right svg { width: 14px; height: 14px; }
+
+  /* WhatsApp chat header */
+  .wa-chat-header {
+    padding: 10px 16px 14px;
+    display: flex; align-items: center; gap: 12px;
+    background: #1F2C33;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+  }
+  .wa-chat-header .back { color: #00A884; display: flex; }
+  .wa-chat-header .back svg { width: 22px; height: 22px; }
+  .wa-chat-header .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--w-teal-700);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--w-mint-500);
+  }
+  .wa-chat-header .avatar svg { width: 26px; height: 26px; }
+  .wa-chat-header .meta { flex: 1; min-width: 0; }
+  .wa-chat-header .meta b {
+    display: block;
+    color: #E9EDEF; font-size: 16px; font-weight: 600;
+  }
+  .wa-chat-header .meta span {
+    display: block;
+    color: #8696A0; font-size: 12px; margin-top: 2px;
+  }
+  .wa-chat-header .icons { display: flex; gap: 18px; color: #AEBAC1; }
+  .wa-chat-header .icons svg { width: 20px; height: 20px; }
+
+  /* WhatsApp message area */
+  .wa-messages {
+    flex: 1;
+    padding: 16px 12px 12px;
+    display: flex; flex-direction: column; gap: 8px;
+    background:
+      linear-gradient(180deg, rgba(11,20,26,0.92), rgba(11,20,26,0.92)),
+      radial-gradient(circle at 20% 10%, #0d3a2f 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, #10423a 0%, transparent 40%),
+      #0B141A;
+    overflow: hidden;
+  }
+  .wa-date-pill {
+    align-self: center;
+    padding: 4px 12px;
+    background: rgba(33, 44, 54, 0.85);
+    color: #AEBAC1;
+    font-size: 11px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+  }
+
+  .bubble {
+    max-width: 82%;
+    padding: 8px 10px 6px;
+    border-radius: 12px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #E9EDEF;
+    word-wrap: break-word;
+  }
+  .bubble .time {
+    display: inline-block;
+    margin-inline-start: 8px;
+    font-size: 10.5px;
+    color: rgba(233,237,239,0.5);
+    vertical-align: bottom;
+    float: inline-end;
+    padding-top: 4px;
+  }
+  .bubble .time svg { width: 14px; height: 10px; vertical-align: middle; margin-inline-start: 3px; color: #53BDEB; }
+
+  /* outgoing (merchant — on the right in RTL) */
+  .bubble.out {
+    align-self: flex-end;
+    background: #005C4B;
+    border-bottom-right-radius: 2px;
+  }
+  /* incoming from Wosool — white bubble w/ mint accent */
+  .bubble.in {
+    align-self: flex-start;
+    background: #1F2C33;
+    border-bottom-left-radius: 2px;
+    border: 1px solid rgba(115, 252, 215, 0.35);
+    box-shadow: 0 0 0 1px rgba(115, 252, 215, 0.08);
+  }
+
+  /* voice note bubble body */
+  .voice-note {
+    display: flex; align-items: center; gap: 10px;
+    min-width: 220px;
+    padding-top: 2px;
+  }
+  .voice-note .play {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    color: #E9EDEF;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .voice-note .play svg { width: 12px; height: 12px; margin-inline-start: 2px; }
+  .voice-note .wave {
+    flex: 1;
+    display: flex; align-items: center; gap: 2px;
+    height: 24px;
+  }
+  .voice-note .wave i {
+    display: block;
+    width: 2px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 1px;
+  }
+  .voice-note .wave i.played { background: #34D399; }
+  .voice-note .dur {
+    font-size: 11px; color: rgba(255,255,255,0.7);
+    font-family: var(--w-font-mono);
+    min-width: 28px;
+  }
+  .voice-note .speaker-av {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #0A3430;
+    color: var(--w-mint-500);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .voice-note .speaker-av svg { width: 14px; height: 14px; }
+
+  /* typing indicator */
+  .typing-bubble {
+    align-self: flex-start;
+    background: #1F2C33;
+    border: 1px solid rgba(115, 252, 215, 0.25);
+    padding: 10px 14px;
+    border-radius: 12px;
+    border-bottom-left-radius: 2px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .typing-bubble .label {
+    font-size: 11px; color: rgba(115, 252, 215, 0.85);
+    letter-spacing: 0.04em;
+  }
+  .typing-bubble .dots { display: inline-flex; gap: 4px; align-items: center; }
+  .typing-bubble .dots i {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #8696A0;
+  }
+  .typing-bubble .dots i:nth-child(1) { opacity: 1; }
+  .typing-bubble .dots i:nth-child(2) { opacity: 0.65; }
+  .typing-bubble .dots i:nth-child(3) { opacity: 0.35; }
+
+  /* "عبر وصول" trust chip under Wosool reply */
+  .trust-chip {
+    align-self: flex-start;
+    margin-top: 2px; margin-inline-start: 4px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    background: rgba(115, 252, 215, 0.12);
+    border: 1px solid rgba(115, 252, 215, 0.35);
+    border-radius: 999px;
+    font-size: 10.5px;
+    color: var(--w-mint-300);
+    letter-spacing: 0.02em;
+  }
+  .trust-chip .mk {
+    width: 12px; height: 12px; border-radius: 3px;
+    background: var(--w-mint-500);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .trust-chip .mk svg { width: 9px; height: 9px; }
+
+  /* WhatsApp composer (bottom) */
+  .wa-composer {
+    padding: 8px 8px 14px;
+    display: flex; align-items: center; gap: 8px;
+    background: #0B141A;
+    flex-shrink: 0;
+  }
+  .wa-composer .field {
+    flex: 1;
+    padding: 9px 14px;
+    background: #1F2C33;
+    border-radius: 999px;
+    color: #8696A0;
+    font-size: 13px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .wa-composer .field svg { width: 16px; height: 16px; }
+  .wa-composer .mic {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #00A884;
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .wa-composer .mic svg { width: 20px; height: 20px; }
+
+  /* Dashboard desat treatment (F10) — wrapper sits where shell-split would */
+  .dashboard-watched {
+    position: absolute;
+    inset: 0;
+    filter: saturate(0.25) brightness(1.02);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  /* ═══ F14 — End card ═════════════════════════════════════════════ */
+  .end-card {
+    width: 100%; height: 100%;
+    background: #FAFBFB;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .end-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 900px 600px at 50% 40%, rgba(115, 252, 215, 0.12), transparent 70%),
+      radial-gradient(ellipse 400px 400px at 50% 40%, rgba(0, 77, 91, 0.04), transparent 70%);
+    pointer-events: none;
+  }
+  .end-logo {
+    width: 180px; height: 100px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 24px;
+  }
+  .end-logo::before {
+    content: "";
+    position: absolute; inset: -40px;
+    background: radial-gradient(circle, rgba(115, 252, 215, 0.55), transparent 60%);
+    filter: blur(30px);
+    animation: breath 3.2s ease-in-out infinite;
+  }
+  @keyframes breath {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.08); }
+  }
+  .end-logo svg {
+    position: relative;
+    width: 160px;
+    height: auto;
+  }
+  .end-wordmark {
+    font-family: var(--w-font-ar);
+    font-size: 84px;
+    font-weight: 700;
+    color: var(--w-ink);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    z-index: 2;
+    margin-bottom: 36px;
+  }
+  .end-tagline {
+    font-family: var(--w-font-ar);
+    font-size: 56px;
+    font-weight: 500;
+    color: var(--w-text);
+    line-height: 1.25;
+    text-align: center;
+    z-index: 2;
+    margin-bottom: 56px;
+  }
+  .end-tagline .em {
+    color: var(--w-teal-700);
+    font-weight: 700;
+  }
+  .end-divider {
+    width: 80px;
+    height: 1px;
+    background: var(--w-border-strong);
+    margin-bottom: 40px;
+    z-index: 2;
+  }
+  .end-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 18px 32px;
+    background: var(--w-teal-700);
+    color: #fff;
+    border-radius: 999px;
+    font-family: var(--w-font-ar);
+    font-size: 22px; font-weight: 700;
+    text-decoration: none;
+    box-shadow:
+      0 12px 32px rgba(0, 77, 91, 0.3),
+      0 0 0 0 rgba(115, 252, 215, 0.3);
+    z-index: 2;
+    margin-bottom: 48px;
+  }
+  .end-cta .salla-logo {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .end-cta .salla-logo svg { width: 20px; height: 20px; }
+  .end-cta .arrow {
+    opacity: 0.85;
+    display: inline-flex;
+  }
+  .end-cta .arrow svg { width: 20px; height: 20px; transform: scaleX(-1); }
+  .end-footer {
+    font-family: var(--w-font-ar);
+    font-size: 16px;
+    color: var(--w-text-muted);
+    display: inline-flex; align-items: center; gap: 8px;
+    z-index: 2;
+  }
+
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 10 — The merchant speaks
+       Split: phone LEFT (tilted), dashboard RIGHT (desat).
+       Phone shows outgoing voice note + typing indicator.
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Voice Command">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">وصول</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Embedded App — Live</div>
+    </div>
+
+    <!-- iPhone LEFT — voice note mid-send -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-notch"></div>
+
+        <div class="phone-status">
+          <span>٢:١٤</span>
+          <span class="right">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 18h3V9H1v9zm5 0h3V5H6v13zm5 0h3V1h-3v17zm5 0h3v-8h-3v8zm5-11v11h3V7h-3z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="18" height="10" rx="2"/><rect x="20" y="11" width="2" height="4"/></svg>
+          </span>
+        </div>
+
+        <div class="wa-chat-header">
+          <span class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
+          <div class="avatar">
+            <!-- Wosool infinity -->
+            <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+              <path fill="currentColor" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+            </svg>
+          </div>
+          <div class="meta">
+            <b>وصول</b>
+            <span>آخر ظهور الآن</span>
+          </div>
+          <div class="icons">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          </div>
+        </div>
+
+        <div class="wa-messages">
+          <div class="wa-date-pill">اليوم</div>
+
+          <!-- Outgoing voice note -->
+          <div class="bubble out">
+            <div class="voice-note">
+              <span class="speaker-av">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <span class="play">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </span>
+              <span class="wave">
+                <!-- 30 bars; first 8 "played" -->
+                <i class="played" style="height: 6px"></i>
+                <i class="played" style="height: 10px"></i>
+                <i class="played" style="height: 16px"></i>
+                <i class="played" style="height: 12px"></i>
+                <i class="played" style="height: 18px"></i>
+                <i class="played" style="height: 8px"></i>
+                <i class="played" style="height: 14px"></i>
+                <i class="played" style="height: 20px"></i>
+                <i style="height: 10px"></i>
+                <i style="height: 14px"></i>
+                <i style="height: 6px"></i>
+                <i style="height: 16px"></i>
+                <i style="height: 12px"></i>
+                <i style="height: 18px"></i>
+                <i style="height: 8px"></i>
+                <i style="height: 20px"></i>
+                <i style="height: 14px"></i>
+                <i style="height: 10px"></i>
+                <i style="height: 16px"></i>
+                <i style="height: 6px"></i>
+                <i style="height: 12px"></i>
+                <i style="height: 18px"></i>
+                <i style="height: 8px"></i>
+                <i style="height: 14px"></i>
+                <i style="height: 10px"></i>
+                <i style="height: 20px"></i>
+                <i style="height: 6px"></i>
+                <i style="height: 16px"></i>
+                <i style="height: 12px"></i>
+                <i style="height: 8px"></i>
+              </span>
+              <span class="dur">0:08</span>
+            </div>
+            <span class="time">٢:١٤ م
+              <svg viewBox="0 0 18 18"><path d="M11.07 2.68 9.66 1.27l-4.6 4.6-1.41-1.41-1.42 1.41L5.06 8.9l6.01-6.22zm4.34-1.41L8.4 8.28 6.53 6.41 5.12 7.83l3.28 3.28 8.43-8.43-1.42-1.41zM1 12.48l4.3 4.3L6.71 15.37l-4.3-4.3L1 12.48z" fill="currentColor"/></svg>
+            </span>
+          </div>
+
+          <!-- Typing indicator -->
+          <div class="typing-bubble">
+            <span class="label">وصول يكتب</span>
+            <span class="dots"><i></i><i></i><i></i></span>
+          </div>
+        </div>
+
+        <div class="wa-composer">
+          <span class="field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            <span>اكتب رسالة</span>
+          </span>
+          <span class="mic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard on RIGHT — desaturated (watching) -->
+    <div class="dashboard-watched">
+      <div class="app-shell shell-split">
+        <div class="app-body">
+          <div class="page-h">
+            <div>
+              <h1>المنتجات</h1>
+              <div class="sub">٨٤ منتج نشط</div>
+            </div>
+            <div class="page-logo">
+              <div class="mark">
+                <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="page-toolbar">
+            <span class="search-input">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span>ابحث في المنتجات</span>
+            </span>
+            <span class="filter-chip on">الكل</span>
+            <span class="filter-chip">نشط</span>
+          </div>
+
+          <div class="product-list">
+            <div class="product-row">
+              <div class="product-thumb blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9-9 9 9 0 0 1 9 9M4 11v8a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4M22 11v8a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4"/></svg>
+              </div>
+              <div class="product-body">
+                <span class="name">سماعة AirPods Pro</span>
+                <div class="meta"><span class="sku">SKU · 8842</span><span class="stock">المخزون: ١٢ قطعة</span></div>
+              </div>
+              <div class="product-price">
+                <div class="amount"><span>٨٩٩</span><span class="unit">ريال</span></div>
+                <div class="status">نشط</div>
+              </div>
+            </div>
+            <div class="product-row">
+              <div class="product-thumb amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <div class="product-body">
+                <span class="name">كاميرا 4K احترافية</span>
+                <div class="meta"><span class="sku">SKU · 4210</span><span class="stock">المخزون: ٧ قطع</span></div>
+              </div>
+              <div class="product-price">
+                <div class="amount"><span>٢٩٩</span><span class="unit">ريال</span></div>
+                <div class="status">نشط</div>
+              </div>
+            </div>
+            <div class="product-row">
+              <div class="product-thumb violet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              </div>
+              <div class="product-body">
+                <span class="name">حامل تلفون مغناطيسي</span>
+                <div class="meta"><span class="sku">SKU · 1188</span><span class="stock">المخزون: ٤٨ قطعة</span></div>
+              </div>
+              <div class="product-price">
+                <div class="amount"><span>٤٩</span><span class="unit">ريال</span></div>
+                <div class="status">نشط</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">10 / 14</span>
+      <span>Voice Command</span>
+      <span class="ar">— قال، وصول يسمع</span>
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 11 — The dashboard reacts
+       Full dashboard, products page; a new product slides in at the top.
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Dashboard Synced">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">وصول</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Embedded App — Live</div>
+    </div>
+
+    <!-- toast -->
+    <div class="toast" role="status">
+      <span class="tick success">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <span>+١ منتج جديد — أُضيف من واتساب</span>
+    </div>
+
+    <div class="app-shell shell-center">
+      <div class="app-body">
+        <div class="page-h">
+          <div>
+            <h1>المنتجات</h1>
+            <div class="sub">٨٥ منتج نشط · آخر تحديث قبل ثانيتين</div>
+          </div>
+          <div class="page-logo">
+            <div class="mark">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+            <span class="name">وصول</span>
+          </div>
+        </div>
+
+        <div class="page-toolbar">
+          <span class="search-input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>ابحث في المنتجات</span>
+          </span>
+          <span class="filter-chip on">الكل</span>
+          <span class="filter-chip">نشط</span>
+          <span class="filter-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            تصفية
+          </span>
+        </div>
+
+        <div class="product-list">
+          <!-- New product slides in -->
+          <div class="product-row new">
+            <span class="new-badge">جديد</span>
+            <div class="product-thumb mint">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">سماعة X بلوتوث لاسلكية</span>
+              <div class="meta">
+                <span class="sku">SKU · 9041</span>
+                <span class="stock">المخزون: ٢٥ قطعة</span>
+                <span style="display: inline-flex; align-items: center; gap: 4px; color: var(--w-teal-700); font-weight: 600;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  من واتساب
+                </span>
+              </div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>١٤٩</span><span class="unit">ريال</span></div>
+              <div class="status" style="color: var(--w-success); font-weight: 600;">نشط · جاهز للبيع</div>
+            </div>
+          </div>
+
+          <!-- Existing products below, slightly muted -->
+          <div class="product-row muted">
+            <div class="product-thumb blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9-9 9 9 0 0 1 9 9M4 11v8a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4M22 11v8a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">سماعة AirPods Pro</span>
+              <div class="meta"><span class="sku">SKU · 8842</span><span class="stock">المخزون: ١٢ قطعة</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>٨٩٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+          <div class="product-row muted">
+            <div class="product-thumb amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">كاميرا 4K احترافية</span>
+              <div class="meta"><span class="sku">SKU · 4210</span><span class="stock">المخزون: ٧ قطع</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>٢٩٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+          <div class="product-row muted">
+            <div class="product-thumb violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">حامل تلفون مغناطيسي</span>
+              <div class="meta"><span class="sku">SKU · 1188</span><span class="stock">المخزون: ٤٨ قطعة</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>٤٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+          <div class="product-row muted">
+            <div class="product-thumb rose">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">عطر أوود روز ٥٠مل</span>
+              <div class="meta"><span class="sku">SKU · 2307</span><span class="stock">المخزون: ٢١ قطعة</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>٣٤٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">11 / 14</span>
+      <span>Dashboard Synced</span>
+      <span class="ar">— السحر في التنفيذ</span>
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 12 — Wosool answers
+       Same split as F10. Phone now shows incoming Wosool reply + trust chip.
+       Dashboard on right is full opacity and shows the new product.
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Reply">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">وصول</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Embedded App — Live</div>
+    </div>
+
+    <!-- iPhone LEFT — conversation complete -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-notch"></div>
+
+        <div class="phone-status">
+          <span>٢:١٤</span>
+          <span class="right">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 18h3V9H1v9zm5 0h3V5H6v13zm5 0h3V1h-3v17zm5 0h3v-8h-3v8zm5-11v11h3V7h-3z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="18" height="10" rx="2"/><rect x="20" y="11" width="2" height="4"/></svg>
+          </span>
+        </div>
+
+        <div class="wa-chat-header">
+          <span class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
+          <div class="avatar">
+            <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+              <path fill="currentColor" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+            </svg>
+          </div>
+          <div class="meta">
+            <b>وصول</b>
+            <span style="color: #73FCD7;">متصل</span>
+          </div>
+          <div class="icons">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          </div>
+        </div>
+
+        <div class="wa-messages">
+          <div class="wa-date-pill">اليوم</div>
+
+          <!-- Outgoing voice note (echoed from F10) -->
+          <div class="bubble out">
+            <div class="voice-note">
+              <span class="speaker-av">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <span class="play">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </span>
+              <span class="wave">
+                <i class="played" style="height: 6px"></i><i class="played" style="height: 10px"></i><i class="played" style="height: 16px"></i><i class="played" style="height: 12px"></i><i class="played" style="height: 18px"></i><i class="played" style="height: 8px"></i><i class="played" style="height: 14px"></i><i class="played" style="height: 20px"></i><i class="played" style="height: 10px"></i><i class="played" style="height: 14px"></i><i class="played" style="height: 6px"></i><i class="played" style="height: 16px"></i><i class="played" style="height: 12px"></i><i class="played" style="height: 18px"></i><i class="played" style="height: 8px"></i><i class="played" style="height: 20px"></i><i class="played" style="height: 14px"></i><i class="played" style="height: 10px"></i><i class="played" style="height: 16px"></i><i class="played" style="height: 6px"></i><i class="played" style="height: 12px"></i><i class="played" style="height: 18px"></i><i class="played" style="height: 8px"></i><i class="played" style="height: 14px"></i><i class="played" style="height: 10px"></i><i class="played" style="height: 20px"></i><i class="played" style="height: 6px"></i><i class="played" style="height: 16px"></i><i class="played" style="height: 12px"></i><i class="played" style="height: 8px"></i>
+              </span>
+              <span class="dur">0:08</span>
+            </div>
+            <span class="time">٢:١٤ م
+              <svg viewBox="0 0 18 18"><path d="M11.07 2.68 9.66 1.27l-4.6 4.6-1.41-1.41-1.42 1.41L5.06 8.9l6.01-6.22zm4.34-1.41L8.4 8.28 6.53 6.41 5.12 7.83l3.28 3.28 8.43-8.43-1.42-1.41zM1 12.48l4.3 4.3L6.71 15.37l-4.3-4.3L1 12.48z" fill="currentColor"/></svg>
+            </span>
+          </div>
+
+          <!-- Incoming Wosool reply -->
+          <div class="bubble in">
+            <div style="display: flex; align-items: flex-start; gap: 6px; margin-bottom: 2px;">
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; background: var(--w-mint-500); border-radius: 3px; flex-shrink: 0; margin-top: 2px;">
+                <svg width="10" height="6" viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg"><path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/></svg>
+              </span>
+              <span style="color: var(--w-mint-300); font-size: 11px; font-weight: 700;">وصول</span>
+            </div>
+            <div>
+              <span style="color: var(--w-mint-300); display: inline-flex; align-items: center; gap: 4px; font-weight: 600;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                تم
+              </span>
+              سماعة X بلوتوث — <span style="font-family: var(--w-font-mono); font-weight: 600;">١٤٩ ريال</span> — مخزون <span style="font-family: var(--w-font-mono); font-weight: 600;">٢٥</span>.<br>
+              تبي أحط لها صور من المعرض؟
+            </div>
+            <span class="time" style="color: rgba(233,237,239,0.5);">٢:١٤ م</span>
+          </div>
+
+          <!-- Trust chip -->
+          <span class="trust-chip">
+            <span class="mk">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg"><path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/></svg>
+            </span>
+            عبر وصول · بأمر من المتجر
+          </span>
+        </div>
+
+        <div class="wa-composer">
+          <span class="field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            <span>اكتب رسالة</span>
+          </span>
+          <span class="mic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard on RIGHT, full opacity, showing new product at top -->
+    <div class="app-shell shell-split">
+      <div class="app-body">
+        <div class="page-h">
+          <div>
+            <h1>المنتجات</h1>
+            <div class="sub">٨٥ منتج · +١ قبل ثانيتين</div>
+          </div>
+          <div class="page-logo">
+            <div class="mark">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-toolbar">
+          <span class="search-input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>ابحث</span>
+          </span>
+          <span class="filter-chip on">الكل</span>
+        </div>
+
+        <div class="product-list">
+          <!-- New product visible -->
+          <div class="product-row new">
+            <span class="new-badge">جديد</span>
+            <div class="product-thumb mint">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">سماعة X بلوتوث لاسلكية</span>
+              <div class="meta"><span class="sku">SKU · 9041</span><span class="stock">٢٥ قطعة</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>١٤٩</span><span class="unit">ريال</span></div>
+              <div class="status" style="color: var(--w-success); font-weight: 600;">نشط</div>
+            </div>
+          </div>
+
+          <div class="product-row">
+            <div class="product-thumb blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9-9 9 9 0 0 1 9 9M4 11v8a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4M22 11v8a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">سماعة AirPods Pro</span>
+              <div class="meta"><span class="sku">SKU · 8842</span><span class="stock">١٢ قطعة</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>٨٩٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+          <div class="product-row">
+            <div class="product-thumb amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">كاميرا 4K احترافية</span>
+              <div class="meta"><span class="sku">SKU · 4210</span><span class="stock">٧ قطع</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>٢٩٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">12 / 14</span>
+      <span>Reply</span>
+      <span class="ar">— بالعربي، بذوقك</span>
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 13 — Price change
+       Same dashboard camera as F11. Kamera 4K row highlighted with
+       price change annotation.
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Instant Changes">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">وصول</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Embedded App — Live</div>
+    </div>
+
+    <div class="toast" role="status">
+      <span class="tick pencil">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+      </span>
+      <span>تم تعديل السعر — بأمر من المتجر</span>
+    </div>
+
+    <div class="app-shell shell-center">
+      <div class="app-body">
+        <div class="page-h">
+          <div>
+            <h1>المنتجات</h1>
+            <div class="sub">٨٥ منتج نشط · آخر تحديث قبل لحظات</div>
+          </div>
+          <div class="page-logo">
+            <div class="mark">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+            <span class="name">وصول</span>
+          </div>
+        </div>
+
+        <div class="page-toolbar">
+          <span class="search-input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>ابحث في المنتجات</span>
+          </span>
+          <span class="filter-chip on">الكل</span>
+          <span class="filter-chip">نشط</span>
+          <span class="filter-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            تصفية
+          </span>
+        </div>
+
+        <div class="product-list">
+          <div class="product-row muted">
+            <div class="product-thumb mint">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">سماعة X بلوتوث لاسلكية</span>
+              <div class="meta"><span class="sku">SKU · 9041</span><span class="stock">المخزون: ٢٥ قطعة</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>١٤٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+          <div class="product-row muted">
+            <div class="product-thumb blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9-9 9 9 0 0 1 9 9M4 11v8a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4M22 11v8a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">سماعة AirPods Pro</span>
+              <div class="meta"><span class="sku">SKU · 8842</span><span class="stock">المخزون: ١٢ قطعة</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>٨٩٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+
+          <!-- Highlighted price change -->
+          <div class="product-row pulse">
+            <div class="product-thumb amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">كاميرا 4K احترافية</span>
+              <div class="meta">
+                <span class="sku">SKU · 4210</span>
+                <span class="stock">المخزون: ٧ قطع</span>
+                <span style="display: inline-flex; align-items: center; gap: 4px; color: var(--w-teal-700); font-weight: 600;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  عُدِّل من واتساب قبل ثوانٍ
+                </span>
+              </div>
+            </div>
+            <div class="product-price">
+              <div class="price-change">
+                <span class="old">٢٩٩</span>
+                <span class="new"><span>٢٧٩</span> <span class="unit">ريال</span></span>
+              </div>
+              <span class="price-delta">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                خصم ٢٠ ريال
+              </span>
+            </div>
+          </div>
+
+          <div class="product-row muted">
+            <div class="product-thumb violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">حامل تلفون مغناطيسي</span>
+              <div class="meta"><span class="sku">SKU · 1188</span><span class="stock">المخزون: ٤٨ قطعة</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>٤٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+          <div class="product-row muted">
+            <div class="product-thumb rose">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <div class="product-body">
+              <span class="name">عطر أوود روز ٥٠مل</span>
+              <div class="meta"><span class="sku">SKU · 2307</span><span class="stock">المخزون: ٢١ قطعة</span></div>
+            </div>
+            <div class="product-price">
+              <div class="amount"><span>٣٤٩</span><span class="unit">ريال</span></div>
+              <div class="status">نشط</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">13 / 14</span>
+      <span>Instant Changes</span>
+      <span class="ar">— قلها، تصير</span>
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 14 — End card
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="End Card">
+    <div class="end-card">
+      <!-- Wosool infinity, big, with breathing glow -->
+      <div class="end-logo">
+        <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg" aria-label="Wosool">
+          <path fill="#004D5B" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+        </svg>
+      </div>
+
+      <h1 class="end-wordmark">وصول</h1>
+
+      <div class="end-tagline">
+        <div>تكلّم <span class="em">متجرك</span>.</div>
+        <div>يسويه.</div>
+      </div>
+
+      <div class="end-divider"></div>
+
+      <a class="end-cta" href="#">
+        <span class="salla-logo">
+          <!-- Salla mark (S curl) -->
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <path d="M16.5 4.8C15 3 12.8 2 10.2 2 5.6 2 2 5.6 2 10.2c0 2.6 1 4.8 2.8 6.3-1 1-1.8 2.5-1.8 4.5h2c0-1.8 1.2-3 3-3h6c4.6 0 8.2-3.6 8.2-8.2 0-1.9-.6-3.7-1.7-5z" fill="#bafd4c"/>
+            <path d="M10.2 12.5c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3" stroke="#0B1A1F" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>ثبّت من متجر تطبيقات سلة</span>
+        <span class="arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+
+      <div class="end-footer">
+        <span>صُنع في المملكة العربية السعودية</span>
+        <span style="font-size: 22px;">🇸🇦</span>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">14 / 14</span>
+      <span>End Card</span>
+      <span class="ar">— تكلّم متجرك. يسويه.</span>
+    </div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>

@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Wosool — Connection Act · Storyboard Frames</title>
+<link rel="stylesheet" href="tokens.css">
+<script src="deck-stage.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: #000; }
+
+  /* ═══ Stage frame (shared) ═══════════════════════════════════════ */
+  .frame {
+    background: var(--w-bg);
+    font-family: var(--w-font-ar);
+    color: var(--w-text);
+    position: relative;
+    overflow: hidden;
+  }
+  /* Faint grid texture — matches Install Act for continuity */
+  .frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--w-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--w-border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.35;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+  }
+
+  /* Minimal Salla crumb — continuity with Install Act chrome */
+  .store-chrome {
+    position: absolute;
+    top: 48px;
+    inset-inline-start: 80px;
+    inset-inline-end: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--w-text-muted);
+    font-size: 14px;
+    z-index: 5;
+  }
+  .crumbs { display: flex; align-items: center; gap: 10px; }
+  .crumbs .sep { color: var(--w-border-strong); }
+  .crumbs .current { color: var(--w-text-soft); font-weight: 500; }
+  .store-mark {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--w-text-muted);
+    font-family: var(--w-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .store-mark .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--w-border-strong); }
+
+  /* Storyboard caption (bottom-start of every frame) */
+  .frame-caption {
+    position: absolute;
+    bottom: 48px;
+    inset-inline-start: 80px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    color: var(--w-text-muted);
+    font-family: var(--w-font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    z-index: 5;
+  }
+  .frame-caption .num { color: var(--w-ink); font-weight: 700; font-size: 13px; }
+  .frame-caption .ar {
+    font-family: var(--w-font-ar);
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--w-text-soft);
+    font-size: 13px;
+  }
+
+  /* ═══ Embedded Wosool app shell (the Salla iframe content) ═══════ */
+  /* This IS how Wosool renders inside Salla — narrow, vertical, bordered.
+     We scale UP the real embedded app to 1.5× so it reads at projection scale. */
+  .app-shell {
+    position: absolute;
+    background: var(--w-surface);
+    border: 1px solid var(--w-border);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--w-sh-2);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Camera A: dashboard centered, for frames 4, 5, 9 */
+  .shell-center {
+    width: 1020px;
+    height: 920px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Camera B: QR hero centered, for frame 6 */
+  .shell-qr { width: 1020px; height: auto; max-height: 940px; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+
+  /* Camera C: split — dashboard on the right half, phone on left, for 7/8 */
+  .shell-split {
+    width: 820px;
+    height: 920px;
+    right: 120px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: auto;
+  }
+
+  /* Inside the app shell: page padding */
+  .app-body {
+    flex: 1;
+    padding: 40px 44px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+  }
+  .shell-split .app-body { padding: 32px 32px 22px; gap: 16px; }
+
+  /* Page header */
+  .page-h { display: flex; align-items: flex-start; justify-content: space-between; }
+  .page-h h1 { font-size: 30px; font-weight: 700; margin: 0; letter-spacing: -0.01em; white-space: nowrap; }
+  .page-h .sub { font-size: 16px; color: var(--w-text-soft); margin-top: 4px; white-space: nowrap; }
+  .page-logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .page-logo .mark {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--w-mint-500);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .page-logo .mark svg { width: 22px; height: auto; }
+  .page-logo .name {
+    font-size: 15px; font-weight: 700; color: var(--w-ink);
+  }
+
+  .shell-split .page-h h1 { font-size: 24px; }
+  .shell-split .page-h .sub { font-size: 14px; }
+
+  /* ── System health card ───────────────────────────────────────── */
+  .health {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 22px;
+    border-radius: 14px;
+    border: 1px solid;
+  }
+  .health.warn  { background: var(--w-warning-soft); border-color: color-mix(in srgb, var(--w-warning) 25%, transparent); }
+  .health.ok    { background: var(--w-success-soft); border-color: color-mix(in srgb, var(--w-success) 25%, transparent); }
+
+  .health-orb {
+    position: relative; width: 56px; height: 56px; flex-shrink: 0;
+  }
+  .health-orb .core {
+    position: absolute; inset: 0; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .health.warn .health-orb .core { background: #FFE9B8; color: var(--w-warning); }
+  .health.ok   .health-orb .core { background: #C8F5DA; color: var(--w-success); }
+  .health-orb .core svg { width: 28px; height: 28px; }
+  .health-orb .ring {
+    position: absolute; inset: -6px; border-radius: 50%;
+    border: 2px solid currentColor; opacity: 0.25;
+  }
+  .health.warn .health-orb { color: var(--w-warning); }
+  .health.ok   .health-orb { color: var(--w-success); }
+
+  .health-body { flex: 1; min-width: 0; }
+  .health-title { font-size: 20px; font-weight: 700; margin: 0; color: var(--w-ink); }
+  .health-sub { display: flex; gap: 14px; margin-top: 6px; font-size: 13px; color: var(--w-text-soft); flex-wrap: wrap; }
+  .health-sub .ind { display: inline-flex; align-items: center; gap: 6px; }
+  .health-sub .ind::before { content: ""; width: 7px; height: 7px; border-radius: 50%; }
+  .health.warn .health-sub .ind.on::before  { background: var(--w-success); }
+  .health.warn .health-sub .ind.off::before { background: var(--w-danger); }
+  .health.ok   .health-sub .ind::before     { background: var(--w-success); }
+
+  .health-pct {
+    font-family: var(--w-font-mono);
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--w-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Alert card (WhatsApp disconnected / connected) ───────────── */
+  .alert-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid;
+    transition: all 200ms var(--w-ease-out);
+  }
+  .alert-card.danger {
+    background: var(--w-danger-soft);
+    border-color: color-mix(in srgb, var(--w-danger) 30%, transparent);
+  }
+  .alert-card.success {
+    background: #CFF6DF;
+    border-color: var(--w-success);
+  }
+  .alert-ic {
+    width: 56px; height: 56px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .alert-card.danger .alert-ic { background: color-mix(in srgb, var(--w-danger) 12%, white); color: var(--w-danger); }
+  .alert-card.success .alert-ic { background: var(--w-whatsapp); color: #fff; }
+  .alert-body { flex: 1; min-width: 0; }
+  .alert-title { font-size: 18px; font-weight: 700; margin: 0; color: var(--w-ink); }
+  .alert-sub   { font-size: 14px; margin-top: 4px; color: var(--w-text-soft); }
+  .alert-sub .num { font-family: var(--w-font-mono); font-weight: 600; color: var(--w-text); direction: ltr; display: inline-block; }
+  .alert-card.success .alert-sub .num { color: var(--w-teal-900); }
+
+  .btn-connect {
+    height: 44px; padding: 0 20px; border-radius: 10px;
+    font-family: var(--w-font-ar); font-size: 15px; font-weight: 700;
+    background: var(--w-danger); color: #fff; border: 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .badge-check {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border-radius: 999px;
+    background: var(--w-success); color: #fff;
+    font-size: 14px; font-weight: 700;
+  }
+  .badge-check svg { width: 16px; height: 16px; }
+
+  /* ── Section label ────────────────────────────────────────────── */
+  .section-label {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--w-text-soft);
+    margin: 4px 0 0;
+  }
+
+  /* ── Agent rows ───────────────────────────────────────────────── */
+  .agents { display: flex; flex-direction: column; gap: 10px; }
+  .agent-row {
+    background: var(--w-surface);
+    border: 1px solid var(--w-border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .agent-av {
+    width: 52px; height: 52px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; flex-shrink: 0;
+    color: #fff;
+  }
+  .agent-av svg { width: 24px; height: 24px; }
+  .agent-av .dot-status {
+    position: absolute; bottom: -2px; inset-inline-end: -2px;
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--w-surface);
+  }
+  .agent-av.on  .dot-status { background: var(--w-success); }
+  .agent-av.off .dot-status { background: var(--w-text-muted); }
+  .agent-av.blue   { background: linear-gradient(135deg, #3B82F6, #60A5FA); }
+  .agent-av.violet { background: linear-gradient(135deg, #8B5CF6, #A78BFA); }
+  .agent-av.green  { background: linear-gradient(135deg, #10B981, #34D399); }
+  .agent-av.idle {
+    background: var(--w-surface-2);
+    color: var(--w-text-muted);
+    border: 1px solid var(--w-border);
+  }
+
+  .agent-body { flex: 1; min-width: 0; }
+  .agent-body b { display: block; font-size: 17px; font-weight: 700; color: var(--w-ink); }
+  .agent-body span { font-size: 13px; color: var(--w-text-soft); margin-top: 3px; display: block; }
+
+  .agent-metric { text-align: left; flex-shrink: 0; }
+  .agent-metric .v {
+    font-size: 30px; font-weight: 800; line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--w-text-muted);
+  }
+  .agent-metric.live-blue   .v { color: var(--w-agent-customer); }
+  .agent-metric.live-violet .v { color: var(--w-agent-owner); }
+  .agent-metric.live-green  .v { color: var(--w-agent-sales); }
+  .agent-metric .l { font-size: 11px; color: var(--w-text-soft); margin-top: 4px; font-weight: 500; }
+
+  .agent-badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--w-success-soft); color: var(--w-success);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .agent-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .agent-badge.idle { background: var(--w-surface-2); color: var(--w-text-muted); border: 1px solid var(--w-border); }
+
+  /* ── Bottom navbar (inside the app shell) ─────────────────────── */
+  .navbar {
+    border-top: 1px solid var(--w-border);
+    background: var(--w-surface);
+    padding: 12px 0 14px;
+    display: flex; justify-content: space-around;
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--w-text-muted);
+    padding: 4px 8px; min-width: 82px;
+    font-weight: 500;
+    position: relative;
+    white-space: nowrap;
+  }
+  .nav-item svg { width: 24px; height: 24px; }
+  .nav-item svg { width: 22px; height: 22px; }
+  .nav-item.on { color: var(--w-teal-700); }
+  .nav-item.on::before {
+    content: ""; position: absolute; top: -12px;
+    width: 26px; height: 3px; background: var(--w-teal-700); border-radius: 2px;
+  }
+
+  /* ═══ Frame 5 — dim + pulse spotlight ════════════════════════════ */
+  .dimmed .app-body > *:not(.alert-card.danger):not(.page-h) { opacity: 0.32; transition: opacity 200ms; filter: saturate(0.6); }
+  .dimmed .page-h { opacity: 0.55; }
+  .dimmed .alert-card.danger {
+    transform: scale(1.035);
+    box-shadow:
+      0 0 0 8px rgba(245, 67, 74, 0.14),
+      0 0 0 18px rgba(245, 67, 74, 0.06),
+      0 18px 60px rgba(245, 67, 74, 0.25);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ═══ Frame 6 — QR page ══════════════════════════════════════════ */
+  .stepper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .step {
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--w-border);
+    background: var(--w-surface);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .step.on {
+    background: var(--w-teal-50);
+    border-color: var(--w-teal-300);
+  }
+  .step.on .step-n {
+    background: var(--w-teal-700); color: #fff;
+  }
+  .step.done .step-n {
+    background: var(--w-success); color: #fff;
+  }
+  .step-n {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--w-surface-2); color: var(--w-text-soft);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--w-font-mono); font-size: 14px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-body b { display: block; font-size: 15px; font-weight: 700; color: var(--w-ink); }
+  .step-body span { font-size: 12px; color: var(--w-text-soft); margin-top: 2px; display: block; }
+
+  /* Amber callout */
+  .callout {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: var(--w-warning-soft);
+    border: 1px solid color-mix(in srgb, var(--w-warning) 25%, transparent);
+  }
+  .callout .ic {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--w-warning); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .callout .ic svg { width: 16px; height: 16px; }
+  .callout .body { flex: 1; font-size: 15px; line-height: 1.5; color: var(--w-ink); }
+  .callout .body b { font-weight: 700; }
+
+  /* Instructions list */
+  .steps-howto { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .steps-howto li {
+    display: flex; gap: 14px; align-items: flex-start;
+    font-size: 15px; line-height: 1.5; color: var(--w-text);
+  }
+  .steps-howto li .n {
+    flex-shrink: 0;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--w-teal-50); color: var(--w-teal-700);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--w-font-mono); font-size: 13px; font-weight: 700;
+  }
+
+  /* QR hero */
+  .qr-hero {
+    margin: 8px auto 0;
+    width: 360px;
+    padding: 22px;
+    border-radius: 20px;
+    background: var(--w-surface);
+    border: 1px solid var(--w-border);
+    position: relative;
+  }
+  .qr-hero.glow {
+    border-color: var(--w-mint-500);
+    box-shadow:
+      0 0 0 6px rgba(115, 252, 215, 0.35),
+      0 0 0 14px rgba(115, 252, 215, 0.12);
+  }
+  .qr-svg { width: 100%; height: auto; display: block; }
+  .qr-logo-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px;
+    border-radius: 14px;
+    background: var(--w-mint-500);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 6px var(--w-surface);
+  }
+  .qr-logo-center svg { width: 48px; height: auto; }
+
+  .qr-status {
+    text-align: center;
+    margin-top: 18px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 15px;
+    color: var(--w-text-soft);
+  }
+  .qr-status .pulse-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--w-teal-700);
+    position: relative;
+  }
+  .qr-status .dots { display: inline-flex; gap: 3px; align-items: center; padding-top: 8px; }
+  .qr-status .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--w-teal-500); opacity: 0.5; }
+  .qr-status .dots i:nth-child(1) { opacity: 1; }
+  .qr-status .dots i:nth-child(2) { opacity: 0.7; }
+  .qr-status .dots i:nth-child(3) { opacity: 0.35; }
+
+  /* Smaller dashboard variant (for split frames 7/8) */
+  .shell-split .health { padding: 14px 16px; gap: 12px; }
+  .shell-split .health-title { font-size: 17px; }
+  .shell-split .health-orb { width: 44px; height: 44px; }
+  .shell-split .health-orb .core svg { width: 22px; height: 22px; }
+  .shell-split .health-pct { font-size: 26px; }
+  .shell-split .callout { padding: 12px 14px; font-size: 13px; }
+  .shell-split .stepper { gap: 8px; }
+  .shell-split .step { padding: 12px 14px; }
+  .shell-split .step-body b { font-size: 13px; }
+  .shell-split .step-body span { font-size: 11px; }
+  .shell-split .qr-hero { width: 290px; padding: 16px; }
+  .shell-split .qr-logo-center { width: 56px; height: 56px; }
+  .shell-split .qr-logo-center svg { width: 36px; }
+  .shell-split .qr-status { font-size: 13px; margin-top: 14px; }
+  .shell-split .steps-howto li { font-size: 13px; gap: 10px; }
+  .shell-split .steps-howto li .n { width: 22px; height: 22px; font-size: 11px; }
+
+  /* ═══ Toast (Frame 9) ════════════════════════════════════════════ */
+  .toast {
+    position: absolute;
+    top: 120px;
+    right: 120px;
+    left: auto;
+    background: var(--w-ink);
+    color: #fff;
+    border-radius: 999px;
+    padding: 14px 22px 14px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: var(--w-sh-3);
+    z-index: 6;
+  }
+  .toast .tick {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--w-mint-500); color: var(--w-ink);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .toast .tick svg { width: 12px; height: 12px; }
+
+  /* ═══ iPhone frame (Frames 7, 8) ═════════════════════════════════ */
+  .phone {
+    position: absolute;
+    left: 140px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-8deg);
+    width: 440px;
+    height: 900px;
+    border-radius: 68px;
+    background: #111;
+    padding: 14px;
+    box-shadow:
+      0 40px 80px rgba(11, 26, 31, 0.25),
+      0 0 0 2px #1f2937,
+      inset 0 0 0 2px #000;
+  }
+  .phone-screen {
+    width: 100%; height: 100%;
+    border-radius: 56px;
+    overflow: hidden;
+    background: #0B141A; /* WhatsApp dark */
+    position: relative;
+    color: #E9EDEF;
+    font-family: var(--w-font-ar), -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .phone-notch {
+    position: absolute;
+    top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 120px; height: 32px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 3;
+  }
+  .phone-status {
+    position: relative;
+    padding: 18px 32px 10px;
+    display: flex; justify-content: space-between;
+    font-size: 14px; font-weight: 600;
+    color: #E9EDEF;
+    z-index: 2;
+  }
+  .phone-status .right { display: flex; align-items: center; gap: 6px; }
+  .phone-status .right svg { width: 14px; height: 14px; }
+
+  /* WhatsApp Linked Devices screen */
+  .wa-header {
+    padding: 22px 20px 18px;
+    display: flex; align-items: center; gap: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .wa-header .back { color: #00A884; }
+  .wa-header h2 { font-size: 19px; font-weight: 600; margin: 0; color: #E9EDEF; }
+
+  .wa-linked-body {
+    padding: 24px 24px 20px;
+    color: #E9EDEF;
+  }
+  .wa-linked-body .illus {
+    width: 140px; height: 140px; border-radius: 50%;
+    background: rgba(0, 168, 132, 0.12);
+    margin: 8px auto 24px;
+    display: flex; align-items: center; justify-content: center;
+    color: #00A884;
+  }
+  .wa-linked-body .illus svg { width: 72px; height: 72px; }
+  .wa-linked-body h3 {
+    text-align: center; font-size: 18px; font-weight: 600; margin: 0 0 12px;
+    color: #E9EDEF;
+  }
+  .wa-linked-body p {
+    text-align: center; font-size: 13px; line-height: 1.55;
+    color: #8696A0; margin: 0 auto; max-width: 320px;
+  }
+  .wa-cta {
+    display: flex; justify-content: center; margin-top: 26px;
+  }
+  .wa-cta button {
+    background: #00A884; color: #fff; border: 0;
+    padding: 12px 26px; border-radius: 999px;
+    font-family: inherit; font-size: 15px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 8px;
+    white-space: nowrap;
+  }
+  .wa-cta button svg { width: 16px; height: 16px; }
+
+  .wa-list {
+    margin-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .wa-list .item {
+    padding: 16px 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; gap: 14px;
+    font-size: 14px;
+  }
+  .wa-list .item .ic {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    color: #00A884;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .wa-list .item .ic svg { width: 18px; height: 18px; }
+  .wa-list .item .body { flex: 1; min-width: 0; }
+  .wa-list .item .body b { display: block; color: #E9EDEF; font-weight: 500; font-size: 14px; }
+  .wa-list .item .body span { display: block; color: #8696A0; font-size: 12px; margin-top: 2px; }
+
+  /* WhatsApp scanner view (Frame 8) */
+  .scanner {
+    width: 100%; height: 100%;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+  }
+  .scanner-top {
+    position: absolute; top: 60px; left: 0; right: 0;
+    padding: 0 28px;
+    display: flex; align-items: center; gap: 16px;
+    color: #fff;
+    z-index: 2;
+  }
+  .scanner-top h2 { font-size: 18px; font-weight: 600; margin: 0; }
+  .scanner-top .close { color: #fff; opacity: 0.85; }
+
+  .scanner-viewport {
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .scanner-viewport::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at center, transparent 34%, rgba(0,0,0,0.85) 70%);
+  }
+  .scanner-frame {
+    position: relative;
+    width: 280px; height: 280px;
+    border-radius: 16px;
+  }
+  .scanner-frame .corner {
+    position: absolute;
+    width: 40px; height: 40px;
+    border: 4px solid #fff;
+  }
+  .scanner-frame .c1 { top: 0; left: 0; border-right: 0; border-bottom: 0; border-top-left-radius: 14px; }
+  .scanner-frame .c2 { top: 0; right: 0; border-left: 0; border-bottom: 0; border-top-right-radius: 14px; }
+  .scanner-frame .c3 { bottom: 0; left: 0; border-right: 0; border-top: 0; border-bottom-left-radius: 14px; }
+  .scanner-frame .c4 { bottom: 0; right: 0; border-left: 0; border-top: 0; border-bottom-right-radius: 14px; }
+  .scanner-line {
+    position: absolute;
+    left: 16px; right: 16px;
+    top: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00FFB2, transparent);
+    box-shadow: 0 0 24px #00FFB2;
+    border-radius: 3px;
+    transform: translateY(-40px);
+  }
+  .scanner-caption {
+    position: absolute;
+    bottom: 80px; left: 0; right: 0;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    opacity: 0.9;
+    z-index: 2;
+  }
+  .scanner-caption b { display: block; font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+
+  /* Dashboard breathing headline above the stage (for split frames) */
+  /* split-caption removed — storyboard caption at bottom tells the story */
+  .split-caption { display: none; }
+
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 4 — Dashboard, disconnected ("something is missing")
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Dashboard · Disconnected">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">وصول</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Embedded App</div>
+    </div>
+
+    <div class="app-shell shell-center">
+      <div class="app-body">
+        <div class="page-h">
+          <div>
+            <h1>الرئيسية</h1>
+            <div class="sub">نظرة عامة على أداء متجرك</div>
+          </div>
+          <div class="page-logo">
+            <div class="mark">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+            <span class="name">وصول</span>
+          </div>
+        </div>
+
+        <!-- System health — warn 67% -->
+        <div class="health warn">
+          <div class="health-orb">
+            <div class="ring"></div>
+            <div class="core">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+          </div>
+          <div class="health-body">
+            <p class="health-title">صحة النظام <span dir="ltr" style="font-family: var(--w-font-mono);">67%</span></p>
+            <div class="health-sub">
+              <span class="ind off">واتساب غير متصل</span>
+              <span class="ind on">قاعدة المتجر</span>
+              <span class="ind on">الوكلاء جاهزون</span>
+            </div>
+          </div>
+          <div class="health-pct">67<span style="font-size: 22px;">٪</span></div>
+        </div>
+
+        <!-- Red alert: WhatsApp disconnected -->
+        <div class="alert-card danger">
+          <div class="alert-ic">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          </div>
+          <div class="alert-body">
+            <p class="alert-title">واتساب غير متصل</p>
+            <p class="alert-sub">لا يمكن لوكيل العملاء الرد — اربط رقم متجرك لتفعيل المحادثات</p>
+          </div>
+          <button class="btn-connect">
+            ربط الآن
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+        </div>
+
+        <div class="section-label">أداء الوكلاء اليوم</div>
+
+        <div class="agents">
+          <div class="agent-row">
+            <div class="agent-av idle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span class="dot-status" style="background: var(--w-text-muted);"></span>
+            </div>
+            <div class="agent-body">
+              <b>وكيل العملاء</b>
+              <span>في انتظار ربط واتساب</span>
+            </div>
+            <div class="agent-metric"><div class="v">0</div><div class="l">رسالة اليوم</div></div>
+          </div>
+
+          <div class="agent-row">
+            <div class="agent-av idle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              <span class="dot-status" style="background: var(--w-text-muted);"></span>
+            </div>
+            <div class="agent-body">
+              <b>وكيل المدير</b>
+              <span>في انتظار التفعيل</span>
+            </div>
+            <div class="agent-metric"><div class="v">0</div><div class="l">طلب اليوم</div></div>
+          </div>
+
+          <div class="agent-row">
+            <div class="agent-av idle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              <span class="dot-status" style="background: var(--w-text-muted);"></span>
+            </div>
+            <div class="agent-body">
+              <b>وكيل المبيعات</b>
+              <span>في انتظار التفعيل</span>
+            </div>
+            <div class="agent-metric"><div class="v">0</div><div class="l">زائر الآن</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar">
+        <div class="nav-item on">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <span>الرئيسية</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>الرسائل</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+          <span>الموظفون</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>الأتمتة</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>الإعدادات</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">04 / 09</span>
+      <span>Dashboard — Disconnected</span>
+      <span class="ar">— شيء ناقص</span>
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 5 — Same dashboard, spotlight on the red alert
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Spotlight on Alert">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">وصول</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Embedded App</div>
+    </div>
+
+    <div class="app-shell shell-center dimmed">
+      <div class="app-body">
+        <div class="page-h">
+          <div>
+            <h1>الرئيسية</h1>
+            <div class="sub">نظرة عامة على أداء متجرك</div>
+          </div>
+          <div class="page-logo">
+            <div class="mark">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+            <span class="name">وصول</span>
+          </div>
+        </div>
+
+        <div class="health warn">
+          <div class="health-orb">
+            <div class="ring"></div>
+            <div class="core">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+          </div>
+          <div class="health-body">
+            <p class="health-title">صحة النظام <span dir="ltr" style="font-family: var(--w-font-mono);">67%</span></p>
+            <div class="health-sub">
+              <span class="ind off">واتساب غير متصل</span>
+              <span class="ind on">قاعدة المتجر</span>
+              <span class="ind on">الوكلاء جاهزون</span>
+            </div>
+          </div>
+          <div class="health-pct">67<span style="font-size: 22px;">٪</span></div>
+        </div>
+
+        <div class="alert-card danger">
+          <div class="alert-ic">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          </div>
+          <div class="alert-body">
+            <p class="alert-title">واتساب غير متصل</p>
+            <p class="alert-sub">لا يمكن لوكيل العملاء الرد — اربط رقم متجرك لتفعيل المحادثات</p>
+          </div>
+          <button class="btn-connect">
+            ربط الآن
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+        </div>
+
+        <div class="section-label">أداء الوكلاء اليوم</div>
+
+        <div class="agents">
+          <div class="agent-row">
+            <div class="agent-av idle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span class="dot-status" style="background: var(--w-text-muted);"></span>
+            </div>
+            <div class="agent-body"><b>وكيل العملاء</b><span>في انتظار ربط واتساب</span></div>
+            <div class="agent-metric"><div class="v">0</div><div class="l">رسالة اليوم</div></div>
+          </div>
+          <div class="agent-row">
+            <div class="agent-av idle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              <span class="dot-status" style="background: var(--w-text-muted);"></span>
+            </div>
+            <div class="agent-body"><b>وكيل المدير</b><span>في انتظار التفعيل</span></div>
+            <div class="agent-metric"><div class="v">0</div><div class="l">طلب اليوم</div></div>
+          </div>
+          <div class="agent-row">
+            <div class="agent-av idle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              <span class="dot-status" style="background: var(--w-text-muted);"></span>
+            </div>
+            <div class="agent-body"><b>وكيل المبيعات</b><span>في انتظار التفعيل</span></div>
+            <div class="agent-metric"><div class="v">0</div><div class="l">زائر الآن</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar">
+        <div class="nav-item on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>الرئيسية</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>الرسائل</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/></svg><span>الموظفون</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>الأتمتة</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg><span>الإعدادات</span></div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">05 / 09</span>
+      <span>Alert Spotlight</span>
+      <span class="ar">— الخطوة التالية الوحيدة</span>
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 6 — QR code page
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="QR Code Screen">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>التطبيقات</span>
+        <span class="sep">›</span>
+        <span>وصول</span>
+        <span class="sep">›</span>
+        <span class="current">ربط واتساب</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Embedded App</div>
+    </div>
+
+    <div class="app-shell shell-qr">
+      <div class="app-body" style="padding-top: 32px; gap: 18px;">
+        <div class="page-h">
+          <div>
+            <h1>ربط واتساب</h1>
+            <div class="sub">الخطوة الأولى من ثلاث</div>
+          </div>
+          <div class="page-logo">
+            <div class="mark">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+            <span class="name">وصول</span>
+          </div>
+        </div>
+
+        <div class="stepper">
+          <div class="step on">
+            <span class="step-n">١</span>
+            <div class="step-body"><b>رقم المتجر</b><span>للعملاء</span></div>
+          </div>
+          <div class="step">
+            <span class="step-n">٢</span>
+            <div class="step-body"><b>رقم المدير</b><span>للتنبيهات</span></div>
+          </div>
+          <div class="step">
+            <span class="step-n">٣</span>
+            <div class="step-body"><b>جاهز</b><span>بدء الوكلاء</span></div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </div>
+          <div class="body">
+            <b>استخدم رقم واتساب المتجر</b> — هذا الرقم سيستقبل رسائل العملاء. لا تستخدم رقمك الشخصي.
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 360px; gap: 36px; align-items: center;">
+          <div>
+            <div class="section-label" style="margin-bottom: 12px;">خطوات ربط رقم المتجر</div>
+            <ol class="steps-howto">
+              <li><span class="n">١</span><span>افتح تطبيق واتساب على هاتف المتجر</span></li>
+              <li><span class="n">٢</span><span>من الإعدادات، اختر «الأجهزة المرتبطة» ثم «ربط جهاز»</span></li>
+              <li><span class="n">٣</span><span>وجّه كاميرا الهاتف نحو هذا الرمز لمسحه</span></li>
+            </ol>
+          </div>
+
+          <div>
+            <div class="qr-hero">
+              <!-- QR: stylized dot-matrix (not a scannable code — storyboard placeholder) -->
+              <svg class="qr-svg" viewBox="0 0 29 29" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                <!-- Finder patterns -->
+                <g fill="#0B1A1F">
+                  <!-- top-left finder -->
+                  <rect x="0" y="0" width="7" height="7"/>
+                  <rect x="1" y="1" width="5" height="5" fill="#fff"/>
+                  <rect x="2" y="2" width="3" height="3"/>
+                  <!-- top-right finder -->
+                  <rect x="22" y="0" width="7" height="7"/>
+                  <rect x="23" y="1" width="5" height="5" fill="#fff"/>
+                  <rect x="24" y="2" width="3" height="3"/>
+                  <!-- bottom-left finder -->
+                  <rect x="0" y="22" width="7" height="7"/>
+                  <rect x="1" y="23" width="5" height="5" fill="#fff"/>
+                  <rect x="2" y="24" width="3" height="3"/>
+                </g>
+                <!-- Body pattern -->
+                <g fill="#0B1A1F">
+                  <!-- Row 8 -->
+                  <rect x="8" y="0" width="1" height="1"/><rect x="10" y="0" width="1" height="1"/><rect x="12" y="0" width="2" height="1"/><rect x="15" y="0" width="1" height="1"/><rect x="17" y="0" width="1" height="1"/><rect x="19" y="0" width="2" height="1"/>
+                  <rect x="9" y="1" width="1" height="1"/><rect x="11" y="1" width="1" height="1"/><rect x="13" y="1" width="1" height="1"/><rect x="16" y="1" width="2" height="1"/><rect x="20" y="1" width="1" height="1"/>
+                  <rect x="8" y="2" width="2" height="1"/><rect x="12" y="2" width="1" height="1"/><rect x="14" y="2" width="1" height="1"/><rect x="17" y="2" width="1" height="1"/><rect x="19" y="2" width="1" height="1"/><rect x="21" y="2" width="1" height="1"/>
+                  <rect x="11" y="3" width="2" height="1"/><rect x="15" y="3" width="1" height="1"/><rect x="18" y="3" width="2" height="1"/>
+                  <rect x="9" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="14" y="4" width="2" height="1"/><rect x="17" y="4" width="1" height="1"/><rect x="19" y="4" width="1" height="1"/><rect x="21" y="4" width="1" height="1"/>
+                  <rect x="8" y="5" width="1" height="1"/><rect x="10" y="5" width="2" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="15" y="5" width="1" height="1"/><rect x="18" y="5" width="1" height="1"/><rect x="20" y="5" width="1" height="1"/>
+                  <rect x="9" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="13" y="6" width="2" height="1"/><rect x="16" y="6" width="1" height="1"/><rect x="19" y="6" width="1" height="1"/><rect x="21" y="6" width="1" height="1"/>
+                  <!-- vertical timing -->
+                  <rect x="6" y="8" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="6" y="14" width="1" height="1"/><rect x="6" y="16" width="1" height="1"/><rect x="6" y="18" width="1" height="1"/><rect x="6" y="20" width="1" height="1"/>
+                  <!-- horizontal timing -->
+                  <rect x="8" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="14" y="6" width="1" height="1"/><rect x="16" y="6" width="1" height="1"/><rect x="18" y="6" width="1" height="1"/><rect x="20" y="6" width="1" height="1"/>
+
+                  <!-- Middle rows (decorative pattern) -->
+                  <rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="2" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="8" y="8" width="2" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="13" y="8" width="1" height="1"/><rect x="15" y="8" width="2" height="1"/><rect x="18" y="8" width="1" height="1"/><rect x="20" y="8" width="2" height="1"/><rect x="23" y="8" width="1" height="1"/><rect x="25" y="8" width="2" height="1"/><rect x="28" y="8" width="1" height="1"/>
+                  <rect x="1" y="9" width="2" height="1"/><rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="12" y="9" width="2" height="1"/><rect x="16" y="9" width="1" height="1"/><rect x="19" y="9" width="1" height="1"/><rect x="22" y="9" width="1" height="1"/><rect x="24" y="9" width="1" height="1"/><rect x="26" y="9" width="1" height="1"/><rect x="28" y="9" width="1" height="1"/>
+                  <rect x="0" y="10" width="1" height="1"/><rect x="3" y="10" width="2" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="2" height="1"/><rect x="14" y="10" width="1" height="1"/><rect x="17" y="10" width="2" height="1"/><rect x="20" y="10" width="1" height="1"/><rect x="22" y="10" width="2" height="1"/><rect x="25" y="10" width="1" height="1"/><rect x="27" y="10" width="2" height="1"/>
+                  <rect x="2" y="11" width="1" height="1"/><rect x="4" y="11" width="2" height="1"/><rect x="7" y="11" width="2" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="13" y="11" width="2" height="1"/><rect x="16" y="11" width="1" height="1"/><rect x="19" y="11" width="2" height="1"/><rect x="23" y="11" width="1" height="1"/><rect x="25" y="11" width="1" height="1"/><rect x="28" y="11" width="1" height="1"/>
+                  <rect x="0" y="12" width="2" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="9" y="12" width="2" height="1"/><rect x="12" y="12" width="1" height="1"/><rect x="15" y="12" width="2" height="1"/><rect x="18" y="12" width="1" height="1"/><rect x="21" y="12" width="1" height="1"/><rect x="24" y="12" width="2" height="1"/><rect x="27" y="12" width="1" height="1"/>
+                  <rect x="1" y="13" width="1" height="1"/><rect x="3" y="13" width="2" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="10" y="13" width="2" height="1"/><rect x="14" y="13" width="1" height="1"/><rect x="17" y="13" width="1" height="1"/><rect x="20" y="13" width="2" height="1"/><rect x="24" y="13" width="1" height="1"/><rect x="26" y="13" width="2" height="1"/>
+                  <rect x="0" y="14" width="1" height="1"/><rect x="2" y="14" width="1" height="1"/><rect x="5" y="14" width="2" height="1"/><rect x="8" y="14" width="2" height="1"/><rect x="12" y="14" width="2" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="19" y="14" width="1" height="1"/><rect x="22" y="14" width="2" height="1"/><rect x="26" y="14" width="1" height="1"/><rect x="28" y="14" width="1" height="1"/>
+                  <rect x="3" y="15" width="1" height="1"/><rect x="5" y="15" width="2" height="1"/><rect x="9" y="15" width="1" height="1"/><rect x="11" y="15" width="2" height="1"/><rect x="14" y="15" width="1" height="1"/><rect x="16" y="15" width="2" height="1"/><rect x="20" y="15" width="1" height="1"/><rect x="23" y="15" width="1" height="1"/><rect x="25" y="15" width="2" height="1"/>
+                  <rect x="0" y="16" width="2" height="1"/><rect x="4" y="16" width="1" height="1"/><rect x="7" y="16" width="1" height="1"/><rect x="10" y="16" width="1" height="1"/><rect x="13" y="16" width="2" height="1"/><rect x="17" y="16" width="2" height="1"/><rect x="21" y="16" width="2" height="1"/><rect x="25" y="16" width="1" height="1"/><rect x="27" y="16" width="2" height="1"/>
+                  <rect x="2" y="17" width="1" height="1"/><rect x="4" y="17" width="2" height="1"/><rect x="8" y="17" width="2" height="1"/><rect x="11" y="17" width="1" height="1"/><rect x="15" y="17" width="1" height="1"/><rect x="19" y="17" width="1" height="1"/><rect x="22" y="17" width="1" height="1"/><rect x="24" y="17" width="2" height="1"/><rect x="28" y="17" width="1" height="1"/>
+                  <rect x="0" y="18" width="1" height="1"/><rect x="3" y="18" width="1" height="1"/><rect x="7" y="18" width="1" height="1"/><rect x="10" y="18" width="2" height="1"/><rect x="13" y="18" width="1" height="1"/><rect x="16" y="18" width="2" height="1"/><rect x="20" y="18" width="2" height="1"/><rect x="23" y="18" width="1" height="1"/><rect x="26" y="18" width="1" height="1"/>
+                  <rect x="1" y="19" width="2" height="1"/><rect x="5" y="19" width="1" height="1"/><rect x="8" y="19" width="1" height="1"/><rect x="12" y="19" width="2" height="1"/><rect x="15" y="19" width="1" height="1"/><rect x="18" y="19" width="1" height="1"/><rect x="21" y="19" width="1" height="1"/><rect x="24" y="19" width="1" height="1"/><rect x="27" y="19" width="2" height="1"/>
+                  <rect x="0" y="20" width="2" height="1"/><rect x="3" y="20" width="2" height="1"/><rect x="7" y="20" width="2" height="1"/><rect x="11" y="20" width="1" height="1"/><rect x="14" y="20" width="2" height="1"/><rect x="17" y="20" width="1" height="1"/><rect x="20" y="20" width="2" height="1"/><rect x="23" y="20" width="1" height="1"/><rect x="25" y="20" width="2" height="1"/>
+                  <rect x="1" y="21" width="1" height="1"/><rect x="3" y="21" width="1" height="1"/><rect x="5" y="21" width="1" height="1"/><rect x="8" y="21" width="1" height="1"/><rect x="10" y="21" width="2" height="1"/><rect x="13" y="21" width="1" height="1"/><rect x="15" y="21" width="2" height="1"/><rect x="18" y="21" width="1" height="1"/><rect x="21" y="21" width="2" height="1"/><rect x="25" y="21" width="1" height="1"/><rect x="28" y="21" width="1" height="1"/>
+
+                  <!-- Bottom rows -->
+                  <rect x="8" y="22" width="2" height="1"/><rect x="11" y="22" width="1" height="1"/><rect x="13" y="22" width="2" height="1"/><rect x="16" y="22" width="1" height="1"/><rect x="18" y="22" width="2" height="1"/><rect x="21" y="22" width="1" height="1"/>
+                  <rect x="8" y="23" width="1" height="1"/><rect x="10" y="23" width="1" height="1"/><rect x="12" y="23" width="2" height="1"/><rect x="15" y="23" width="1" height="1"/><rect x="17" y="23" width="2" height="1"/><rect x="20" y="23" width="1" height="1"/><rect x="21" y="23" width="1" height="1"/>
+                  <rect x="9" y="24" width="1" height="1"/><rect x="11" y="24" width="2" height="1"/><rect x="14" y="24" width="2" height="1"/><rect x="17" y="24" width="1" height="1"/><rect x="19" y="24" width="1" height="1"/><rect x="21" y="24" width="1" height="1"/>
+                  <rect x="8" y="25" width="1" height="1"/><rect x="10" y="25" width="1" height="1"/><rect x="13" y="25" width="1" height="1"/><rect x="15" y="25" width="2" height="1"/><rect x="18" y="25" width="1" height="1"/><rect x="20" y="25" width="2" height="1"/>
+                  <rect x="9" y="26" width="2" height="1"/><rect x="12" y="26" width="1" height="1"/><rect x="14" y="26" width="1" height="1"/><rect x="16" y="26" width="1" height="1"/><rect x="19" y="26" width="2" height="1"/><rect x="22" y="26" width="1" height="1"/>
+                  <rect x="8" y="27" width="1" height="1"/><rect x="11" y="27" width="1" height="1"/><rect x="13" y="27" width="2" height="1"/><rect x="17" y="27" width="2" height="1"/><rect x="20" y="27" width="1" height="1"/>
+                  <rect x="9" y="28" width="2" height="1"/><rect x="12" y="28" width="1" height="1"/><rect x="15" y="28" width="1" height="1"/><rect x="18" y="28" width="2" height="1"/><rect x="21" y="28" width="1" height="1"/>
+                </g>
+              </svg>
+              <div class="qr-logo-center">
+                <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="qr-status">
+              <span class="pulse-dot"></span>
+              في انتظار المسح
+              <span class="dots"><i></i><i></i><i></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">06 / 09</span>
+      <span>QR Code</span>
+      <span class="ar">— الرمز هو البطل</span>
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 7 — Phone enters the scene (Linked Devices)
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Phone Enters">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>وصول</span>
+        <span class="sep">›</span>
+        <span class="current">ربط واتساب</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>WhatsApp Business · الأجهزة المرتبطة</div>
+    </div>
+
+    <!-- Phone on the left (tilted ~8°) -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-notch"></div>
+        <div class="phone-status">
+          <span>٩:٤١</span>
+          <span class="right">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 18h3V9H1v9zm5 0h3V5H6v13zm5 0h3V1h-3v17zm5 0h3v-8h-3v8zm5-11v11h3V7h-3z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="18" height="10" rx="2"/><rect x="20" y="11" width="2" height="4"/></svg>
+          </span>
+        </div>
+
+        <div class="wa-header">
+          <span class="back">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+          <h2>الأجهزة المرتبطة</h2>
+        </div>
+
+        <div class="wa-linked-body">
+          <div class="illus">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="3"/><rect x="8" y="6" width="8" height="8"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+          </div>
+          <h3>استخدم واتساب في أجهزة أخرى</h3>
+          <p>امسح رمز الاستجابة السريعة على الجهاز الذي تريد ربطه لتسجيل الدخول إلى حسابك.</p>
+          <div class="wa-cta">
+            <button>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="5"/><rect x="16" y="3" width="5" height="5"/><rect x="3" y="16" width="5" height="5"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+              ربط جهاز
+            </button>
+          </div>
+
+          <div class="wa-list">
+            <div class="item">
+              <div class="ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <div class="body">
+                <b>هذا الهاتف (نشط)</b>
+                <span>iPhone · ٩:٤١ ص</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard shell (shrunk, right-aligned) -->
+    <div class="app-shell shell-split">
+      <div class="app-body">
+        <div class="page-h">
+          <div>
+            <h1>ربط واتساب</h1>
+            <div class="sub">الخطوة الأولى من ثلاث</div>
+          </div>
+          <div class="page-logo">
+            <div class="mark">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepper">
+          <div class="step on"><span class="step-n">١</span><div class="step-body"><b>رقم المتجر</b><span>للعملاء</span></div></div>
+          <div class="step"><span class="step-n">٢</span><div class="step-body"><b>رقم المدير</b><span>للتنبيهات</span></div></div>
+          <div class="step"><span class="step-n">٣</span><div class="step-body"><b>جاهز</b><span>بدء الوكلاء</span></div></div>
+        </div>
+
+        <div class="callout">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </div>
+          <div class="body"><b>استخدم رقم واتساب المتجر</b> — لا تستخدم رقمك الشخصي.</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 8px;">
+          <div class="qr-hero">
+            <svg class="qr-svg" viewBox="0 0 29 29" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+              <g fill="#0B1A1F">
+                <rect x="0" y="0" width="7" height="7"/><rect x="1" y="1" width="5" height="5" fill="#fff"/><rect x="2" y="2" width="3" height="3"/>
+                <rect x="22" y="0" width="7" height="7"/><rect x="23" y="1" width="5" height="5" fill="#fff"/><rect x="24" y="2" width="3" height="3"/>
+                <rect x="0" y="22" width="7" height="7"/><rect x="1" y="23" width="5" height="5" fill="#fff"/><rect x="2" y="24" width="3" height="3"/>
+                <rect x="8" y="0" width="1" height="1"/><rect x="10" y="0" width="1" height="1"/><rect x="12" y="0" width="2" height="1"/><rect x="15" y="0" width="1" height="1"/><rect x="17" y="0" width="1" height="1"/><rect x="19" y="0" width="2" height="1"/>
+                <rect x="9" y="1" width="1" height="1"/><rect x="11" y="1" width="1" height="1"/><rect x="16" y="1" width="2" height="1"/><rect x="20" y="1" width="1" height="1"/>
+                <rect x="8" y="2" width="2" height="1"/><rect x="12" y="2" width="1" height="1"/><rect x="17" y="2" width="1" height="1"/><rect x="21" y="2" width="1" height="1"/>
+                <rect x="11" y="3" width="2" height="1"/><rect x="15" y="3" width="1" height="1"/><rect x="18" y="3" width="2" height="1"/>
+                <rect x="9" y="4" width="1" height="1"/><rect x="14" y="4" width="2" height="1"/><rect x="19" y="4" width="1" height="1"/><rect x="21" y="4" width="1" height="1"/>
+                <rect x="10" y="5" width="2" height="1"/><rect x="15" y="5" width="1" height="1"/><rect x="20" y="5" width="1" height="1"/>
+                <rect x="13" y="6" width="2" height="1"/><rect x="19" y="6" width="1" height="1"/>
+                <rect x="8" y="9" width="2" height="1"/><rect x="12" y="9" width="2" height="1"/><rect x="16" y="9" width="1" height="1"/><rect x="19" y="9" width="1" height="1"/>
+                <rect x="10" y="10" width="1" height="1"/><rect x="13" y="10" width="2" height="1"/><rect x="17" y="10" width="2" height="1"/><rect x="21" y="10" width="1" height="1"/>
+                <rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="2" height="1"/><rect x="15" y="11" width="1" height="1"/><rect x="18" y="11" width="2" height="1"/>
+                <rect x="9" y="12" width="2" height="1"/><rect x="13" y="12" width="1" height="1"/><rect x="16" y="12" width="2" height="1"/><rect x="20" y="12" width="1" height="1"/>
+                <rect x="11" y="13" width="1" height="1"/><rect x="14" y="13" width="1" height="1"/><rect x="17" y="13" width="1" height="1"/><rect x="20" y="13" width="2" height="1"/>
+                <rect x="8" y="14" width="2" height="1"/><rect x="12" y="14" width="2" height="1"/><rect x="15" y="14" width="1" height="1"/><rect x="19" y="14" width="1" height="1"/>
+                <rect x="9" y="15" width="1" height="1"/><rect x="11" y="15" width="2" height="1"/><rect x="14" y="15" width="1" height="1"/><rect x="16" y="15" width="2" height="1"/><rect x="20" y="15" width="1" height="1"/>
+                <rect x="8" y="16" width="1" height="1"/><rect x="13" y="16" width="2" height="1"/><rect x="17" y="16" width="2" height="1"/><rect x="21" y="16" width="1" height="1"/>
+                <rect x="10" y="17" width="1" height="1"/><rect x="12" y="17" width="1" height="1"/><rect x="15" y="17" width="1" height="1"/><rect x="19" y="17" width="1" height="1"/>
+                <rect x="9" y="18" width="2" height="1"/><rect x="13" y="18" width="1" height="1"/><rect x="16" y="18" width="2" height="1"/><rect x="20" y="18" width="2" height="1"/>
+                <rect x="11" y="19" width="1" height="1"/><rect x="14" y="19" width="2" height="1"/><rect x="18" y="19" width="1" height="1"/><rect x="21" y="19" width="1" height="1"/>
+                <rect x="8" y="20" width="2" height="1"/><rect x="12" y="20" width="2" height="1"/><rect x="15" y="20" width="2" height="1"/><rect x="19" y="20" width="2" height="1"/>
+                <rect x="10" y="21" width="1" height="1"/><rect x="13" y="21" width="1" height="1"/><rect x="17" y="21" width="1" height="1"/><rect x="20" y="21" width="1" height="1"/>
+                <rect x="8" y="22" width="2" height="1"/><rect x="11" y="22" width="1" height="1"/><rect x="13" y="22" width="2" height="1"/><rect x="16" y="22" width="1" height="1"/><rect x="18" y="22" width="2" height="1"/>
+                <rect x="9" y="23" width="1" height="1"/><rect x="12" y="23" width="2" height="1"/><rect x="15" y="23" width="1" height="1"/><rect x="17" y="23" width="2" height="1"/>
+                <rect x="8" y="24" width="1" height="1"/><rect x="11" y="24" width="2" height="1"/><rect x="14" y="24" width="2" height="1"/><rect x="19" y="24" width="1" height="1"/><rect x="21" y="24" width="1" height="1"/>
+                <rect x="10" y="25" width="1" height="1"/><rect x="13" y="25" width="1" height="1"/><rect x="15" y="25" width="2" height="1"/><rect x="18" y="25" width="1" height="1"/><rect x="20" y="25" width="2" height="1"/>
+                <rect x="9" y="26" width="2" height="1"/><rect x="12" y="26" width="1" height="1"/><rect x="16" y="26" width="1" height="1"/><rect x="19" y="26" width="2" height="1"/>
+                <rect x="11" y="27" width="1" height="1"/><rect x="13" y="27" width="2" height="1"/><rect x="17" y="27" width="2" height="1"/><rect x="21" y="27" width="1" height="1"/>
+                <rect x="8" y="28" width="2" height="1"/><rect x="12" y="28" width="1" height="1"/><rect x="15" y="28" width="1" height="1"/><rect x="18" y="28" width="2" height="1"/>
+              </g>
+            </svg>
+            <div class="qr-logo-center">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="qr-status">
+            <span class="pulse-dot"></span>
+            في انتظار المسح
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Left caption -->
+    <div class="split-caption">
+      <div class="ey">الخطوة ١ · الهاتف</div>
+      <h2>يفتح المتجر تطبيق واتساب<br/>ويتجه إلى الأجهزة المرتبطة.</h2>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">07 / 09</span>
+      <span>Phone Enters</span>
+      <span class="ar">— المشهد يتسع</span>
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 8 — Scanning
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Scanning">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>وصول</span>
+        <span class="sep">›</span>
+        <span class="current">ربط واتساب</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>WhatsApp Business · مسح الرمز</div>
+    </div>
+
+    <!-- Phone in scanner mode -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-notch"></div>
+        <div class="scanner">
+          <div class="phone-status" style="color: #fff;">
+            <span>٩:٤١</span>
+            <span class="right">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 18h3V9H1v9zm5 0h3V5H6v13zm5 0h3V1h-3v17zm5 0h3v-8h-3v8zm5-11v11h3V7h-3z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="18" height="10" rx="2"/><rect x="20" y="11" width="2" height="4"/></svg>
+            </span>
+          </div>
+
+          <div class="scanner-top">
+            <span class="close">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </span>
+            <h2>امسح رمز الاستجابة</h2>
+          </div>
+
+          <div class="scanner-viewport">
+            <div class="scanner-frame">
+              <span class="corner c1"></span>
+              <span class="corner c2"></span>
+              <span class="corner c3"></span>
+              <span class="corner c4"></span>
+              <div class="scanner-line"></div>
+            </div>
+          </div>
+
+          <div class="scanner-caption">
+            <b>وجّه الكاميرا نحو الرمز</b>
+            <span style="opacity: 0.7;">سيتم الربط تلقائياً عند المسح</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard shell (same as F7) with QR glowing -->
+    <div class="app-shell shell-split">
+      <div class="app-body">
+        <div class="page-h">
+          <div>
+            <h1>ربط واتساب</h1>
+            <div class="sub">الخطوة الأولى من ثلاث</div>
+          </div>
+          <div class="page-logo">
+            <div class="mark">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepper">
+          <div class="step on"><span class="step-n">١</span><div class="step-body"><b>رقم المتجر</b><span>للعملاء</span></div></div>
+          <div class="step"><span class="step-n">٢</span><div class="step-body"><b>رقم المدير</b><span>للتنبيهات</span></div></div>
+          <div class="step"><span class="step-n">٣</span><div class="step-body"><b>جاهز</b><span>بدء الوكلاء</span></div></div>
+        </div>
+
+        <div class="callout">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </div>
+          <div class="body"><b>استخدم رقم واتساب المتجر</b> — لا تستخدم رقمك الشخصي.</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 8px;">
+          <!-- Glowing QR -->
+          <div class="qr-hero glow">
+            <svg class="qr-svg" viewBox="0 0 29 29" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+              <g fill="#0B1A1F">
+                <rect x="0" y="0" width="7" height="7"/><rect x="1" y="1" width="5" height="5" fill="#fff"/><rect x="2" y="2" width="3" height="3"/>
+                <rect x="22" y="0" width="7" height="7"/><rect x="23" y="1" width="5" height="5" fill="#fff"/><rect x="24" y="2" width="3" height="3"/>
+                <rect x="0" y="22" width="7" height="7"/><rect x="1" y="23" width="5" height="5" fill="#fff"/><rect x="2" y="24" width="3" height="3"/>
+                <rect x="8" y="0" width="1" height="1"/><rect x="10" y="0" width="1" height="1"/><rect x="12" y="0" width="2" height="1"/><rect x="15" y="0" width="1" height="1"/><rect x="17" y="0" width="1" height="1"/><rect x="19" y="0" width="2" height="1"/>
+                <rect x="9" y="1" width="1" height="1"/><rect x="11" y="1" width="1" height="1"/><rect x="16" y="1" width="2" height="1"/><rect x="20" y="1" width="1" height="1"/>
+                <rect x="8" y="2" width="2" height="1"/><rect x="12" y="2" width="1" height="1"/><rect x="17" y="2" width="1" height="1"/><rect x="21" y="2" width="1" height="1"/>
+                <rect x="11" y="3" width="2" height="1"/><rect x="15" y="3" width="1" height="1"/><rect x="18" y="3" width="2" height="1"/>
+                <rect x="9" y="4" width="1" height="1"/><rect x="14" y="4" width="2" height="1"/><rect x="19" y="4" width="1" height="1"/><rect x="21" y="4" width="1" height="1"/>
+                <rect x="10" y="5" width="2" height="1"/><rect x="15" y="5" width="1" height="1"/><rect x="20" y="5" width="1" height="1"/>
+                <rect x="13" y="6" width="2" height="1"/><rect x="19" y="6" width="1" height="1"/>
+                <rect x="8" y="9" width="2" height="1"/><rect x="12" y="9" width="2" height="1"/><rect x="16" y="9" width="1" height="1"/><rect x="19" y="9" width="1" height="1"/>
+                <rect x="10" y="10" width="1" height="1"/><rect x="13" y="10" width="2" height="1"/><rect x="17" y="10" width="2" height="1"/><rect x="21" y="10" width="1" height="1"/>
+                <rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="2" height="1"/><rect x="15" y="11" width="1" height="1"/><rect x="18" y="11" width="2" height="1"/>
+                <rect x="9" y="12" width="2" height="1"/><rect x="13" y="12" width="1" height="1"/><rect x="16" y="12" width="2" height="1"/><rect x="20" y="12" width="1" height="1"/>
+                <rect x="11" y="13" width="1" height="1"/><rect x="14" y="13" width="1" height="1"/><rect x="17" y="13" width="1" height="1"/><rect x="20" y="13" width="2" height="1"/>
+                <rect x="8" y="14" width="2" height="1"/><rect x="12" y="14" width="2" height="1"/><rect x="15" y="14" width="1" height="1"/><rect x="19" y="14" width="1" height="1"/>
+                <rect x="9" y="15" width="1" height="1"/><rect x="11" y="15" width="2" height="1"/><rect x="14" y="15" width="1" height="1"/><rect x="16" y="15" width="2" height="1"/><rect x="20" y="15" width="1" height="1"/>
+                <rect x="8" y="16" width="1" height="1"/><rect x="13" y="16" width="2" height="1"/><rect x="17" y="16" width="2" height="1"/><rect x="21" y="16" width="1" height="1"/>
+                <rect x="10" y="17" width="1" height="1"/><rect x="12" y="17" width="1" height="1"/><rect x="15" y="17" width="1" height="1"/><rect x="19" y="17" width="1" height="1"/>
+                <rect x="9" y="18" width="2" height="1"/><rect x="13" y="18" width="1" height="1"/><rect x="16" y="18" width="2" height="1"/><rect x="20" y="18" width="2" height="1"/>
+                <rect x="11" y="19" width="1" height="1"/><rect x="14" y="19" width="2" height="1"/><rect x="18" y="19" width="1" height="1"/><rect x="21" y="19" width="1" height="1"/>
+                <rect x="8" y="20" width="2" height="1"/><rect x="12" y="20" width="2" height="1"/><rect x="15" y="20" width="2" height="1"/><rect x="19" y="20" width="2" height="1"/>
+                <rect x="10" y="21" width="1" height="1"/><rect x="13" y="21" width="1" height="1"/><rect x="17" y="21" width="1" height="1"/><rect x="20" y="21" width="1" height="1"/>
+                <rect x="8" y="22" width="2" height="1"/><rect x="11" y="22" width="1" height="1"/><rect x="13" y="22" width="2" height="1"/><rect x="16" y="22" width="1" height="1"/><rect x="18" y="22" width="2" height="1"/>
+                <rect x="9" y="23" width="1" height="1"/><rect x="12" y="23" width="2" height="1"/><rect x="15" y="23" width="1" height="1"/><rect x="17" y="23" width="2" height="1"/>
+                <rect x="8" y="24" width="1" height="1"/><rect x="11" y="24" width="2" height="1"/><rect x="14" y="24" width="2" height="1"/><rect x="19" y="24" width="1" height="1"/><rect x="21" y="24" width="1" height="1"/>
+                <rect x="10" y="25" width="1" height="1"/><rect x="13" y="25" width="1" height="1"/><rect x="15" y="25" width="2" height="1"/><rect x="18" y="25" width="1" height="1"/><rect x="20" y="25" width="2" height="1"/>
+                <rect x="9" y="26" width="2" height="1"/><rect x="12" y="26" width="1" height="1"/><rect x="16" y="26" width="1" height="1"/><rect x="19" y="26" width="2" height="1"/>
+                <rect x="11" y="27" width="1" height="1"/><rect x="13" y="27" width="2" height="1"/><rect x="17" y="27" width="2" height="1"/><rect x="21" y="27" width="1" height="1"/>
+                <rect x="8" y="28" width="2" height="1"/><rect x="12" y="28" width="1" height="1"/><rect x="15" y="28" width="1" height="1"/><rect x="18" y="28" width="2" height="1"/>
+              </g>
+            </svg>
+            <div class="qr-logo-center">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="qr-status">
+            <span class="pulse-dot" style="background: var(--w-success);"></span>
+            جاري القراءة
+            <span class="dots"><i></i><i></i><i></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Left caption -->
+    <div class="split-caption">
+      <div class="ey" style="color: var(--w-success);">المسح · لحظة الربط</div>
+      <h2>الكاميرا تلتقط الرمز<br/>ويبدأ الربط فوراً.</h2>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">08 / 09</span>
+      <span>Scanning</span>
+      <span class="ar">— المسح الحي</span>
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       FRAME 9 — Connected, everything alive
+       ═════════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Connected">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">وصول</span>
+      </div>
+      <div class="store-mark"><span class="dot" style="background: var(--w-success);"></span>Embedded App — Live</div>
+    </div>
+
+    <!-- Success toast top-end -->
+    <div class="toast" role="status">
+      <span class="tick">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <span>تم ربط واتساب بنجاح</span>
+    </div>
+
+    <div class="app-shell shell-center" style="box-shadow: 0 0 0 2px var(--w-mint-500), 0 20px 60px rgba(115, 252, 215, 0.25);">
+      <div class="app-body">
+        <div class="page-h">
+          <div>
+            <h1>الرئيسية</h1>
+            <div class="sub">نظرة عامة على أداء متجرك</div>
+          </div>
+          <div class="page-logo">
+            <div class="mark">
+              <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+              </svg>
+            </div>
+            <span class="name">وصول</span>
+          </div>
+        </div>
+
+        <!-- System health 100% -->
+        <div class="health ok">
+          <div class="health-orb">
+            <div class="ring"></div>
+            <div class="core">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
+          <div class="health-body">
+            <p class="health-title">صحة النظام <span dir="ltr" style="font-family: var(--w-font-mono);">100%</span> — كل الأنظمة تعمل</p>
+            <div class="health-sub">
+              <span class="ind">واتساب</span>
+              <span class="ind">قاعدة المتجر</span>
+              <span class="ind">الوكلاء</span>
+            </div>
+          </div>
+          <div class="health-pct" style="color: var(--w-success);">100<span style="font-size: 22px;">٪</span></div>
+        </div>
+
+        <!-- Green success card: WhatsApp connected -->
+        <div class="alert-card success">
+          <div class="alert-ic">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div class="alert-body">
+            <p class="alert-title">واتساب متصل</p>
+            <p class="alert-sub">رقم المتجر: <span class="num">+966 55 123 4567</span> · الردود الفورية مفعّلة</p>
+          </div>
+          <div class="badge-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            متصل
+          </div>
+        </div>
+
+        <div class="section-label">أداء الوكلاء اليوم</div>
+
+        <div class="agents">
+          <div class="agent-row">
+            <div class="agent-av blue on">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span class="dot-status"></span>
+            </div>
+            <div class="agent-body">
+              <b>وكيل العملاء</b>
+              <span>نشط — يرد على واتساب</span>
+            </div>
+            <span class="agent-badge">نشط</span>
+          </div>
+
+          <div class="agent-row">
+            <div class="agent-av violet on">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              <span class="dot-status"></span>
+            </div>
+            <div class="agent-body">
+              <b>وكيل المدير</b>
+              <span>نشط — جاهز للمهام</span>
+            </div>
+            <span class="agent-badge">نشط</span>
+          </div>
+
+          <div class="agent-row">
+            <div class="agent-av green on">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              <span class="dot-status"></span>
+            </div>
+            <div class="agent-body">
+              <b>وكيل المبيعات</b>
+              <span>نشط — يراقب المتجر</span>
+            </div>
+            <span class="agent-badge">نشط</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar">
+        <div class="nav-item on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>الرئيسية</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>الرسائل</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/></svg><span>الموظفون</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>الأتمتة</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg><span>الإعدادات</span></div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">09 / 09</span>
+      <span>Connected</span>
+      <span class="ar">— كل شيء حيّ</span>
+    </div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>

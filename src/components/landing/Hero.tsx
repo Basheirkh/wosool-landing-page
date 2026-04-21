@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import TypewriterDemo from "@/components/ui/TypewriterDemo";
 
 export default function Hero() {
   return (
@@ -184,7 +183,7 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* TypewriterDemo */}
+          {/* Demo video */}
           <motion.div
             initial={{ opacity: 0, y: 40, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -194,10 +193,21 @@ export default function Hero() {
             <div className="relative max-w-[980px] mx-auto">
               <div className="absolute -inset-8 bg-brand-primary/5 rounded-[40px] blur-3xl" />
               <div
-                className="relative shadow-2xl shadow-black/60 rounded-[28px] overflow-hidden"
+                className="relative shadow-2xl shadow-black/60 rounded-[28px] overflow-hidden aspect-video bg-black"
                 style={{ transform: "perspective(1400px) rotateY(-2deg) rotateX(2deg)" }}
               >
-                <TypewriterDemo />
+                <video
+                  src="/video/wosool-demo.mp4"
+                  poster="/video/wosool-demo-poster.jpg"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  controls
+                  preload="metadata"
+                  className="w-full h-full object-cover"
+                  aria-label="عرض مباشر لوصول يدير متجرك من واتساب"
+                />
               </div>
             </div>
           </motion.div>

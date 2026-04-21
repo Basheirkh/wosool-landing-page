@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Wosool — Install Act · Storyboard Frames</title>
+<link rel="stylesheet" href="tokens.css">
+<script src="deck-stage.js"></script>
+<style>
+  /* ── Stage background: neutral Salla app-store surface ─────────── */
+  html, body { margin: 0; padding: 0; background: #000; }
+
+  /* Each slide = the Salla app-store "camera" on the card */
+  .frame {
+    background: var(--w-bg);
+    font-family: var(--w-font-ar);
+    color: var(--w-text);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Minimal app-store chrome — barely-there breadcrumb so we read "app store"
+     without showing Salla's full dashboard. RTL: breadcrumb flows right→left. */
+  .store-chrome {
+    position: absolute;
+    top: 60px;
+    inset-inline-start: 80px;
+    inset-inline-end: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--w-text-muted);
+    font-size: 14px;
+    letter-spacing: 0.01em;
+  }
+  .crumbs { display: flex; align-items: center; gap: 10px; }
+  .crumbs .sep { color: var(--w-border-strong); }
+  .crumbs .current { color: var(--w-text-soft); font-weight: 500; }
+  .store-mark {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--w-text-muted);
+    font-family: var(--w-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .store-mark .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--w-border-strong); }
+
+  /* ── The app card — fixed geometry across all 3 frames ─────────── */
+  .card-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1180px;
+  }
+
+  .card {
+    background: var(--w-surface);
+    border: 1px solid var(--w-border);
+    border-radius: var(--w-r-3xl);
+    padding: 64px 72px;
+    display: grid;
+    grid-template-columns: 220px 1fr auto;
+    gap: 56px;
+    align-items: center;
+    /* One subtle lift — this is a focal hero card in the store, not a list item.
+       Borders-first, but the camera wants to say "this is the thing." */
+    box-shadow: var(--w-sh-2);
+  }
+
+  /* Logo tile — mint ground + ink infinity mark. Matches lockup rules. */
+  .logo-tile {
+    width: 220px;
+    height: 220px;
+    border-radius: var(--w-r-2xl);
+    background: var(--w-mint-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .logo-tile svg { width: 140px; height: auto; }
+  .logo-tile .ring {
+    position: absolute;
+    inset: -1px;
+    border-radius: var(--w-r-2xl);
+    border: 1px solid rgba(11, 26, 31, 0.08);
+    pointer-events: none;
+  }
+
+  /* Card body — title, tagline, meta, description */
+  .body { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--w-teal-700);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: var(--w-font-mono);
+  }
+  .eyebrow .tag {
+    background: var(--w-teal-50);
+    padding: 5px 12px;
+    border-radius: var(--w-r-full);
+    font-family: var(--w-font-ar);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12px;
+  }
+
+  .title {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--w-ink);
+    margin: 0;
+  }
+  .title .em { color: var(--w-teal-700); }
+  .tagline {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--w-text);
+    line-height: 1.4;
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  /* Meta row: rating · reviews · category · developer */
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding-top: 10px;
+    border-top: 1px solid var(--w-border);
+    margin-top: 6px;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--w-text-soft);
+  }
+  .meta-item strong {
+    color: var(--w-text);
+    font-weight: 600;
+  }
+  .meta-item .num {
+    font-family: var(--w-font-mono);
+    font-weight: 600;
+    color: var(--w-text);
+    font-size: 15px;
+  }
+  .stars { display: inline-flex; gap: 2px; color: var(--w-warning); }
+  .stars svg { width: 15px; height: 15px; }
+  .dot-sep {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--w-border-strong);
+  }
+
+  /* Right column — action zone. Same size across frames for continuity. */
+  .action {
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .btn-install {
+    height: 64px;
+    border-radius: var(--w-r-lg);
+    border: 0;
+    font-family: var(--w-font-ar);
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all var(--w-dur-base) var(--w-ease-out);
+    letter-spacing: -0.005em;
+  }
+  .btn-install.state-idle {
+    background: var(--w-teal-700);
+    color: #fff;
+    box-shadow: var(--w-sh-glow-teal);
+  }
+  .btn-install.state-installing {
+    background: var(--w-teal-50);
+    color: var(--w-teal-700);
+    border: 1px solid var(--w-teal-300);
+    cursor: wait;
+  }
+  .btn-install.state-installed {
+    background: var(--w-mint-500);
+    color: var(--w-ink);
+  }
+  .btn-install .check {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--w-ink);
+    color: var(--w-mint-500);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .btn-install .check svg { width: 13px; height: 13px; }
+
+  /* Spinner (Frame 2) — static visual, no animation (storyboard frame) */
+  .spinner {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2.5px solid var(--w-teal-300);
+    border-top-color: var(--w-teal-700);
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Progress bar (Frame 2) */
+  .progress {
+    width: 100%;
+    height: 6px;
+    background: var(--w-border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress > div {
+    height: 100%;
+    background: var(--w-teal-700);
+    border-radius: 999px;
+    transition: width var(--w-dur-slow) var(--w-ease-out);
+  }
+  .progress-meta {
+    display: flex; justify-content: space-between;
+    font-size: 12px;
+    color: var(--w-text-soft);
+    font-family: var(--w-font-mono);
+    letter-spacing: 0.04em;
+  }
+
+  .sub-hint {
+    font-size: 12px;
+    color: var(--w-text-muted);
+    text-align: center;
+    font-family: var(--w-font-ar);
+  }
+
+  /* Success toast (Frame 3) — top, centered, restrained */
+  .toast {
+    position: absolute;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--w-ink);
+    color: #fff;
+    border-radius: var(--w-r-full);
+    padding: 16px 28px 16px 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: var(--w-sh-3);
+  }
+  .toast .tick {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--w-mint-500);
+    color: var(--w-ink);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .toast .tick svg { width: 12px; height: 12px; }
+  .toast .arrow {
+    color: var(--w-text-muted);
+    display: inline-flex;
+    padding-inline-start: 6px;
+    border-inline-start: 1px solid rgba(255,255,255,0.12);
+  }
+  .toast .arrow svg { width: 14px; height: 14px; }
+
+  /* Frame 3: big success ornament — soft mint halo behind the logo tile */
+  .success-halo {
+    position: absolute;
+    inset: -28px;
+    border-radius: var(--w-r-3xl);
+    background: radial-gradient(
+      circle at center,
+      rgba(115, 252, 215, 0.55) 0%,
+      rgba(115, 252, 215, 0.18) 45%,
+      rgba(115, 252, 215, 0) 72%
+    );
+    z-index: -1;
+    pointer-events: none;
+  }
+  .success-badge {
+    position: absolute;
+    top: -14px;
+    inset-inline-end: -14px;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: var(--w-success);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid var(--w-surface);
+  }
+  .success-badge svg { width: 28px; height: 28px; }
+
+  /* Bottom caption — tiny frame label, storyboard-style */
+  .frame-caption {
+    position: absolute;
+    bottom: 48px;
+    inset-inline-start: 80px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    color: var(--w-text-muted);
+    font-family: var(--w-font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .frame-caption .num {
+    color: var(--w-ink);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .frame-caption .ar {
+    font-family: var(--w-font-ar);
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--w-text-soft);
+    font-size: 13px;
+  }
+
+  /* Subtle grid texture on the store surface — very faint, barely perceptible.
+     Keeps the "empty" background from feeling flat without adding chrome. */
+  .frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--w-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--w-border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.35;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+  }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FRAME 1 — DISCOVERY
+       The card at rest. Teal CTA draws the eye; everything else quiet.
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Discovery">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>متجر التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">الذكاء الاصطناعي</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Salla App Store</div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card">
+        <div class="logo-tile">
+          <div class="ring"></div>
+          <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg" aria-label="Wosool mark">
+            <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+          </svg>
+        </div>
+
+        <div class="body">
+          <div class="eyebrow">
+            <span>Wosool.ai</span>
+            <span class="tag">موصى به لمتجرك</span>
+          </div>
+          <h1 class="title">وصول — موظف متجرك <span class="em">الذكي</span></h1>
+          <p class="tagline">
+            ثلاثة وكلاء ذكاء اصطناعي يديرون متجرك على سلة: يردّون على العملاء في واتساب، ينفّذون المهام التشغيلية، ويحوّلون الزوار إلى طلبات.
+          </p>
+          <div class="meta">
+            <div class="meta-item">
+              <span class="stars" aria-label="4.9 out of 5">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+              <span class="num" dir="ltr">4.9</span>
+              <span>(<span class="num" dir="ltr" style="font-size:14px;">2,184</span> تقييم)</span>
+            </div>
+            <span class="dot-sep"></span>
+            <div class="meta-item"><span>التصنيف:</span> <strong>الذكاء الاصطناعي</strong></div>
+            <span class="dot-sep"></span>
+            <div class="meta-item"><span>المطوّر:</span> <strong>Wosool</strong></div>
+          </div>
+        </div>
+
+        <div class="action">
+          <button class="btn-install state-idle" aria-label="تثبيت التطبيق">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            تثبيت
+          </button>
+          <div class="sub-hint">مجاني للتجربة · بدون بطاقة ائتمان</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">01 / 03</span>
+      <span>Discovery</span>
+      <span class="ar">— البطاقة في وضع السكون</span>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FRAME 2 — INSTALLING
+       Same camera. Only the action column changes: button flips to
+       "جاري التثبيت..." with spinner; a progress bar + percentage appears.
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Installing">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>متجر التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">الذكاء الاصطناعي</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Salla App Store</div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card">
+        <div class="logo-tile">
+          <div class="ring"></div>
+          <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg" aria-label="Wosool mark">
+            <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+          </svg>
+        </div>
+
+        <div class="body">
+          <div class="eyebrow">
+            <span>Wosool.ai</span>
+            <span class="tag">موصى به لمتجرك</span>
+          </div>
+          <h1 class="title">وصول — موظف متجرك <span class="em">الذكي</span></h1>
+          <p class="tagline">
+            ثلاثة وكلاء ذكاء اصطناعي يديرون متجرك على سلة: يردّون على العملاء في واتساب، ينفّذون المهام التشغيلية، ويحوّلون الزوار إلى طلبات.
+          </p>
+          <div class="meta">
+            <div class="meta-item">
+              <span class="stars" aria-label="4.9 out of 5">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+              <span class="num" dir="ltr">4.9</span>
+              <span>(<span class="num" dir="ltr" style="font-size:14px;">2,184</span> تقييم)</span>
+            </div>
+            <span class="dot-sep"></span>
+            <div class="meta-item"><span>التصنيف:</span> <strong>الذكاء الاصطناعي</strong></div>
+            <span class="dot-sep"></span>
+            <div class="meta-item"><span>المطوّر:</span> <strong>Wosool</strong></div>
+          </div>
+        </div>
+
+        <div class="action">
+          <button class="btn-install state-installing" aria-label="جاري التثبيت" disabled>
+            <span class="spinner" aria-hidden="true"></span>
+            جاري التثبيت...
+          </button>
+          <div class="progress" aria-label="تقدّم التثبيت">
+            <div style="width: 62%"></div>
+          </div>
+          <div class="progress-meta">
+            <span>تجهيز الوكلاء</span>
+            <span dir="ltr">62%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">02 / 03</span>
+      <span>Installing</span>
+      <span class="ar">— نفس الكاميرا، الحالة تتغيّر</span>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FRAME 3 — INSTALLED
+       Celebratory but restrained: mint halo behind the tile, small
+       green success badge on the tile corner, mint CTA, success toast.
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="frame" data-label="Installed">
+    <div class="store-chrome">
+      <div class="crumbs">
+        <span>سلة</span>
+        <span class="sep">›</span>
+        <span>متجر التطبيقات</span>
+        <span class="sep">›</span>
+        <span class="current">الذكاء الاصطناعي</span>
+      </div>
+      <div class="store-mark"><span class="dot"></span>Salla App Store</div>
+    </div>
+
+    <div class="toast" role="status">
+      <span class="tick">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <span>وصول جاهز للاستخدام</span>
+      <span class="arrow" aria-hidden="true">
+        <!-- RTL: "next" chevron points left -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </span>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card">
+        <div class="logo-tile">
+          <div class="success-halo"></div>
+          <div class="ring"></div>
+          <svg viewBox="74.424 10.582 46.872 28.387" xmlns="http://www.w3.org/2000/svg" aria-label="Wosool mark">
+            <path fill="#0B1A1F" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
+          </svg>
+          <div class="success-badge" aria-label="installed">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+
+        <div class="body">
+          <div class="eyebrow">
+            <span>Wosool.ai</span>
+            <span class="tag" style="background: var(--w-mint-100); color: var(--w-teal-900);">مُثبَّت في متجرك</span>
+          </div>
+          <h1 class="title">وصول — موظف متجرك <span class="em">الذكي</span></h1>
+          <p class="tagline">
+            ثلاثة وكلاء ذكاء اصطناعي يديرون متجرك على سلة: يردّون على العملاء في واتساب، ينفّذون المهام التشغيلية، ويحوّلون الزوار إلى طلبات.
+          </p>
+          <div class="meta">
+            <div class="meta-item">
+              <span class="stars" aria-label="4.9 out of 5">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+              <span class="num" dir="ltr">4.9</span>
+              <span>(<span class="num" dir="ltr" style="font-size:14px;">2,184</span> تقييم)</span>
+            </div>
+            <span class="dot-sep"></span>
+            <div class="meta-item"><span>التصنيف:</span> <strong>الذكاء الاصطناعي</strong></div>
+            <span class="dot-sep"></span>
+            <div class="meta-item"><span>المطوّر:</span> <strong>Wosool</strong></div>
+          </div>
+        </div>
+
+        <div class="action">
+          <button class="btn-install state-installed" aria-label="تم التثبيت">
+            <span class="check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            تم التثبيت
+          </button>
+          <div class="sub-hint" style="color: var(--w-teal-700); font-weight: 600;">انتقل إلى الإعداد ›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-caption">
+      <span class="num">03 / 03</span>
+      <span>Installed</span>
+      <span class="ar">— لحظة النجاح، بهدوء</span>
+    </div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>
