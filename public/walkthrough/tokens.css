@@ -1,0 +1,155 @@
+/* =============================================================
+   Wosool.ai — Design Tokens
+   -------------------------------------------------------------
+   Arabic-first (RTL default). Canonical values — every preview
+   card and UI kit imports this file. Change a token here, every
+   downstream surface updates.
+   ============================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap");
+
+:root {
+  /* ── Brand ─────────────────────────────────────────────────── */
+  /* Teal is Salla-native; mint is our distinctive accent.
+     We lean on the pair together — never teal alone on surfaces
+     that need energy. */
+  --w-ink:             #0B1A1F;   /* near-black, warm cool */
+  --w-teal-900:        #00323C;
+  --w-teal-700:        #004D5B;   /* primary — matches embedded */
+  --w-teal-500:        #0A7380;
+  --w-teal-300:        #9FD9DF;
+  --w-teal-50:         #E6F2F4;   /* primary-light in embedded */
+
+  --w-mint-500:        #73FCD7;   /* secondary / highlight */
+  --w-mint-300:        #B4FFE8;
+  --w-mint-100:        #E7FFF7;
+
+  /* ── Semantic status ───────────────────────────────────────── */
+  --w-success:         #00B259;
+  --w-success-soft:    #E6FFF3;
+  --w-warning:         #F5A623;
+  --w-warning-soft:    #FFF8E6;
+  --w-danger:          #F5434A;
+  --w-danger-soft:     #FFF0F0;
+  --w-info:            #3B82F6;
+  --w-info-soft:       #EFF6FF;
+
+  /* ── Agent identity (trio) ─────────────────────────────────── */
+  /* Each agent carries one color across every surface.
+     This is the product's visual backbone. */
+  --w-agent-customer:  #3B82F6;   /* blue — listens/replies  */
+  --w-agent-owner:     #8B5CF6;   /* violet — does the work   */
+  --w-agent-sales:     #10B981;   /* green — converts visitors */
+
+  /* ── Channel identity ──────────────────────────────────────── */
+  --w-whatsapp:        #25D366;
+  --w-whatsapp-ink:    #0B141A;   /* WhatsApp dark bg */
+  --w-whatsapp-bubble: #005C4B;   /* outgoing bubble */
+  --w-sms:             #007AFF;
+  --w-email:           #6366F1;
+
+  /* ── Neutrals (light) ──────────────────────────────────────── */
+  --w-bg:              #F8F8F8;
+  --w-surface:         #FFFFFF;
+  --w-surface-2:       #F9FAFB;
+  --w-border:          #E5E5E5;
+  --w-border-strong:   #D1D5DB;
+  --w-text:            #1A1A1A;
+  --w-text-soft:       #6B7280;
+  --w-text-muted:      #9CA3AF;
+
+  /* ── Type ──────────────────────────────────────────────────── */
+  --w-font-ar:         "IBM Plex Sans Arabic", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --w-font-en:         "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --w-font-display:    "Outfit", "IBM Plex Sans Arabic", sans-serif; /* LTR marketing only */
+  --w-font-mono:       "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Scale — Arabic reads well a touch tighter than English.
+     Values are px; sizes below 13 are reserved for meta/labels. */
+  --w-t-micro:         11px;  /* uppercase labels, micro-meta */
+  --w-t-meta:          12px;  /* timestamps, captions         */
+  --w-t-small:         13px;  /* secondary body               */
+  --w-t-body:          14px;  /* default body                 */
+  --w-t-lead:          15px;  /* card titles, list items      */
+  --w-t-h4:            18px;
+  --w-t-h3:            22px;
+  --w-t-h2:            28px;
+  --w-t-h1:            36px;
+  --w-t-display:       56px;  /* hero                         */
+
+  --w-lh-tight:        1.2;
+  --w-lh-snug:         1.35;
+  --w-lh-body:         1.6;
+
+  /* ── Spacing (4pt base) ────────────────────────────────────── */
+  --w-s-1:             4px;
+  --w-s-2:             8px;
+  --w-s-3:             12px;
+  --w-s-4:             16px;
+  --w-s-5:             20px;
+  --w-s-6:             24px;
+  --w-s-8:             32px;
+  --w-s-10:            40px;
+  --w-s-12:            48px;
+  --w-s-16:            64px;
+  --w-s-20:            80px;
+
+  /* ── Radius ────────────────────────────────────────────────── */
+  --w-r-sm:            6px;   /* pills, inline chips          */
+  --w-r-md:            8px;   /* inputs, buttons              */
+  --w-r-lg:            10px;
+  --w-r-xl:            12px;  /* cards (default)              */
+  --w-r-2xl:           16px;
+  --w-r-3xl:           20px;  /* hero cards                   */
+  --w-r-full:          9999px;
+
+  /* ── Shadows ───────────────────────────────────────────────── */
+  /* Elevation is used sparingly. Surfaces prefer borders over
+     shadows, which keeps the dashboard quiet. */
+  --w-sh-0:            0 0 0 1px var(--w-border);
+  --w-sh-1:            0 1px 2px rgba(11, 26, 31, 0.04),
+                       0 1px 1px rgba(11, 26, 31, 0.03);
+  --w-sh-2:            0 4px 12px rgba(11, 26, 31, 0.06);
+  --w-sh-3:            0 12px 32px rgba(11, 26, 31, 0.08);
+  --w-sh-glow-teal:    0 0 0 4px rgba(0, 77, 91, 0.12);
+  --w-sh-glow-mint:    0 0 0 4px rgba(115, 252, 215, 0.35);
+
+  /* ── Motion ────────────────────────────────────────────────── */
+  --w-ease-out:        cubic-bezier(0.16, 1, 0.3, 1);
+  --w-ease-in-out:     cubic-bezier(0.65, 0, 0.35, 1);
+  --w-dur-fast:        120ms;
+  --w-dur-base:        200ms;
+  --w-dur-slow:        400ms;
+}
+
+/* Base reset for design-system preview pages */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {
+  margin: 0;
+  font-family: var(--w-font-ar);
+  font-size: var(--w-t-body);
+  line-height: var(--w-lh-body);
+  color: var(--w-text);
+  background: var(--w-bg);
+}
+
+/* Cards live on neutral backgrounds; canvas shell for the
+   design-system card previews. */
+.w-card {
+  background: var(--w-surface);
+  border: 1px solid var(--w-border);
+  border-radius: var(--w-r-xl);
+  padding: var(--w-s-6);
+}
+
+/* Utility for label text used above grouped content */
+.w-label {
+  font-size: var(--w-t-micro);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--w-text-soft);
+}
+
+.w-mono { font-family: var(--w-font-mono); }

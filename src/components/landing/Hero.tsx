@@ -1,8 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLocale, useTranslations } from "next-intl";
+import { useRef } from "react";
 
 export default function Hero() {
+  const t = useTranslations("Hero");
+  const tCommon = useTranslations("Common");
+  const locale = useLocale();
+  const walkthroughRef = useRef<HTMLIFrameElement>(null);
+
+  const enterFullscreen = () => {
+    const el = walkthroughRef.current;
+    if (!el) return;
+    const req =
+      el.requestFullscreen ??
+      (el as unknown as { webkitRequestFullscreen?: () => Promise<void> }).webkitRequestFullscreen;
+    req?.call(el);
+  };
   return (
     <section className="relative px-5 pt-[72px] md:px-6 md:pt-[80px]">
       {/* Outer wrapper with margin and rounded border */}
@@ -86,7 +101,7 @@ export default function Hero() {
             transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-ghost border border-medium text-sm text-secondary mb-10"
           >
-            لأصحاب المتاجر الإلكترونية في السعودية
+            {t("eyebrow")}
           </motion.div>
 
           {/* H1 */}
@@ -96,9 +111,9 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-[40px] md:text-[64px] lg:text-[80px] xl:text-[96px] font-bold leading-[1.08] mb-6 tracking-tight"
           >
-            <span className="block">تكلّم متجرك.</span>
+            <span className="block">{t("h1_line1")}</span>
             <span className="block">
-              يسويه{" "}
+              {t("h1_line2")}{" "}
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="74.424 10.58 46.872 28.387" className="inline-block w-[0.6em] h-[0.36em] align-middle mb-1" aria-label="Wosool">
                 <path fill="#00D97E" d="M103.6,32.7c-.6-.6-1.3-1.6-1.5-2.3s-.5-1.2.6-.7c2.5,1.3,3.9,2.2,6.9,1.9,5.9-.5,8.3-8,3.7-11.7-3.4-2.6-7.2-1.2-10,1.4-5,4.4-6.5,11.4-13.6,13.5-9.2,2.8-17.1-7.5-11.6-15.5,3.5-5.1,12.4-5.4,14.3-2.1s1.2,2.2,1.4,2.8v.2c-.2,0-2.1-1.1-2.5-1.3-3.8-1.6-8.5-.9-10.2,3.1s2.8,10.7,8.3,8.7c5.9-2.1,7.5-8.3,11.7-12.3s8-5.1,12.7-3.1c7.5,3.3,8.3,13.4,1.5,18-3.3,2.1-8.9,2.3-11.7-.6h0Z"/>
               </svg>
@@ -112,11 +127,11 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="text-[15px] md:text-[17px] text-secondary max-w-2xl mb-10 leading-relaxed"
           >
-            دير متجرك كله من واتساب.
+            {t("subtitle_line1")}
             <br />
-            صوت. صور. نص.
+            {t("subtitle_line2")}
             <br />
-            بدون لابتوب. بدون موظف.
+            {t("subtitle_line3")}
           </motion.p>
 
           {/* CTAs — 2 buttons only */}
@@ -130,16 +145,26 @@ export default function Hero() {
               href="#pricing"
               className="theme-btn-primary font-medium rounded-full px-7 py-3 text-sm hover:opacity-90 transition-all hover:-translate-y-[1px] min-w-[200px]"
             >
-              جرّب مجاناً — 7 أيام
+              {tCommon("start_free_trial")}
             </a>
             <a
               href="#product"
               className="flex items-center justify-center gap-2 text-primary border border-brand-primary/20 bg-brand-primary/5 rounded-full px-7 py-3 text-sm transition-all hover:border-brand-primary/40 min-w-[200px]"
             >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-              شوف كيف يشتغل
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="rtl:scale-x-100 ltr:-scale-x-100"><polyline points="15 18 9 12 15 6"/></svg>
+              {tCommon("see_how_it_works")}
             </a>
           </motion.div>
+
+          {/* Microcopy under CTAs */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="text-[12px] text-muted mt-4"
+          >
+            {tCommon("trial_microcopy")}
+          </motion.p>
 
           {/* Badges */}
           <motion.div
@@ -149,9 +174,9 @@ export default function Hero() {
             className="flex flex-wrap items-center justify-center gap-3 mt-8"
           >
             {[
-              "العربية أولاً",
-              "من واتساب",
-              "ينفّذ فعلياً",
+              t("badge_natural_arabic"),
+              t("badge_24_7"),
+              t("badge_executes"),
             ].map((item) => (
               <span
                 key={item}
@@ -170,7 +195,7 @@ export default function Hero() {
             className="mt-8 flex flex-col items-center"
           >
             <span className="text-[11px] tracking-[0.24em] text-muted uppercase">
-              شوف المثال
+              {t("see_example")}
             </span>
             <div className="mt-3 flex flex-col items-center gap-2">
               <div className="w-px h-10 bg-gradient-to-b from-brand-primary/70 to-transparent" />
@@ -196,18 +221,28 @@ export default function Hero() {
                 className="relative shadow-2xl shadow-black/60 rounded-[28px] overflow-hidden aspect-video bg-black"
                 style={{ transform: "perspective(1400px) rotateY(-2deg) rotateX(2deg)" }}
               >
-                <video
-                  src="/video/wosool-demo.mp4"
-                  poster="/video/wosool-demo-poster.jpg"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  controls
-                  preload="metadata"
-                  className="w-full h-full object-cover"
-                  aria-label="عرض مباشر لوصول يدير متجرك من واتساب"
+                <iframe
+                  ref={walkthroughRef}
+                  src={`/walkthrough/index.html?locale=${locale}`}
+                  className="w-full h-full border-0"
+                  loading="lazy"
+                  allow="autoplay; encrypted-media; fullscreen"
+                  allowFullScreen
+                  title={t("h1_line1")}
                 />
+                <button
+                  type="button"
+                  onClick={enterFullscreen}
+                  aria-label="Fullscreen"
+                  className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-full bg-black/55 backdrop-blur px-3 py-1.5 text-xs text-white/90 hover:bg-black/75 hover:text-white transition border border-white/10"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                    <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+                    <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+                    <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                  </svg>
+                </button>
               </div>
             </div>
           </motion.div>

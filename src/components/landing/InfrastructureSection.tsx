@@ -110,7 +110,7 @@ export default function InfrastructureSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="mb-14 max-w-5xl text-right"
+          className="mb-14 max-w-5xl text-start"
         >
           <span className="mb-4 block text-sm text-secondary">البنية الداخلية</span>
           <h2 className="text-[30px] font-bold leading-[1.12] md:text-[42px] lg:text-[54px]">

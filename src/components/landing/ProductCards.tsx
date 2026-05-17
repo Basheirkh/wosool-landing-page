@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Brain, Check, CheckCircle2, Smartphone } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function ProductCards() {
+  const t = useTranslations("ProductCards");
   return (
     <section className="relative py-16 px-6">
       <div className="max-w-[1400px] mx-auto">
@@ -18,23 +20,23 @@ export default function ProductCards() {
           >
             <div className="p-6 pt-6">
               <h3 className="text-[22px] md:text-[28px] font-bold leading-[1.2]">
-                تصحى الصبح — كل شيء تم.
+                {t("card1_title")}
               </h3>
               <p className="text-sm text-secondary mt-4 max-w-md leading-relaxed">
-                وصول يشتغل الليل كله ويرسلك الملخص.
+                {t("card1_subtitle")}
               </p>
             </div>
 
             <div className="px-6 pb-6 flex items-end justify-center">
               <div className="bg-surface-accent-green-inner rounded-xl border border-subtle p-4 w-full max-w-[380px]">
                 <div className="flex items-center gap-2 text-xs text-brand-primary mb-3 font-medium">
-                  <BarChart3Icon /> صباح الخير — ملخص الليلة
+                  <BarChart3Icon /> {t("card1_label")}
                 </div>
                 <div className="space-y-2">
                   {[
-                    { text: "12 عميل ردّينا عليهم", ok: true },
-                    { text: "3 طلبات أكّدناها", ok: true },
-                    { text: "حالة وحدة تحتاج قرارك", ok: false },
+                    { text: t("card1_item1"), ok: true },
+                    { text: t("card1_item2"), ok: true },
+                    { text: t("card1_item3"), ok: false },
                   ].map((item) => (
                     <div
                       key={item.text}
@@ -68,10 +70,10 @@ export default function ProductCards() {
           >
             <div className="p-6 pt-6">
               <h3 className="text-[22px] md:text-[28px] font-bold leading-[1.2]">
-                ترسل رسالة. وصول يسويها.
+                {t("card2_title")}
               </h3>
               <p className="text-sm text-secondary mt-4 max-w-md leading-relaxed">
-                كل شيء في خط واحد واضح.
+                {t("card2_subtitle")}
               </p>
             </div>
 
@@ -80,9 +82,9 @@ export default function ProductCards() {
                 {/* Simple 3-step flow */}
                 <div className="grid grid-cols-3 text-center">
                   {[
-                    { icon: Smartphone, label: "ترسل رسالة", sub: "واتساب", accent: "#25D366" },
-                    { icon: Brain, label: "وصول يفهم", sub: "يقرأ ويقرر", accent: "#A78BFA" },
-                    { icon: CheckCircle2, label: "ينفّذ", sub: "في متجرك", accent: "#00D97E" },
+                    { icon: Smartphone, label: t("step1_label"), sub: t("step1_sub"), accent: "#25D366" },
+                    { icon: Brain, label: t("step2_label"), sub: t("step2_sub"), accent: "#A78BFA" },
+                    { icon: CheckCircle2, label: t("step3_label"), sub: t("step3_sub"), accent: "#00D97E" },
                   ].map((step, i) => {
                     const StepIcon = step.icon;
                     return (
@@ -107,17 +109,17 @@ export default function ProductCards() {
 
                 {/* Example */}
                 <div className="border-t border-subtle p-5">
-                  <div className="text-[13px] text-secondary mb-2">مثال:</div>
+                  <div className="text-[13px] text-secondary mb-2">{t("example_label")}</div>
                   <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 text-sm">
-                    <span className="rounded-lg bg-ghost px-3 py-2 text-faint">&quot;خفّض الكاميرا 20 ريال&quot;</span>
+                    <span className="rounded-lg bg-ghost px-3 py-2 text-faint">&quot;{t("example_input")}&quot;</span>
                     <span className="text-brand-primary hidden md:inline">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="rtl:scale-x-100 ltr:-scale-x-100"><polyline points="15 18 9 12 15 6"/></svg>
                     </span>
-                    <span className="text-secondary">فهم: تعديل سعر</span>
+                    <span className="text-secondary">{t("example_understanding")}</span>
                     <span className="text-brand-primary hidden md:inline">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="rtl:scale-x-100 ltr:-scale-x-100"><polyline points="15 18 9 12 15 6"/></svg>
                     </span>
-                    <span className="inline-flex items-center gap-1 text-brand-primary font-medium"><Check size={14} strokeWidth={2.5} />تم</span>
+                    <span className="inline-flex items-center gap-1 text-brand-primary font-medium"><Check size={14} strokeWidth={2.5} />{t("example_result")}</span>
                   </div>
                 </div>
               </div>

@@ -2,65 +2,30 @@
 
 import { motion } from "framer-motion";
 import { Check, X, Minus } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 
-const rows = [
-  {
-    label: "يرد على عملاءك؟",
-    whatsapp: "ردود جاهزة",
-    chatgpt: "لا",
-    wosool: "ذكي",
-    wosoolCheck: true,
-  },
-  {
-    label: "يعرف منتجاتك وأسعارك؟",
-    whatsapp: "لا",
-    chatgpt: "لا",
-    wosool: "نعم",
-    wosoolCheck: true,
-  },
-  {
-    label: "ينفّذ أوامر (سعر/شحن)؟",
-    whatsapp: "لا",
-    chatgpt: "لا",
-    wosool: "نعم",
-    wosoolCheck: true,
-  },
-  {
-    label: "يتكلم عربي خليجي؟",
-    whatsapp: "محدود",
-    chatgpt: "عامّ",
-    wosool: "طبيعي",
-    wosoolCheck: true,
-  },
-  {
-    label: "يشتغل وأنت نايم؟",
-    whatsapp: "لا",
-    chatgpt: "لا",
-    wosool: "24/7",
-    wosoolCheck: true,
-  },
-  {
-    label: "وقت التشغيل؟",
-    whatsapp: "فوري",
-    chatgpt: "—",
-    wosool: "دقيقتين",
-    wosoolCheck: false,
-  },
-];
-
-const summaries = [
-  "واتساب بزنس = ردود جاهزة",
-  "ChatGPT = يكتب ويفكر — ما يسوي شيء في متجرك",
-  "وصول = يدير متجرك فعلياً",
-];
-
-function CellIcon({ value }: { value: string }) {
-  if (value === "لا") return <X size={16} className="text-red-400/60" strokeWidth={2} />;
+function CellIcon({ value, noText }: { value: string; noText: string }) {
+  if (value === noText) return <X size={16} className="text-red-400/60" strokeWidth={2} />;
   if (value === "—") return <Minus size={16} className="text-secondary/40" strokeWidth={2} />;
   return null;
 }
 
 export default function ComparisonGrid() {
+  const t = useTranslations("ComparisonGrid");
+  const locale = useLocale();
+  const noText = locale === "ar" ? "لا" : "No";
+
+  const rows = [
+    { label: t("row1_q"), whatsapp: t("row1_wa"), chatgpt: t("row1_gpt"), wosool: t("row1_ws"), wosoolCheck: true },
+    { label: t("row2_q"), whatsapp: t("row2_wa"), chatgpt: t("row2_gpt"), wosool: t("row2_ws"), wosoolCheck: true },
+    { label: t("row3_q"), whatsapp: t("row3_wa"), chatgpt: t("row3_gpt"), wosool: t("row3_ws"), wosoolCheck: true },
+    { label: t("row4_q"), whatsapp: t("row4_wa"), chatgpt: t("row4_gpt"), wosool: t("row4_ws"), wosoolCheck: true },
+    { label: t("row5_q"), whatsapp: t("row5_wa"), chatgpt: t("row5_gpt"), wosool: t("row5_ws"), wosoolCheck: true },
+    { label: t("row6_q"), whatsapp: t("row6_wa"), chatgpt: t("row6_gpt"), wosool: t("row6_ws"), wosoolCheck: false },
+  ];
+
+  const summaries = [t("summary_wa"), t("summary_gpt"), t("summary_ws")];
+
   return (
     <section id="comparisons" className="relative px-5 py-16 md:px-6 md:py-24 bg-surface-inset">
       <div className="max-w-[1400px] mx-auto">
@@ -69,13 +34,14 @@ export default function ComparisonGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-10 text-right"
+          className="mb-10 text-start"
         >
           <h2 className="text-[28px] font-bold leading-[1.15] md:text-[40px] lg:text-[52px]">
-            وش الفرق؟
-            <br />
-            <span className="text-secondary">بصراحة.</span>
+            {t("heading")}
           </h2>
+          <p className="mt-5 max-w-2xl text-[16px] leading-8 text-secondary">
+            {t("sub")}
+          </p>
         </motion.div>
 
         {/* Mobile: stacked cards per row */}
@@ -94,24 +60,24 @@ export default function ComparisonGrid() {
               </div>
               <div className="grid grid-cols-3 divide-x divide-subtle" dir="ltr">
                 {/* WhatsApp */}
-                <div className="p-4 text-center" dir="rtl">
-                  <div className="text-[11px] text-muted mb-2">واتساب بزنس</div>
+                <div className="p-4 text-center">
+                  <div className="text-[11px] text-muted mb-2">{t("col_whatsapp")}</div>
                   <div className="flex items-center justify-center gap-1 text-sm text-secondary">
-                    <CellIcon value={row.whatsapp} />
-                    <span>{row.whatsapp === "لا" ? "" : row.whatsapp}</span>
+                    <CellIcon value={row.whatsapp} noText={noText} />
+                    <span>{row.whatsapp === noText ? "" : row.whatsapp}</span>
                   </div>
                 </div>
                 {/* ChatGPT */}
-                <div className="p-4 text-center" dir="rtl">
-                  <div className="text-[11px] text-muted mb-2">ChatGPT</div>
+                <div className="p-4 text-center">
+                  <div className="text-[11px] text-muted mb-2">{t("col_chatgpt")}</div>
                   <div className="flex items-center justify-center gap-1 text-sm text-secondary">
-                    <CellIcon value={row.chatgpt} />
-                    <span>{row.chatgpt === "لا" ? "" : row.chatgpt}</span>
+                    <CellIcon value={row.chatgpt} noText={noText} />
+                    <span>{row.chatgpt === noText ? "" : row.chatgpt}</span>
                   </div>
                 </div>
                 {/* Wosool */}
-                <div className="p-4 text-center rounded-bl-xl" dir="rtl" style={{ background: "linear-gradient(135deg, rgba(0,217,126,0.10), rgba(0,217,126,0.04))" }}>
-                  <div className="text-[11px] text-brand-primary font-medium mb-2">وصول</div>
+                <div className="p-4 text-center rounded-bl-xl" style={{ background: "linear-gradient(135deg, rgba(0,217,126,0.10), rgba(0,217,126,0.04))" }}>
+                  <div className="text-[11px] text-brand-primary font-medium mb-2">{t("col_wosool")}</div>
                   <div className="flex items-center justify-center gap-1 text-sm text-brand-primary font-semibold">
                     {row.wosoolCheck && <Check size={14} strokeWidth={2.5} />}
                     <span>{row.wosool}</span>
@@ -125,8 +91,8 @@ export default function ComparisonGrid() {
         {/* Desktop: proper table */}
         <div className="hidden md:block overflow-x-auto rounded-2xl border border-subtle bg-surface">
           <div className="grid grid-cols-[240px_repeat(3,minmax(0,1fr))] border-b border-subtle bg-ghost">
-            <div className="p-5 text-sm text-muted">السؤال</div>
-            {["واتساب بزنس", "ChatGPT", "وصول"].map((col, i) => (
+            <div className="p-5 text-sm text-muted">{t("question_header")}</div>
+            {[t("col_whatsapp"), t("col_chatgpt"), t("col_wosool")].map((col, i) => (
               <div
                 key={col}
                 className={`p-5 text-sm font-medium ${
@@ -152,20 +118,20 @@ export default function ComparisonGrid() {
               {/* WhatsApp */}
               <div className={`p-5 text-sm ${rowIndex % 2 !== 0 ? "bg-ghost" : ""}`}>
                 <span className="inline-flex items-center gap-2 text-secondary">
-                  <CellIcon value={row.whatsapp} />
-                  {row.whatsapp !== "لا" ? row.whatsapp : ""}
+                  <CellIcon value={row.whatsapp} noText={noText} />
+                  {row.whatsapp !== noText ? row.whatsapp : ""}
                 </span>
               </div>
               {/* ChatGPT */}
               <div className={`p-5 text-sm ${rowIndex % 2 !== 0 ? "bg-ghost" : ""}`}>
                 <span className="inline-flex items-center gap-2 text-secondary">
-                  <CellIcon value={row.chatgpt} />
-                  {row.chatgpt !== "لا" && row.chatgpt !== "—" ? row.chatgpt : ""}
+                  <CellIcon value={row.chatgpt} noText={noText} />
+                  {row.chatgpt !== noText && row.chatgpt !== "—" ? row.chatgpt : ""}
                 </span>
               </div>
               {/* Wosool */}
               <div
-                className={`p-5 text-sm font-medium text-primary border-r border-brand-primary/16 ${rowIndex % 2 !== 0 ? "bg-ghost" : ""}`}
+                className={`p-5 text-sm font-medium text-primary border-e border-brand-primary/16 ${rowIndex % 2 !== 0 ? "bg-ghost" : ""}`}
                 style={{ background: "linear-gradient(135deg, rgba(0,217,126,0.10), rgba(0,217,126,0.03))" }}
               >
                 <span className="inline-flex items-center gap-2">

@@ -2,35 +2,18 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-
-const faqs = [
-  {
-    q: "محتاج أعرف برمجة؟",
-    a: "لا. إذا تعرف تكتب واتساب — تعرف تشغّل وصول.",
-  },
-  {
-    q: "العميل يبي يكلم إنسان — وش يصير؟",
-    a: "وصول يعرف متى يتنحى. ينبّهك فوراً وأنت تكمل.",
-  },
-  {
-    q: "وإذا غلط في رد؟",
-    a: "الأشياء المهمة — يسألك أول. ما يقرر لحاله.",
-  },
-  {
-    q: "أقدر أجرّبه قبل ما أدفع؟",
-    a: "7 أيام مجاناً. بدون بطاقة.",
-  },
-  {
-    q: "وش الفرق بينه وبين موظف عادي؟",
-    a: "الموظف ينام. وصول ما ينام. الموظف ينسى. وصول ما ينسى. الموظف 3,000 ريال. وصول 299.",
-  },
-  {
-    q: "بياناتي آمنة؟",
-    a: "بياناتك لك. ما نبيعها ولا نشاركها. تقدر تحذفها بأي وقت.",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function FAQ() {
+  const t = useTranslations("FAQ");
+  const faqs = [
+    { q: t("q1"), a: t("a1") },
+    { q: t("q2"), a: t("a2") },
+    { q: t("q3"), a: t("a3") },
+    { q: t("q4"), a: t("a4") },
+    { q: t("q5"), a: t("a5") },
+    { q: t("q6"), a: t("a6") },
+  ];
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
@@ -41,10 +24,10 @@ export default function FAQ() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="mb-12 text-right"
+          className="mb-12 text-start"
         >
           <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.15]">
-            أسئلة قبل ما تقرر
+            {t("heading")}
           </h2>
         </motion.div>
 
@@ -59,7 +42,7 @@ export default function FAQ() {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full rounded-[20px] border border-subtle bg-surface-elevated p-5 md:p-6 text-right transition-all hover:border-medium"
+                className="w-full rounded-[20px] border border-subtle bg-surface-elevated p-5 md:p-6 text-start transition-all hover:border-medium"
               >
                 <div className="flex items-center justify-between gap-4">
                   <h3 className="text-[16px] font-semibold text-primary">{faq.q}</h3>

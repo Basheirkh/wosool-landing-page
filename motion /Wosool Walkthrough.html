@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Wosool — Walkthrough Motion Graphic</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #0a0a0a; overflow: hidden; }
+  #root { position: fixed; inset: 0; }
+  @keyframes click-pulse { 0% { transform: scale(0.5); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
+  @keyframes highlight-pulse { 0%, 100% { box-shadow: 0 0 0 4px rgba(115,252,215,0.2), 0 0 18px rgba(115,252,215,0.6); } 50% { box-shadow: 0 0 0 7px rgba(115,252,215,0.3), 0 0 24px rgba(115,252,215,0.9); } }
+  @keyframes qr-scan { 0% { top: 0; } 50% { top: calc(100% - 3px); } 100% { top: 0; } }
+  /* WhatsApp / promo animations — entry animations use forwards fill */
+  @keyframes wa-bubble-in { from { opacity: 0; transform: translateY(8px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes wa-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  /* Force entry animations to retain their end state */
+  [style*="wa-bubble-in"], [style*="wa-fade-in"], [style*="sf-card-slide"], [style*="sf-fade-in"] { animation-fill-mode: forwards !important; }
+  @keyframes wa-typing-dot { 0%, 60%, 100% { opacity: 0.3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-4px); } }
+  @keyframes wa-wave-pulse { 0%, 100% { background: #54656F; } 50% { background: #25D366; } }
+  /* Storefront animations */
+  @keyframes sf-card-slide { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes sf-fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes sf-cart-bounce { 0% { transform: scale(1); } 30% { transform: scale(1.5); } 60% { transform: scale(0.9); } 100% { transform: scale(1); } }
+  @keyframes sf-pulse { 0%, 100% { box-shadow: 0 0 0 4px rgba(199,108,91,0.3), 0 8px 24px rgba(199,108,91,0.4); } 50% { box-shadow: 0 0 0 8px rgba(199,108,91,0.15), 0 12px 32px rgba(199,108,91,0.5); } }
+  @keyframes sf-status-pulse { 0% { transform: scale(1); } 30% { transform: scale(1.15); } 100% { transform: scale(1); } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="animations.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+<script type="text/babel" src="screens-2.jsx"></script>
+<script type="text/babel" src="screens-3.jsx"></script>
+<script type="text/babel" src="helpers.jsx"></script>
+<script type="text/babel" src="whatsapp.jsx"></script>
+<script type="text/babel" src="storefront.jsx"></script>
+<script type="text/babel" src="promo-scenes.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+</body>
+</html>

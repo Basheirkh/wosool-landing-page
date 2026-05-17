@@ -2,19 +2,22 @@
 
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslations, useLocale } from "next-intl";
 
 const EMPLOYEE_COST_PER_MONTH = 5000;
 const SECONDS_PER_MESSAGE = 90;
 const WOSOOL_COST = 299;
 
-function formatNumber(n: number) {
-  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(
-    Math.round(n)
-  );
-}
-
 export default function RoiCalculator() {
+  const t = useTranslations("RoiCalc");
+  const locale = useLocale();
   const [messages, setMessages] = useState(150);
+
+  const fmt = useMemo(
+    () => new Intl.NumberFormat(locale === "ar" ? "ar-SA" : "en-US", { maximumFractionDigits: 0 }),
+    [locale]
+  );
+  const formatNumber = (n: number) => fmt.format(Math.round(n));
 
   const result = useMemo(() => {
     const msgMonthly = messages * 30;
@@ -45,20 +48,19 @@ export default function RoiCalculator() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-12 text-right"
+          className="mb-12 text-start"
         >
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-brand-primary/20 bg-brand-primary/5">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-primary" />
             <span className="text-xs text-brand-primary font-medium tracking-wider uppercase">
-              حاسبة العائد
+              {t("eyebrow")}
             </span>
           </div>
           <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.15]">
-            كم ستوفّر شهرياً مع وصول؟
+            {t("heading")}
           </h2>
           <p className="mt-4 text-[15px] md:text-[17px] text-secondary max-w-2xl">
-            حرّك العدّاد لتشاهد كم وقتاً ومالاً يوفّر عليك وصول مقارنةً بتوظيف
-            موظف خدمة عملاء بدوام كامل.
+            {t("sub")}
           </p>
         </motion.div>
 
@@ -72,14 +74,14 @@ export default function RoiCalculator() {
             className="rounded-[28px] border border-subtle bg-surface p-8 md:p-10"
           >
             <div className="text-xs text-muted uppercase tracking-[0.24em] mb-3">
-              الرسائل اليومية
+              {t("input_label")}
             </div>
             <div className="flex items-baseline gap-3">
               <span className="text-[52px] md:text-[68px] font-bold leading-none text-primary tracking-tight">
                 {formatNumber(messages)}
               </span>
               <span className="text-[14px] md:text-[16px] text-secondary">
-                رسالة / يوم
+                {t("messages_per_day")}
               </span>
             </div>
 
@@ -108,22 +110,21 @@ export default function RoiCalculator() {
 
             <div className="mt-10 grid grid-cols-2 gap-3">
               <div className="rounded-2xl border border-subtle bg-surface-inset p-4">
-                <div className="text-xs text-muted">رسائل شهرياً</div>
+                <div className="text-xs text-muted">{t("monthly_messages")}</div>
                 <div className="text-xl font-semibold text-primary mt-1">
                   {formatNumber(result.msgMonthly)}
                 </div>
               </div>
               <div className="rounded-2xl border border-subtle bg-surface-inset p-4">
-                <div className="text-xs text-muted">ساعات عمل مقدّرة</div>
+                <div className="text-xs text-muted">{t("estimated_hours")}</div>
                 <div className="text-xl font-semibold text-primary mt-1">
-                  {formatNumber(result.hoursMonthly)} س
+                  {formatNumber(result.hoursMonthly)} {t("hours_unit")}
                 </div>
               </div>
             </div>
 
             <div className="mt-6 text-xs text-muted leading-6">
-              يُحسب بناءً على متوسط 90 ثانية لكل رسالة خدمة عملاء، وراتب موظف
-              بدوام كامل 5,000 ريال شهرياً.
+              {t("footnote")}
             </div>
           </motion.div>
 
@@ -144,7 +145,7 @@ export default function RoiCalculator() {
               <div className="flex items-center gap-2 mb-3">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand-primary animate-pulse" />
                 <span className="text-xs text-brand-primary font-medium tracking-wider uppercase">
-                  توفيرك الشهري
+                  {t("result_eyebrow")}
                 </span>
               </div>
 
@@ -153,38 +154,38 @@ export default function RoiCalculator() {
                   {formatNumber(result.netSavings)}
                 </span>
                 <span className="text-[16px] md:text-[18px] text-secondary">
-                  ريال / شهر
+                  {t("currency_per_month_long")}
                 </span>
               </div>
 
               <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-brand-primary/30 bg-brand-primary/10 px-3 py-1 text-xs text-brand-primary">
-                عائد {result.roi}٪ على الاستثمار
+                {t("roi_chip", { roi: result.roi })}
               </div>
 
               <div className="my-8 h-px bg-gradient-to-l from-transparent via-brand-primary/30 to-transparent" />
 
               <div className="space-y-4">
                 <Row
-                  label="قيمة الوقت الموفّر"
-                  value={`${formatNumber(result.costSavedPerMonth)} ريال`}
+                  label={t("row_time_value")}
+                  value={`${formatNumber(result.costSavedPerMonth)} ${t("currency_short")}`}
                 />
                 <Row
-                  label="اشتراك وصول الشهري"
-                  value={`${WOSOOL_COST} ريال`}
+                  label={t("row_wosool_cost")}
+                  value={`${WOSOOL_COST} ${t("currency_short")}`}
                   sub
                 />
                 <div className="h-px bg-subtle" />
                 <Row
-                  label="صافي التوفير"
-                  value={`${formatNumber(result.netSavings)} ريال`}
+                  label={t("row_net_savings")}
+                  value={`${formatNumber(result.netSavings)} ${t("currency_short")}`}
                   highlight
                 />
               </div>
 
               <div className="mt-10 rounded-2xl border border-brand-primary/20 bg-brand-primary/5 p-4">
-                <div className="text-xs text-muted mb-2">يعادل هذا التوفير:</div>
+                <div className="text-xs text-muted mb-2">{t("equivalent_label")}</div>
                 <div className="text-sm text-primary font-medium leading-7">
-                  راتب موظف جزئي + ساعات يرجع لك مع عائلتك
+                  {t("equivalent_text")}
                 </div>
               </div>
 
@@ -192,13 +193,13 @@ export default function RoiCalculator() {
                 href="#pricing"
                 className="theme-btn-primary mt-6 inline-flex rounded-full px-6 py-3 text-sm font-medium transition hover:-translate-y-[1px]"
               >
-                ابدأ التوفير الآن
+                {t("cta")}
               </a>
             </div>
 
             {/* Decorative gradient */}
             <div
-              className="absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-40"
+              className="absolute -end-20 -top-20 h-64 w-64 rounded-full opacity-40"
               style={{
                 background:
                   "radial-gradient(circle, rgba(0,217,126,0.25), transparent 60%)",

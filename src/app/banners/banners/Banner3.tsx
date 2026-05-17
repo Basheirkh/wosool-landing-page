@@ -45,9 +45,9 @@ export default function Banner3() {
       <div style={textStack}>
         <div style={eyebrow}>وكيل العملاء</div>
         <h1 style={headline}>
-          يرد على عملاءك
+          يرد على عملائك
           <br />
-          <span style={{ color: "var(--w-teal-700)" }}>وأنت نايم.</span>
+          <span style={{ color: "var(--w-teal-700)" }}>على مدار الساعة.</span>
         </h1>
 
         <ul style={proofList}>

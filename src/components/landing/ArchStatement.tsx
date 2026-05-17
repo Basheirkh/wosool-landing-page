@@ -18,7 +18,7 @@ export default function ArchStatement() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="max-w-5xl mr-0 ml-auto text-right"
+          className="max-w-5xl me-auto ms-0 text-start"
         >
           <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.2] mb-6">
             وصول لا يُنافس ChatGPT في الذكاء العام.
@@ -33,7 +33,7 @@ export default function ArchStatement() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="max-w-4xl mr-0 ml-auto text-right mt-8"
+          className="max-w-4xl me-auto ms-0 text-start mt-8"
         >
           <p className="text-[18px] md:text-[22px] lg:text-[26px] leading-[1.5] text-secondary">
             قوة النماذج العامة.

@@ -2,35 +2,18 @@
 
 import { motion } from "framer-motion";
 import { Lock, KeyRound, Trash2, Globe } from "lucide-react";
-
-const guards = [
-  {
-    icon: Lock,
-    title: "بياناتك لك",
-    text: "ما نبيعها. ما نشاركها. ما نستخدمها لتدريب غيرك.",
-    accent: "#00D97E",
-  },
-  {
-    icon: KeyRound,
-    title: "أنت المتحكم",
-    text: "وصول ما يقرر بدون إذنك في الأشياء المهمة.",
-    accent: "#60A5FA",
-  },
-  {
-    icon: Trash2,
-    title: "احذف متى تبي",
-    text: "بياناتك — تقدر تحذفها أو تنزّلها بأي وقت.",
-    accent: "#F97316",
-  },
-  {
-    icon: Globe,
-    title: "عربي من الأساس",
-    text: "مو ترجمة. مبني بالعربي من أول يوم.",
-    accent: "#A78BFA",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function SocialProof() {
+  const t = useTranslations("SocialProof");
+
+  const guards = [
+    { icon: Lock, title: t("g1_title"), text: t("g1_text"), accent: "#00D97E" },
+    { icon: KeyRound, title: t("g2_title"), text: t("g2_text"), accent: "#60A5FA" },
+    { icon: Trash2, title: t("g3_title"), text: t("g3_text"), accent: "#F97316" },
+    { icon: Globe, title: t("g4_title"), text: t("g4_text"), accent: "#A78BFA" },
+  ];
+
   return (
     <section className="relative bg-surface-inset px-5 py-16 md:px-6 md:py-24">
       <div className="max-w-[1400px] mx-auto">
@@ -39,12 +22,12 @@ export default function SocialProof() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="mb-12 text-right"
+          className="mb-12 text-start"
         >
           <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold text-primary leading-[1.15] mb-4">
-            بياناتك أمانة.
+            {t("heading_line1")}
             <br />
-            <span className="text-secondary">مو بضاعة.</span>
+            <span className="text-secondary">{t("heading_line2")}</span>
           </h2>
         </motion.div>
 

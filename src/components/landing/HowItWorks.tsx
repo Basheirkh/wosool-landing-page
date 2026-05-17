@@ -13,7 +13,7 @@ export default function HowItWorks() {
           <span className="text-sm text-secondary">كيف يعمل وصول</span>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 mb-20 max-w-5xl mr-0 ml-auto">
+        <div className="grid md:grid-cols-3 gap-4 mb-20 max-w-5xl me-auto ms-0">
           {[
             "يفهم السياق",
             "يقرأ بيانات العمل",

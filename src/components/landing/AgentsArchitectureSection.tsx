@@ -2,55 +2,42 @@
 
 import { motion } from "framer-motion";
 import { Headphones, UserCog, BarChart3, Monitor, ShoppingBag, Wifi, Check } from "lucide-react";
-
-const agents = [
-  {
-    name: "موظف العملاء",
-    tagline: "يرد على عملاءك في واتساب. أسرع منك.",
-    example: {
-      from: "عميل",
-      message: "وين طلبي؟",
-      response: "طلبك في الشحن — يوصل بكرا إن شاء الله.",
-    },
-    icon: Headphones,
-    accent: "#25D366",
-  },
-  {
-    name: "موظف المدير",
-    tagline: "قوله وش تبي — ينفّذ.",
-    example: {
-      from: "أنت",
-      message: "خفّض الكاميرا 20 ريال",
-      response: "تم — كان 299 — صار 279",
-    },
-    icon: UserCog,
-    accent: "#60A5FA",
-  },
-  {
-    name: "موظف الذكاء",
-    tagline: "يرسلك تقرير كل صباح: شو بيع أمس. شو ناقص.",
-    example: {
-      from: "صباح الخير — أمس",
-      message: "12 طلب | 4,350 ريال",
-      response: "سماعة X — بقى 3 فقط",
-    },
-    icon: BarChart3,
-    accent: "#A78BFA",
-  },
-  {
-    name: "موظف الموقع",
-    tagline: "عميلك يسأل عن منتج — يرى الصفحة ويرد بالتفاصيل.",
-    example: {
-      from: "عميل (في الموقع)",
-      message: "بكم أول منتج؟",
-      response: "149 ريال — وعندك خصم 10% لأول طلب",
-    },
-    icon: Monitor,
-    accent: "#F6C453",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function AgentsArchitectureSection() {
+  const t = useTranslations("Agents");
+
+  const agents = [
+    {
+      name: t("agent1_name"),
+      tagline: t("agent1_tagline"),
+      example: { from: t("agent1_from"), message: t("agent1_message"), response: t("agent1_response") },
+      icon: Headphones,
+      accent: "#25D366",
+    },
+    {
+      name: t("agent2_name"),
+      tagline: t("agent2_tagline"),
+      example: { from: t("agent2_from"), message: t("agent2_message"), response: t("agent2_response") },
+      icon: UserCog,
+      accent: "#60A5FA",
+    },
+    {
+      name: t("agent3_name"),
+      tagline: t("agent3_tagline"),
+      example: { from: t("agent3_from"), message: t("agent3_message"), response: t("agent3_response") },
+      icon: BarChart3,
+      accent: "#A78BFA",
+    },
+    {
+      name: t("agent4_name"),
+      tagline: t("agent4_tagline"),
+      example: { from: t("agent4_from"), message: t("agent4_message"), response: t("agent4_response") },
+      icon: Monitor,
+      accent: "#F6C453",
+    },
+  ];
+
   return (
     <section className="relative px-5 py-16 md:px-6 md:py-24 bg-background">
       <div className="mx-auto max-w-[1400px]">
@@ -59,15 +46,15 @@ export default function AgentsArchitectureSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="mb-12 text-right"
+          className="mb-12 text-start"
         >
           <h2 className="text-[30px] md:text-[42px] lg:text-[56px] font-bold leading-[1.1]">
-            4 موظفين. شغّالين 24/7.
+            {t("heading_line1")}
             <br />
-            ما يتعبون.
+            {t("heading_line2")}
           </h2>
           <p className="mt-5 max-w-2xl text-[16px] leading-8 text-secondary">
-            بدل ما توظّف 4 أشخاص — شغّل 4 موظفين جاهزين.
+            {t("sub")}
           </p>
         </motion.div>
 
@@ -110,7 +97,7 @@ export default function AgentsArchitectureSection() {
                     <span className="text-[14px] text-faint">&quot;{agent.example.message}&quot;</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-[12px] font-medium mt-0.5 flex-shrink-0" style={{ color: agent.accent }}>الموظف:</span>
+                    <span className="text-[12px] font-medium mt-0.5 flex-shrink-0" style={{ color: agent.accent }}>{t("agent_label")}</span>
                     <span className="inline-flex items-center gap-1 text-[14px] text-primary">
                       <Check size={13} className="text-brand-primary flex-shrink-0" strokeWidth={2.5} />
                       &quot;{agent.example.response}&quot;
@@ -125,8 +112,8 @@ export default function AgentsArchitectureSection() {
         {/* Coming soon items */}
         <div className="mt-6 grid md:grid-cols-2 gap-4">
           {[
-            { name: "المشتريات", note: "مساعد مشتريات ذكي", icon: ShoppingBag },
-            { name: "قدرات الإنترنت", note: "يبحث ويقارن لك", icon: Wifi },
+            { name: t("soon_purchasing"), note: t("soon_purchasing_note"), icon: ShoppingBag },
+            { name: t("soon_web"), note: t("soon_web_note"), icon: Wifi },
           ].map((item) => {
             const Icon = item.icon;
             return (
@@ -144,7 +131,7 @@ export default function AgentsArchitectureSection() {
                     <span className="text-[13px] text-secondary">{item.note}</span>
                   </div>
                 </div>
-                <span className="text-[12px] text-secondary rounded-full border border-subtle px-3 py-1">قريباً</span>
+                <span className="text-[12px] text-secondary rounded-full border border-subtle px-3 py-1">{t("soon")}</span>
               </div>
             );
           })}

@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { MessagesSquare, Smartphone, Moon } from "lucide-react";
+import { MessagesSquare, Smartphone, Clock } from "lucide-react";
 import WhyCard from "./WhyCard";
 
 export default function WhyWosoolSection() {
@@ -9,20 +9,20 @@ export default function WhyWosoolSection() {
         <div style={gridStyle}>
           <WhyCard
             illustration={<MessagesSquare size={48} strokeWidth={1.5} />}
-            title="ما تخسر بيعة مرة ثانية"
-            description="عميلك يسأل الساعة ٢ فجراً؟ وصول يرد في ٣ ثوانٍ — بالعربي، بنبرتك، بمعلومات متجرك الحقيقية. كل رسالة تلاقي رد. كل عميل يلاقي بيعة."
+            title="لا تخسر بيعة مرة أخرى"
+            description="يسأل عميلك الساعة ٢ فجرًا؟ وصول يرد في ٣ ثوانٍ — بالعربية، بنبرة متجرك، وبمعلومات حقيقية. كل رسالة تجد ردًا، وكل عميل يجد فرصة شراء."
             accentColor="teal"
           />
           <WhyCard
             illustration={<Smartphone size={48} strokeWidth={1.5} />}
-            title="تدير متجرك من جوالك"
-            description="أرسل رسالة صوتية، صورة، أو نص — وصول ينفّذ في متجر سلة فوراً. غيّر الأسعار، أضف منتج، تابع الطلبات. ما تحتاج لابتوب. ما تحتاج موظف."
+            title="أدر متجرك من جوالك"
+            description="أرسل رسالة صوتية، صورة، أو نص — وصول ينفّذ في متجر سلة فورًا. حدّث الأسعار، أضف منتجًا، تابع الطلبات. كل ذلك من واتساب، بدون أدوات إضافية."
             accentColor="mint"
           />
           <WhyCard
-            illustration={<Moon size={48} strokeWidth={1.5} />}
-            title="متجرك يبيع وأنت نايم"
-            description="أربعة وكلاء أذكياء يشتغلون في متجرك ٢٤/٧ — يردون على العملاء، يساعدون الزوار، ينفّذون أوامرك، ويتعلمون من متجرك. تصحى الصبح وكل شيء تم."
+            illustration={<Clock size={48} strokeWidth={1.5} />}
+            title="متجرك يعمل على مدار الساعة"
+            description="أربعة وكلاء أذكياء يعملون داخل متجرك ٢٤/٧ — يردون على العملاء، يساعدون الزوار، ينفّذون أوامرك، ويتعلمون من متجرك. تبدأ يومك وكل شيء جاهز."
             accentColor="deep-teal"
           />
         </div>

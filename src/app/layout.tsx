@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_Arabic, JetBrains_Mono } from "next/font/google";
+import { IBM_Plex_Sans_Arabic, Inter, JetBrains_Mono } from "next/font/google";
+import { getLocale, getTranslations } from "next-intl/server";
 import "./globals.css";
 
 const themeInitScript = `
@@ -23,6 +24,14 @@ const ibmArabic = IBM_Plex_Sans_Arabic({
   preload: true,
 });
 
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+  preload: true,
+});
+
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
@@ -31,36 +40,51 @@ const jetbrains = JetBrains_Mono({
   preload: false,
 });
 
-export const metadata: Metadata = {
-  title: "وصول — تكلّم متجرك. يسويه.",
-  description:
-    "دير متجرك كله من واتساب. 4 موظفين يردون على عملاءك، ينفّذون أوامرك، ويرسلون لك تقرير كل صباح. جرّب مجاناً 7 أيام.",
-  icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
-  },
-  openGraph: {
-    title: "وصول — تكلّم متجرك. يسويه.",
-    description:
-      "دير متجرك كله من واتساب. 4 موظفين يردون على عملاءك، ينفّذون أوامرك، ويرسلون لك تقرير كل صباح. جرّب مجاناً 7 أيام.",
-    type: "website",
-    locale: "ar_SA",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    icons: {
+      icon: "/icon.svg",
+      shortcut: "/icon.svg",
+      apple: "/icon.svg",
+    },
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      type: "website",
+      locale: locale === "ar" ? "ar_SA" : "en_US",
+    },
+    alternates: {
+      canonical: locale === "ar" ? "/" : `/${locale}`,
+      languages: {
+        ar: "/",
+        en: "/en",
+        "x-default": "/",
+      },
+    },
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const dir = locale === "ar" ? "rtl" : "ltr";
+  const bodyFont = locale === "ar" ? "font-arabic" : "font-inter";
+
   return (
-    <html lang="ar" dir="rtl">
+    <html lang={locale} dir={dir} style={{ direction: dir }}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body
-        className={`${ibmArabic.variable} ${jetbrains.variable} font-arabic antialiased`}
+        className={`${ibmArabic.variable} ${inter.variable} ${jetbrains.variable} ${bodyFont} antialiased`}
+        style={{ direction: dir }}
       >
         {children}
       </body>

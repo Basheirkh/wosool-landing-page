@@ -2,23 +2,15 @@
 
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
-
-const testimonials = [
-  {
-    quote: "كنت أصحّى 6 الصبح أشوف الطلبات. الحين وصول يرسلي ملخص وأنا نايم.",
-    author: "صاحبة متجر عباءات، جدة",
-  },
-  {
-    quote: "أضفت 30 منتج في 10 دقائق بصوتي من السيارة.",
-    author: "مدير متجر إلكترونيات",
-  },
-  {
-    quote: "عميلتي وصلتها إجابة الساعة 2 الفجر. ما عرفت إنه مو إنسان.",
-    author: "صاحب متجر عطور",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function SecurityBrief() {
+  const t = useTranslations("Testimonials");
+  const testimonials = [
+    { quote: t("t1_quote"), author: t("t1_author") },
+    { quote: t("t2_quote"), author: t("t2_author") },
+    { quote: t("t3_quote"), author: t("t3_author") },
+  ];
   return (
     <section className="relative px-5 py-16 md:px-6 md:py-24 bg-surface-inset">
       <div className="max-w-[1400px] mx-auto">
@@ -27,10 +19,10 @@ export default function SecurityBrief() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-12 text-right"
+          className="mb-12 text-start"
         >
-          <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.15] max-w-5xl mr-0 ml-auto">
-            تجّار مثلك — بدأوا
+          <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.15] max-w-5xl me-auto ms-0">
+            {t("heading")}
           </h2>
         </motion.div>
 

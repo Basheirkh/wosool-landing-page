@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export default function FooterCTA() {
+  const t = useTranslations("FooterCTA");
   return (
     <section className="relative px-6 py-8">
       <div className="max-w-[1400px] mx-auto rounded-2xl overflow-hidden min-h-[400px] md:min-h-[480px] bg-surface-inset relative">
@@ -24,7 +26,7 @@ export default function FooterCTA() {
             transition={{ duration: 0.6 }}
             className="text-[36px] md:text-[56px] lg:text-[72px] font-bold leading-[1.1] mb-6"
           >
-            متجرك ينتظرك.
+            {t("heading")}
           </motion.h2>
 
           <motion.p
@@ -34,11 +36,11 @@ export default function FooterCTA() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-[16px] md:text-[18px] text-secondary leading-relaxed max-w-lg mb-10"
           >
-            أول موظف ما يحتاج راتب.
+            {t("body_line1")}
             <br />
-            ما ينام. ما يتعب.
+            {t("body_line2")}
             <br />
-            وجاهز الحين.
+            {t("body_line3")}
           </motion.p>
 
           <motion.div
@@ -51,7 +53,7 @@ export default function FooterCTA() {
               href="/#pricing"
               className="theme-btn-accent inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 text-[15px] font-semibold"
             >
-              <span>جرّب مجاناً — 7 أيام بدون بطاقة</span>
+              <span>{t("cta")}</span>
               <svg
                 width="16"
                 height="16"
@@ -61,7 +63,7 @@ export default function FooterCTA() {
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="-scale-x-100"
+                className="rtl:-scale-x-100"
               >
                 <path d="M5 12h14" />
                 <path d="m12 5 7 7-7 7" />

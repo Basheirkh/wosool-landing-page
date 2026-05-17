@@ -8,15 +8,18 @@
     "start": "next start",
     "lint": "next lint",
     "render:demo": "node scripts/render-demo.mjs",
+    "render:walkthrough": "node scripts/render-walkthrough.mjs",
     "render:banners": "node scripts/render-banners.mjs",
     "render:social": "node scripts/render-social-promo.mjs",
-    "render:icon": "node scripts/render-icon.mjs"
+    "render:icon": "node scripts/render-icon.mjs",
+    "render:promo-video": "node scripts/render-promo-video.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.7.0",
     "next": "14.2.35",
+    "next-intl": "^4.12.0",
     "qrcode": "^1.5.4",
     "react": "^18",
     "react-dom": "^18"

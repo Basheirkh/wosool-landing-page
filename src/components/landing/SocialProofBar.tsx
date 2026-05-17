@@ -2,17 +2,14 @@
 
 import MarqueeScroll from "@/components/ui/MarqueeScroll";
 import { Sparkles } from "lucide-react";
-
-const proofItems = [
-  "4 موظفين ما يتعبون",
-  "من واتساب",
-  "العربية أولاً",
-  "يشتغل وأنت نايم",
-  "اربطه في دقيقتين",
-  "تقرير كل صباح",
-];
+import { useTranslations } from "next-intl";
 
 export default function SocialProofBar() {
+  const t = useTranslations("SocialProofBar");
+  const proofItems = t("items")
+    .split("·")
+    .map((s) => s.trim())
+    .filter(Boolean);
   return (
     <section className="relative px-6 py-8 border-y border-subtle bg-surface-inset overflow-hidden">
       <div className="max-w-[1400px] mx-auto">

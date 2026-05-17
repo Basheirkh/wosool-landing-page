@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   content: [
@@ -46,6 +47,7 @@ const config: Config = {
       },
       fontFamily: {
         arabic: ["var(--font-ibm-arabic)", "sans-serif"],
+        inter: ["var(--font-inter)", "Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "system-ui", "sans-serif"],
         mono: ["var(--font-jetbrains)", "monospace"],
       },
       fontSize: {
@@ -88,6 +90,12 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // rtl: / ltr: variants based on <html dir>
+    plugin(({ addVariant }) => {
+      addVariant("rtl", '&:where([dir="rtl"], [dir="rtl"] *)');
+      addVariant("ltr", '&:where([dir="ltr"], [dir="ltr"] *)');
+    }),
+  ],
 };
 export default config;

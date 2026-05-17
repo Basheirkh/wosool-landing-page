@@ -1,33 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { UserCheck, ShieldCheck, Brain, Check, X, ArrowLeft } from "lucide-react";
-
-const features = [
-  {
-    title: "يعرف عملاءك",
-    description: "عميل رسلك قبل",
-    descriptionHighlight: "وصول يتذكر اسمه وطلباته وآخر مشكلته.",
-    descriptionEnd: "ما يسأل \"كيف أقدر أساعدك؟\" كل مرة.",
-    icon: UserCheck,
-    accent: "#25D366",
-  },
-  {
-    title: "يسألك قبل ما يغلط",
-    description: "عميل يبي استرداد 350 ريال. وصول ما يرد لحاله — يسألك أول: \"توافق؟\"",
-    icon: ShieldCheck,
-    accent: "#60A5FA",
-    hasButtons: true,
-  },
-  {
-    title: "يتعلم من متجرك — مو من الإنترنت",
-    description: "يعرف أسعارك. مخزونك. سياساتك. ما يخترع إجابات من عنده.",
-    icon: Brain,
-    accent: "#A78BFA",
-  },
-];
+import { UserCheck, ShieldCheck, Brain, Check, X, ArrowLeft, ArrowRight } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function FeaturesGrid() {
+  const t = useTranslations("FeaturesGrid");
+  const locale = useLocale();
+  const ArrowFlowIcon = locale === "ar" ? ArrowLeft : ArrowRight;
+
+  const features = [
+    {
+      title: t("card1_title"),
+      description: t("card1_description"),
+      descriptionHighlight: t("card1_descriptionHighlight"),
+      descriptionEnd: t("card1_descriptionEnd"),
+      icon: UserCheck,
+      accent: "#25D366",
+    },
+    {
+      title: t("card2_title"),
+      description: t("card2_description"),
+      icon: ShieldCheck,
+      accent: "#60A5FA",
+      hasButtons: true,
+    },
+    {
+      title: t("card3_title"),
+      description: t("card3_description"),
+      icon: Brain,
+      accent: "#A78BFA",
+    },
+  ];
+
   return (
     <section id="product" className="relative px-5 py-16 md:px-6 md:py-24">
       <div className="max-w-[1400px] mx-auto">
@@ -38,8 +43,8 @@ export default function FeaturesGrid() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.15] text-right max-w-4xl mr-0 ml-auto">
-            مو بوت. موظف يفهمك.
+          <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.15] text-start max-w-4xl me-auto ms-0">
+            {t("heading")}
           </h2>
         </motion.div>
 
@@ -64,7 +69,7 @@ export default function FeaturesGrid() {
                 <h3 className="text-[18px] font-bold mb-3">{feature.title}</h3>
                 {feature.descriptionHighlight ? (
                   <p className="text-sm text-secondary leading-relaxed">
-                    {feature.description} <ArrowLeft size={12} className="inline text-brand-primary mx-1" strokeWidth={2} /> {feature.descriptionHighlight} {feature.descriptionEnd}
+                    {feature.description} <ArrowFlowIcon size={12} className="inline text-brand-primary mx-1" strokeWidth={2} /> {feature.descriptionHighlight} {feature.descriptionEnd}
                   </p>
                 ) : (
                   <p className="text-sm text-secondary leading-relaxed">
@@ -76,11 +81,11 @@ export default function FeaturesGrid() {
                   <div className="flex gap-2 mt-4">
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-primary/12 text-brand-primary px-4 py-2 text-sm font-medium">
                       <Check size={14} strokeWidth={2.5} />
-                      توافق
+                      {t("card2_yes")}
                     </span>
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-subtle px-4 py-2 text-sm text-secondary">
                       <X size={14} strokeWidth={2.5} />
-                      لا
+                      {t("card2_no")}
                     </span>
                   </div>
                 )}

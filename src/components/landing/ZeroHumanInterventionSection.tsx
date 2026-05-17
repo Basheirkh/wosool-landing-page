@@ -53,7 +53,7 @@ export default function ZeroHumanInterventionSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="mb-12 text-right"
+          className="mb-12 text-start"
         >
           <span className="mb-4 inline-flex rounded-full border border-brand-primary/18 bg-brand-primary/8 px-4 py-2 text-xs tracking-[0.24em] text-brand-primary uppercase">
             Future Vision

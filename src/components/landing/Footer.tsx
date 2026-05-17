@@ -1,55 +1,45 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import Logo from "@/components/ui/Logo";
 
 export default function Footer() {
+  const t = useTranslations("Footer");
+
   const columns = [
     {
-      title: "المنصة",
+      title: t("col_platform"),
       links: [
-        { label: "الأسعار", href: "/#pricing" },
-        { label: "الميزات", href: "/#product" },
-        { label: "التكاملات", href: "/#product" },
-        { label: "التحديثات", href: "/changelog" },
-        { label: "حالة المنصة", href: "/status" },
+        { label: t("link_pricing"), href: "/pricing" },
+        { label: t("link_features"), href: "/features" },
+        { label: t("link_integrations"), href: "/features" },
+        { label: t("link_changelog"), href: "/changelog" },
+        { label: t("link_status"), href: "/status" },
       ],
     },
     {
-      title: "الموارد",
+      title: t("col_resources"),
       links: [
-        { label: "المدونة", href: "/blog" },
-        { label: "التوثيق", href: "/blog/for-developers" },
-        { label: "تحدث إلى فريقنا", href: "/contact" },
+        { label: t("link_blog"), href: "/blog" },
+        { label: t("link_docs"), href: "/blog/for-developers" },
+        { label: t("link_talk_to_team"), href: "/contact" },
       ],
     },
     {
-      title: "الشركة",
+      title: t("col_company"),
       links: [
-        { label: "عن وصول", href: "/about" },
-        { label: "تواصل معنا", href: "/contact" },
-        { label: "الصحافة", href: "mailto:info@wosool.ai" },
+        { label: t("link_about"), href: "/about" },
+        { label: t("link_contact"), href: "/contact" },
+        { label: t("link_press"), href: "mailto:info@wosool.ai" },
       ],
     },
     {
-      title: "قانوني",
+      title: t("col_legal"),
       links: [
-        { label: "شروط الاستخدام", href: "/terms" },
-        { label: "سياسة الخصوصية", href: "/privacy" },
-        { label: "اتفاقية معالجة البيانات", href: "/dpa" },
-        { label: "الإلغاء والاسترداد", href: "/refunds" },
-        { label: "ملفات الارتباط", href: "/cookies" },
-      ],
-    },
-    {
-      title: "الحوكمة",
-      links: [
-        { label: "الإفصاح عن الذكاء الاصطناعي", href: "/ai-disclosure" },
-        { label: "أخلاقيات AI", href: "mailto:info@wosool.ai" },
-        { label: "حقوق البيانات", href: "mailto:info@wosool.ai" },
-        {
-          label: "شكاوى SDAIA",
-          href: "https://pdpl.sdaia.gov.sa",
-          external: true,
-        },
+        { label: t("link_terms"), href: "/terms" },
+        { label: t("link_privacy"), href: "/privacy" },
+        { label: t("link_dpa"), href: "/dpa" },
+        { label: t("link_refunds"), href: "/refunds" },
+        { label: t("link_cookies"), href: "/cookies" },
       ],
     },
   ];
@@ -58,7 +48,7 @@ export default function Footer() {
     <footer className="theme-surface relative py-16 px-6 border-t theme-border">
       <div className="max-w-[1400px] mx-auto">
         {/* Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
           {columns.map((col) => (
             <div key={col.title}>
               <h4 className="theme-text-primary text-sm font-semibold mb-4">{col.title}</h4>
@@ -112,13 +102,9 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t theme-border">
           <Logo size="sm" color="adaptive" />
 
-          <span className="theme-text-secondary text-xs">
-            © 2026 وصول — جميع الحقوق محفوظة
-          </span>
+          <span className="theme-text-secondary text-xs">{t("copyright")}</span>
 
-          <span className="theme-text-secondary text-xs">
-            صُنع بـ <span className="text-brand-primary">∞</span> في المملكة العربية السعودية
-          </span>
+          <span className="theme-text-secondary text-xs">{t("made_in")}</span>
         </div>
       </div>
     </footer>

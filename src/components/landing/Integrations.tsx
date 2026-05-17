@@ -2,16 +2,19 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-
-const integrations = [
-  { name: "واتساب Business", src: "/logos/whatsapp.svg", status: "جاهز", available: true, note: "أرسل وينفّذ" },
-  { name: "سلة", src: "/logos/salla.svg", status: "جاهز", available: true, note: "يقرأ متجرك ويديره" },
-  { name: "زد", src: "/logos/zid.svg", status: "قريباً", available: false, note: "نفس الشيء — لمتاجر زد" },
-  { name: "Shopify", src: "/logos/shopify.svg", status: "قريباً", available: false, note: "للمتاجر العالمية" },
-  { name: "Meta", src: "/logos/meta.svg", status: "قريباً", available: false, note: "إنستقرام وفيسبوك" },
-];
+import { useTranslations } from "next-intl";
 
 export default function Integrations() {
+  const t = useTranslations("Integrations");
+
+  const integrations = [
+    { name: t("i1_name"), src: "/logos/whatsapp.svg", status: t("status_ready"), available: true, note: t("i1_note") },
+    { name: t("i2_name"), src: "/logos/salla.svg", status: t("status_ready"), available: true, note: t("i2_note") },
+    { name: t("i3_name"), src: "/logos/zid.svg", status: t("status_soon"), available: false, note: t("i3_note") },
+    { name: t("i4_name"), src: "/logos/shopify.svg", status: t("status_soon"), available: false, note: t("i4_note") },
+    { name: t("i5_name"), src: "/logos/meta.svg", status: t("status_soon"), available: false, note: t("i5_note") },
+  ];
+
   return (
     <section id="product" className="relative overflow-hidden px-5 py-16 md:px-6 md:py-24 bg-surface-inset">
       <div
@@ -28,15 +31,15 @@ export default function Integrations() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="mb-10 max-w-4xl text-right md:mb-14"
+          className="mb-10 max-w-4xl text-start md:mb-14"
         >
           <h2 className="text-[30px] font-bold leading-[1.12] md:text-[42px] lg:text-[54px]">
-            يشتغل مع متجرك من أول يوم
+            {t("heading")}
           </h2>
           <p className="mt-5 max-w-2xl text-[16px] leading-8 text-secondary">
-            عندك سلة؟ وصّله في 10 ثوان.
+            {t("sub_line1")}
             <br />
-            وصول يقرأ منتجاتك وطلباتك ويبدأ.
+            {t("sub_line2")}
           </p>
         </motion.div>
 

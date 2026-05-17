@@ -1,11 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Logo from "@/components/ui/Logo";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import LocaleSwitcher from "@/components/landing/LocaleSwitcher";
 
 export default function Navbar() {
+  const t = useTranslations("Navbar");
+  const locale = useLocale();
+  const dir = locale === "ar" ? "rtl" : "ltr";
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -16,15 +21,18 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { label: "شوف كيف يشتغل", href: "/#product" },
-    { label: "الأسعار", href: "/#pricing" },
-    { label: "المدونة", href: "/blog" },
+    { label: locale === "ar" ? "القدرات" : "Features", href: "/features" },
+    { label: locale === "ar" ? "الموظفون الذكيون" : "Agents", href: "/agents" },
+    { label: t("pricing"), href: "/pricing" },
+    { label: t("blog"), href: "/blog" },
   ];
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 h-[60px] flex items-center transition-all duration-300 ${
+        dir={dir}
+        style={{ direction: dir }}
+        className={`fixed top-0 inset-x-0 z-50 h-[60px] flex items-center transition-all duration-300 ${
           scrolled
             ? "theme-nav-shell backdrop-blur-xl border-b"
             : "bg-transparent"
@@ -43,27 +51,28 @@ export default function Navbar() {
                 className="text-sm transition-colors relative group theme-link-muted"
               >
                 {link.label}
-                <span className="absolute bottom-0 right-0 w-0 h-[1px] bg-brand-primary transition-all duration-300 group-hover:w-full" />
+                <span className="absolute bottom-0 end-0 w-0 h-[1px] bg-brand-primary transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
           </div>
 
-          {/* Right buttons */}
+          {/* End buttons */}
           <div className="hidden md:flex items-center gap-3">
+            <LocaleSwitcher />
             <ThemeToggle />
-            <Link
+            <a
               href="https://app.wosool.ai/login"
               target="_blank"
               rel="noreferrer"
               className="text-sm transition-colors px-4 py-2 theme-link-muted"
             >
-              دخول
-            </Link>
+              {t("login")}
+            </a>
             <Link
-              href="/#pricing"
+              href="/pricing"
               className="theme-btn-primary text-sm font-medium rounded-full px-5 py-2.5 transition-all hover:-translate-y-[1px]"
             >
-              جرّب مجاناً
+              {t("start_trial")}
             </Link>
           </div>
 
@@ -71,7 +80,7 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden flex flex-col gap-1.5 p-2"
-            aria-label="القائمة"
+            aria-label="Menu"
           >
             <span
               className={`block w-5 h-[2px] bg-foreground transition-transform ${
@@ -106,20 +115,21 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="flex flex-col gap-4 mt-8 items-center">
+            <LocaleSwitcher />
             <ThemeToggle />
-            <Link
+            <a
               href="https://app.wosool.ai/login"
               target="_blank"
               rel="noreferrer"
               className="theme-link-muted text-lg"
             >
-              دخول
-            </Link>
+              {t("login")}
+            </a>
             <Link
-              href="/#pricing"
+              href="/pricing"
               className="theme-btn-primary rounded-full px-8 py-3 text-lg font-semibold"
             >
-              جرّب مجاناً
+              {t("start_trial")}
             </Link>
           </div>
         </div>

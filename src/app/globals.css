@@ -182,17 +182,33 @@ html[data-theme="light"] {
 
 html {
   scroll-behavior: smooth;
-  direction: rtl;
+}
+
+/* Direction enforcement — html[dir] sets the inherited direction */
+html[dir="rtl"] {
+  direction: rtl !important;
+}
+
+html[dir="ltr"] {
+  direction: ltr !important;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   overflow-x: hidden;
-  font-family: var(--font-ibm-arabic), "IBM Plex Sans Arabic", sans-serif;
   transition:
     background-color 220ms ease,
     color 220ms ease;
+}
+
+/* Locale-aware font stack */
+html[dir="rtl"] body {
+  font-family: var(--font-ibm-arabic), "IBM Plex Sans Arabic", sans-serif;
+}
+
+html[dir="ltr"] body {
+  font-family: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 }
 
 /* Dot grid pattern — theme-aware (for content areas) */
@@ -239,15 +255,23 @@ body {
   transform: translate(-50%, -50%);
 }
 
-/* Scroll progress bar */
+/* Scroll progress bar — anchored to logical start */
 .scroll-progress {
   position: fixed;
   top: 0;
-  right: 0;
+  inset-inline-start: 0;
   height: 2px;
   background: var(--brand-primary);
   z-index: 100;
-  transform-origin: right;
+  transform-origin: var(--scroll-progress-origin, right);
+}
+
+html[dir="ltr"] {
+  --scroll-progress-origin: left;
+}
+
+html[dir="rtl"] {
+  --scroll-progress-origin: right;
 }
 
 /* WhatsApp demo bubble */

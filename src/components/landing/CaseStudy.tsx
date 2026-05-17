@@ -1,42 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const metrics = [
-  {
-    label: "زمن الرد",
-    before: "45 دقيقة",
-    after: "3 ثوان",
-    improvement: "أسرع 900×",
-  },
-  {
-    label: "نسبة الردود",
-    before: "60٪",
-    after: "100٪",
-    improvement: "كل العملاء يُجاب عليهم",
-  },
-  {
-    label: "ساعات خدمة العملاء",
-    before: "8 ساعات / يوم",
-    after: "24 / 7",
-    improvement: "تغطية كاملة",
-  },
-  {
-    label: "التكلفة الشهرية",
-    before: "5,000 ريال",
-    after: "299 ريال",
-    improvement: "توفير 94٪",
-  },
-];
-
-const quote = {
-  text: "كنا نُضيّع طلبات كل ليلة لأن ما أحد يرد على العملاء بعد الدوام. من أول أسبوع مع وصول، كل رسالة تلاقي ردّاً — وزادت الطلبات 40٪ في نفس الشهر.",
-  author: "صاحب متجر",
-  role: "قطاع الموضة النسائية",
-  location: "الرياض",
-};
+import { useTranslations } from "next-intl";
 
 export default function CaseStudy() {
+  const t = useTranslations("CaseStudy");
+
+  const metrics = [
+    { label: t("m1_label"), before: t("m1_before"), after: t("m1_after"), improvement: t("m1_improvement") },
+    { label: t("m2_label"), before: t("m2_before"), after: t("m2_after"), improvement: t("m2_improvement") },
+    { label: t("m3_label"), before: t("m3_before"), after: t("m3_after"), improvement: t("m3_improvement") },
+    { label: t("m4_label"), before: t("m4_before"), after: t("m4_after"), improvement: t("m4_improvement") },
+  ];
+
   return (
     <section className="relative px-5 py-16 md:px-6 md:py-24">
       <div className="max-w-[1400px] mx-auto">
@@ -46,18 +22,18 @@ export default function CaseStudy() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-12 text-right"
+          className="mb-12 text-start"
         >
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-brand-primary/20 bg-brand-primary/5">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-primary" />
             <span className="text-xs text-brand-primary font-medium tracking-wider uppercase">
-              قصة نجاح
+              {t("eyebrow")}
             </span>
           </div>
           <h2 className="text-[28px] md:text-[40px] lg:text-[52px] font-bold leading-[1.15]">
-            قبل وصول. بعد وصول.
+            {t("heading_line1")}
             <br />
-            <span className="text-secondary">النتائج الفعلية.</span>
+            <span className="text-secondary">{t("heading_line2")}</span>
           </h2>
         </motion.div>
 
@@ -78,7 +54,7 @@ export default function CaseStudy() {
 
               {/* Before */}
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] text-muted">قبل</span>
+                <span className="text-[11px] text-muted">{t("before")}</span>
                 <span className="text-sm text-secondary line-through decoration-red-400/40">
                   {m.before}
                 </span>
@@ -87,7 +63,7 @@ export default function CaseStudy() {
               {/* After */}
               <div className="flex items-center justify-between mb-5">
                 <span className="text-[11px] text-brand-primary font-medium">
-                  بعد
+                  {t("after")}
                 </span>
                 <span className="text-[22px] md:text-[26px] font-bold text-primary leading-none">
                   {m.after}
@@ -157,34 +133,34 @@ export default function CaseStudy() {
               </svg>
 
               <p className="text-[18px] md:text-[22px] leading-[1.7] text-primary font-medium max-w-2xl">
-                {quote.text}
+                {t("quote")}
               </p>
 
               <div className="mt-6 flex items-center gap-4">
                 <div className="h-12 w-12 rounded-full bg-brand-primary/15 border border-brand-primary/25 flex items-center justify-center text-brand-primary font-bold">
-                  م
+                  {t("quote_author").charAt(0)}
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-primary">
-                    {quote.author}
+                    {t("quote_author")}
                   </div>
                   <div className="text-xs text-muted mt-0.5">
-                    {quote.role} — {quote.location}
+                    {t("quote_role")} — {t("quote_location")}
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Big number accent */}
-            <div className="lg:border-r lg:border-brand-primary/20 lg:pr-8">
+            <div className="lg:border-s lg:border-brand-primary/20 lg:ps-8">
               <div className="text-xs text-muted uppercase tracking-[0.2em] mb-2">
-                زيادة الطلبات
+                {t("metric_label")}
               </div>
               <div className="text-[64px] md:text-[84px] font-bold leading-none text-brand-primary tracking-tight">
-                +40٪
+                {t("metric_value")}
               </div>
               <div className="text-sm text-secondary mt-2">
-                في الشهر الأول
+                {t("metric_sub")}
               </div>
             </div>
           </div>
